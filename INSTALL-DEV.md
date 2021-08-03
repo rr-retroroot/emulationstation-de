@@ -83,6 +83,24 @@ To build with CEC support you also need to install these packages:
 sudo apt-get install libcec-dev libp8-platform-dev
 ```
 
+
+**RockPro 64 (Armbian)**
+
+All of the required packages can be installed with apt-get:
+```
+sudo apt-get install build-essential git cmake libsdl2-dev libfreeimage-dev libfreetype6-dev libcurl4-openssl-dev libpugixml-dev rapidjson-dev libasound2-dev vlc libvlc-dev libgl1-mesa-dev libavcodec-dev libavfilter-dev
+```
+
+If building with the optional VLC video player, the following packages are also needed:
+```
+sudo apt-get install vlc libvlc-dev
+```
+
+To build with CEC support you also need to install these packages:
+```
+sudo apt-get install libcec-dev libp8-platform-dev
+```
+
 **FreeBSD**
 
 Use pkg to install the dependencies:
