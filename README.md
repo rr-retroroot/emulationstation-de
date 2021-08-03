@@ -28,6 +28,7 @@ The following operating systems have been tested with ES-DE (all for the x86 arc
 * macOS 10.11 "El Capitan" (v1.0 release only)
 * Windows 10
 * Windows 8.1
+* Armbian 20.04 "focal" (RockPro64, ARM64, v1.1 release only)
 
 **Note:** If using a Mac with an ARM CPU (e.g. M1) you need to install the x86 version of RetroArch and any other emulators, or you won't be able to launch any games. This will be fixed whenever a native macOS ARM build of ES-DE is released.
 
