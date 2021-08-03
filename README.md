@@ -28,6 +28,7 @@ The following operating systems have been tested with ES-DE (all for the x86 arc
 * macOS 10.11 "El Capitan" (v1.0 release only)
 * Windows 10
 * Windows 8.1
+* Armbian 20.04 "focal" (RockPro64, ARM64, v1.1 release only)
 
 **Note:** If using a Mac with an ARM CPU (e.g. M1) you need to install the x86 version of RetroArch and any other emulators, or you won't be able to launch any games. This will be fixed whenever a native macOS ARM build of ES-DE is released.
 
@@ -50,12 +51,15 @@ The latest pre-release version is 1.1.0-rc (released 2021-07-16)
 | Debian DEB package  | Ubuntu 20.04 to 21.04, Linux Mint 20, possibly others   | x64 (x86)    | [emulationstation-de-1.1.0-rc-x64.deb](https://es-de.org/releases/beta/Linux/emulationstation-de-1.1.0-rc-x64.deb)|
 | Fedora RPM package  | Fedora Workstation 33, possibly others                  | x64 (x86)    | [emulationstation-de-1.1.0-rc-x64.rpm](https://es-de.org/releases/beta/Linux/emulationstation-de-1.1.0-rc-x64.rpm)|
 | Debian DEB package  | Raspberry Pi OS (Raspian) - preview release             | ARM          | [emulationstation-de-1.1.0-rc-preview-armv7l.deb](https://es-de.org/releases/beta/RaspberryPi/emulationstation-de-1.1.0-rc-preview-armv7l.deb)|
+| Armbian DEB package | RockPro64 (Armbian) - preview release                   | ARM64        | [emulationstation-de-1.1.0-rc-preview-arm64.deb](https://es-de.org/releases/beta/RockPro64/emulationstation-de-1.1.0-rc-preview-arm64.deb)
 | macOS DMG installer | macOS 10.14 "Mojave" to 11 "Big Sur"                    | x64 (x86)    | [EmulationStation-DE-1.1.0-rc-x64.dmg](https://es-de.org/releases/beta/macOS/EmulationStation-DE-1.1.0-rc-x64.dmg)|
 | Windows installer   | Windows 10 and 8.1                                      | x64 (x86)    | [EmulationStation-DE-1.1.0-rc-x64.exe](https://es-de.org/releases/beta/Windows/EmulationStation-DE-1.1.0-rc-x64.exe)|
 
 Unfortunately due to technical reasons, v1.0.1 will be the last release for legacy macOS versions.
 
 The Raspberry Pi 4 release is a preview only, there are some bugs such as graphical glitches on this platform and some features like GLSL shaders are missing. Official support will probably be added for this device as of v1.2.
+
+The RockPro64 release is a highly experimental preview release. Initial testing looks good with no glitches/bugs found yet, but results may vary.
 
 For some of the rarer operating systems listed at the top you need to build ES-DE from source. The plan is to have ES-DE available in the software repositories of all supported operating systems (where this is applicable), so in the long term building from source should not be required.
 
