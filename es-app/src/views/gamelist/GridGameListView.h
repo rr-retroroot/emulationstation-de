@@ -9,6 +9,7 @@
 #ifndef ES_APP_VIEWS_GAME_LIST_GRID_GAME_LIST_VIEW_H
 #define ES_APP_VIEWS_GAME_LIST_GRID_GAME_LIST_VIEW_H
 
+#include "components/BadgesComponent.h"
 #include "components/DateTimeComponent.h"
 #include "components/ImageGridComponent.h"
 #include "components/RatingComponent.h"
@@ -67,13 +68,15 @@ protected:
 
     ImageGridComponent<FileData*> mGrid;
     // Points to the first game in the list, i.e. the first entry which is of the type 'GAME'.
-    FileData* firstGameEntry;
+    FileData *firstGameEntry;
 
 private:
     void updateInfoPanel();
-    const std::string getImagePath(FileData* file);
+
+    const std::string getImagePath(FileData *file);
 
     void initMDLabels();
+
     void initMDValues();
 
     ImageComponent mMarquee;
@@ -88,6 +91,7 @@ private:
     TextComponent mLblLastPlayed;
     TextComponent mLblPlayCount;
 
+    BadgesComponent mBadges;
     RatingComponent mRating;
     DateTimeComponent mReleaseDate;
     TextComponent mDeveloper;
