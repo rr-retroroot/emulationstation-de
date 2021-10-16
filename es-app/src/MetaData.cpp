@@ -100,7 +100,6 @@ MetaDataList MetaDataList::createFromXML(MetaDataListType type,
     const std::vector<MetaDataDecl>& mdd = mdl.getMDD();
 
     for (auto iter = mdd.cbegin(); iter != mdd.cend(); iter++) {
-        pugi::xml_node md = node.child(iter->key.c_str());
 
         // Find all nodes of given mdd type.
         const pugi::xml_object_range<pugi::xml_node_iterator>& children = node.children();
@@ -159,11 +158,21 @@ void MetaDataList::appendToXML(pugi::xml_node& parent,
             if (mddIter->type == MD_PATH)
                 value = Utils::FileSystem::createRelativePath(value, relativeTo, true);
 
-            auto node = parent.append_child(mapIter->first.c_str());
-            node.text().set(value.c_str());
-            // for (auto& a : mapIter->second.attr) {
-            // node.append_attribute(a.first.c_str()) = a.second.c_str();
-            // }
+            // Create simple node without attributes when we have a non-empty 'value'.
+            if (!value.empty()) {
+                auto node = parent.append_child(mapIter->first.c_str());
+                node.text().set(value.c_str());
+            }
+
+            // Create nodes with attributes for every attribute value.
+            for (auto& a : mapIter->second.attr) {
+                for (auto& b : a.second) {
+                    auto node = parent.append_child(mapIter->first.c_str());
+                    auto nodeAttr = node.append_attribute(a.first.c_str());
+                    nodeAttr.set_value(b.first.c_str());
+                    node.text().set(b.second.c_str());
+                }
+            }
         }
     }
 }
