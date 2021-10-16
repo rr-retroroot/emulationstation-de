@@ -18,46 +18,47 @@
 // The statistic entries must be placed at the bottom or otherwise there will be problems with
 // saving the values in GuiMetaDataEd.
 MetaDataDecl gameDecls[] = {
-// key,           type,                default,           statistic, name in GuiMetaDataEd,        prompt in GuiMetaDataEd,            shouldScrape
-{"name",          MD_STRING,           "",                false,     "name",                       "enter name",                       true},
-{"sortname",      MD_STRING,           "",                false,     "sortname",                   "enter sortname",                   false},
-{"desc",          MD_MULTILINE_STRING, "",                false,     "description",                "enter description",                true},
-{"rating",        MD_RATING,           "0",               false,     "rating",                     "enter rating",                     true},
-{"releasedate",   MD_DATE,             "19700101T010000", false,     "release date",               "enter release date",               true},
-{"developer",     MD_STRING,           "unknown",         false,     "developer",                  "enter developer",                  true},
-{"publisher",     MD_STRING,           "unknown",         false,     "publisher",                  "enter publisher",                  true},
-{"genre",         MD_STRING,           "unknown",         false,     "genre",                      "enter genre",                      true},
-{"players",       MD_STRING,           "unknown",         false,     "players",                    "enter number of players",          true},
-{"favorite",      MD_BOOL,             "false",           false,     "favorite",                   "enter favorite off/on",            false},
-{"completed",     MD_BOOL,             "false",           false,     "completed",                  "enter completed off/on",           false},
-{"kidgame",       MD_BOOL,             "false",           false,     "kidgame",                    "enter kidgame off/on",             false},
-{"hidden",        MD_BOOL,             "false",           false,     "hidden",                     "enter hidden off/on",              false},
-{"broken",        MD_BOOL,             "false",           false,     "broken/not working",         "enter broken off/on",              false},
-{"nogamecount",   MD_BOOL,             "false",           false,     "exclude from game counter",  "enter don't count as game off/on", false},
-{"nomultiscrape", MD_BOOL,             "false",           false,     "exclude from multi-scraper", "enter no multi-scrape off/on",     false},
-{"hidemetadata",  MD_BOOL,             "false",           false,     "hide metadata fields",       "enter hide metadata off/on",       false},
-{"playcount",     MD_INT,              "0",               false,     "times played",               "enter number of times played",     false},
-{"altemulator",   MD_ALT_EMULATOR,     "",                false,     "alternative emulator",       "select alternative emulator",      false},
-{"lastplayed",    MD_TIME,             "0",               true,      "last played",                "enter last played date",           false}
+// key,                 type,                     default,                      statistic,          name in GuiMetaDataEd,                    prompt in GuiMetaDataEd,                        shouldScrape
+{"name",          MD_STRING,           "",                false,     "name",                       "enter name",                       true,    {}},
+{"sortname",      MD_STRING,           "",                false,     "sortname",                   "enter sortname",                   false,   {}},
+{"desc",          MD_MULTILINE_STRING, "",                false,     "description",                "enter description",                true,    {}},
+{"rating",        MD_RATING,           "0",               false,     "rating",                     "enter rating",                     true,    {}},
+{"releasedate",   MD_DATE,             "19700101T010000", false,     "release date",               "enter release date",               true,    {}},
+{"developer",     MD_STRING,           "unknown",         false,     "developer",                  "enter developer",                  true,    {}},
+{"publisher",     MD_STRING,           "unknown",         false,     "publisher",                  "enter publisher",                  true,    {}},
+{"genre",         MD_STRING,           "unknown",         false,     "genre",                      "enter genre",                      true,    {}},
+{"players",       MD_STRING,           "unknown",         false,     "players",                    "enter number of players",          true,    {}},
+{"favorite",      MD_BOOL,             "false",           false,     "favorite",                   "enter favorite off/on",            false,   {}},
+{"completed",     MD_BOOL,             "false",           false,     "completed",                  "enter completed off/on",           false,   {}},
+{"kidgame",       MD_BOOL,             "false",           false,     "kidgame",                    "enter kidgame off/on",             false,   {}},
+{"hidden",        MD_BOOL,             "false",           false,     "hidden",                     "enter hidden off/on",              false,   {}},
+{"broken",        MD_BOOL,             "false",           false,     "broken/not working",         "enter broken off/on",              false,   {}},
+{"nogamecount",   MD_BOOL,             "false",           false,     "exclude from game counter",  "enter don't count as game off/on", false,   {}},
+{"nomultiscrape", MD_BOOL,             "false",           false,     "exclude from multi-scraper", "enter no multi-scrape off/on",     false,   {}},
+{"hidemetadata",  MD_BOOL,             "false",           false,     "hide metadata fields",       "enter hide metadata off/on",       false,   {}},
+{"playcount",     MD_INT,              "0",               false,     "times played",               "enter number of times played",     false,   {}},
+{"altemulator",   MD_ALT_EMULATOR,     "",                false,     "alternative emulator",       "select alternative emulator",      false,   {}},
+{"lastplayed",    MD_TIME,             "0",               true,      "last played",                "enter last played date",           false,   {}},
+{"controllers",    MD_STRING,           "",               false,     "controllers",                "select controllers",               false,   {"players"}}
 };
 
 MetaDataDecl folderDecls[] = {
-{"name",          MD_STRING,           "",                false,     "name",                          "enter name",                       true},
-{"desc",          MD_MULTILINE_STRING, "",                false,     "description",                   "enter description",                true},
-{"rating",        MD_RATING,           "0",               false,     "rating",                        "enter rating",                     true},
-{"releasedate",   MD_DATE,             "19700101T010000", false,     "release date",                  "enter release date",               true},
-{"developer",     MD_STRING,           "unknown",         false,     "developer",                     "enter developer",                  true},
-{"publisher",     MD_STRING,           "unknown",         false,     "publisher",                     "enter publisher",                  true},
-{"genre",         MD_STRING,           "unknown",         false,     "genre",                         "enter genre",                      true},
-{"players",       MD_STRING,           "unknown",         false,     "players",                       "enter number of players",          true},
-{"favorite",      MD_BOOL,             "false",           false,     "favorite",                      "enter favorite off/on",            false},
-{"completed",     MD_BOOL,             "false",           false,     "completed",                     "enter completed off/on",           false},
-{"kidgame",       MD_BOOL,             "false",           false,     "kidgame (only affects badges)", "enter kidgame off/on",             false},
-{"hidden",        MD_BOOL,             "false",           false,     "hidden",                        "enter hidden off/on",              false},
-{"broken",        MD_BOOL,             "false",           false,     "broken/not working",            "enter broken off/on",              false},
-{"nomultiscrape", MD_BOOL,             "false",           false,     "exclude from multi-scraper",    "enter no multi-scrape off/on",     false},
-{"hidemetadata",  MD_BOOL,             "false",           false,     "hide metadata fields",          "enter hide metadata off/on",       false},
-{"lastplayed",    MD_TIME,             "0",               true,      "last played",                   "enter last played date",           false}
+{"name",          MD_STRING,           "",                false,     "name",                          "enter name",                       true,   {}},
+{"desc",          MD_MULTILINE_STRING, "",                false,     "description",                   "enter description",                true,   {}},
+{"rating",        MD_RATING,           "0",               false,     "rating",                        "enter rating",                     true,   {}},
+{"releasedate",   MD_DATE,             "19700101T010000", false,     "release date",                  "enter release date",               true,   {}},
+{"developer",     MD_STRING,           "unknown",         false,     "developer",                     "enter developer",                  true,   {}},
+{"publisher",     MD_STRING,           "unknown",         false,     "publisher",                     "enter publisher",                  true,   {}},
+{"genre",         MD_STRING,           "unknown",         false,     "genre",                         "enter genre",                      true,   {}},
+{"players",       MD_STRING,           "unknown",         false,     "players",                       "enter number of players",          true,   {}},
+{"favorite",      MD_BOOL,             "false",           false,     "favorite",                      "enter favorite off/on",            false,   {}},
+{"completed",     MD_BOOL,             "false",           false,     "completed",                     "enter completed off/on",           false,   {}},
+{"kidgame",       MD_BOOL,             "false",           false,     "kidgame (only affects badges)", "enter kidgame off/on",             false,   {}},
+{"hidden",        MD_BOOL,             "false",           false,     "hidden",                        "enter hidden off/on",              false,   {}},
+{"broken",        MD_BOOL,             "false",           false,     "broken/not working",            "enter broken off/on",              false,   {}},
+{"nomultiscrape", MD_BOOL,             "false",           false,     "exclude from multi-scraper",    "enter no multi-scrape off/on",     false,   {}},
+{"hidemetadata",  MD_BOOL,             "false",           false,     "hide metadata fields",          "enter hide metadata off/on",       false,   {}},
+{"lastplayed",    MD_TIME,             "0",               true,      "last played",                   "enter last played date",           false,   {}}
 };
 // clang-format on
 
@@ -87,7 +88,7 @@ MetaDataList::MetaDataList(MetaDataListType type)
 {
     const std::vector<MetaDataDecl>& mdd = getMDD();
     for (auto iter = mdd.cbegin(); iter != mdd.cend(); iter++)
-        set(iter->key, iter->defaultValue);
+        set(iter->key, iter->defaultValue, {});
 }
 
 MetaDataList MetaDataList::createFromXML(MetaDataListType type,
@@ -99,17 +100,40 @@ MetaDataList MetaDataList::createFromXML(MetaDataListType type,
     const std::vector<MetaDataDecl>& mdd = mdl.getMDD();
 
     for (auto iter = mdd.cbegin(); iter != mdd.cend(); iter++) {
-        pugi::xml_node md = node.child(iter->key.c_str());
-        if (md && !md.text().empty()) {
-            // If it's a path, resolve relative paths.
-            std::string value = md.text().get();
+
+        // Find all nodes of given mdd type.
+        const pugi::xml_object_range<pugi::xml_node_iterator>& children = node.children();
+        std::string value = iter->defaultValue;
+        std::map<std::string, std::map<std::string, std::string>> attr = {};
+        for (auto iter2 = children.begin(); iter2 != children.end(); iter2++) {
+            if (iter2->name() != iter->key)
+                continue;
+
+            // Parse value.
+            std::string v = iter2->text().get();
             if (iter->type == MD_PATH)
-                value = Utils::FileSystem::resolveRelativePath(value, relativeTo, true);
-            mdl.set(iter->key, value);
+                value = Utils::FileSystem::resolveRelativePath(v, relativeTo, true);
+            if (iter2->attributes().begin() == iter2->attributes().end())
+                value = v;
+
+            // Parse attributes.
+            for (const auto& attrName : iter->attr) {
+                // Initialize attribute to empty map if it doesn't exist yet.
+                if (attr.find(attrName) == attr.end()) {
+                    std::map<std::string, std::string> m = {};
+                    attr[attrName] = m;
+                }
+
+                // Append attribute value.
+                std::string attrValue = iter2->attribute(attrName.c_str()).as_string("");
+                if (!attrValue.empty()) {
+                    attr[attrName].insert({attrValue, v});
+                }
+            }
         }
-        else {
-            mdl.set(iter->key, iter->defaultValue);
-        }
+
+        // Set.
+        mdl.set(iter->key, value, attr);
     }
     return mdl;
 }
@@ -123,28 +147,47 @@ void MetaDataList::appendToXML(pugi::xml_node& parent,
     for (auto mddIter = mdd.cbegin(); mddIter != mdd.cend(); mddIter++) {
         auto mapIter = mMap.find(mddIter->key);
         if (mapIter != mMap.cend()) {
+
             // We have this value!
             // If it's just the default (and we ignore defaults), don't write it.
-            if (ignoreDefaults && mapIter->second == mddIter->defaultValue)
+            if (ignoreDefaults && mapIter->second.value == mddIter->defaultValue &&
+                mapIter->second.attr.empty())
                 continue;
 
             // Try and make paths relative if we can.
-            std::string value = mapIter->second;
+            std::string value = mapIter->second.value;
             if (mddIter->type == MD_PATH)
                 value = Utils::FileSystem::createRelativePath(value, relativeTo, true);
 
-            parent.append_child(mapIter->first.c_str()).text().set(value.c_str());
+            // Create simple node without attributes when we have a non-empty 'value'.
+            if (!value.empty()) {
+                auto node = parent.append_child(mapIter->first.c_str());
+                node.text().set(value.c_str());
+            }
+
+            // Create nodes with attributes for every attribute value.
+            for (auto& a : mapIter->second.attr) {
+                for (auto& b : a.second) {
+                    auto node = parent.append_child(mapIter->first.c_str());
+                    auto nodeAttr = node.append_attribute(a.first.c_str());
+                    nodeAttr.set_value(b.first.c_str());
+                    node.text().set(b.second.c_str());
+                }
+            }
         }
     }
 }
 
-void MetaDataList::set(const std::string& key, const std::string& value)
+void MetaDataList::set(const std::string& key,
+                       const std::string& value,
+                       const std::map<std::string, std::map<std::string, std::string>>& attr)
 {
-    mMap[key] = value;
+    MetaDataValue mdv = {value, attr};
+    mMap[key] = mdv;
     mWasChanged = true;
 }
 
-const std::string& MetaDataList::get(const std::string& key) const
+const MetaDataValue& MetaDataList::getWithAttributes(const std::string& key) const
 {
     // Check that the key actually exists, otherwise return an empty string.
     if (mMap.count(key) > 0)
@@ -153,16 +196,25 @@ const std::string& MetaDataList::get(const std::string& key) const
         return mNoResult;
 }
 
+const std::string& MetaDataList::get(const std::string& key) const
+{
+    // Check that the key actually exists, otherwise return an empty string.
+    if (mMap.count(key) > 0)
+        return mMap.at(key).value;
+    else
+        return mNoResult.value;
+}
+
 int MetaDataList::getInt(const std::string& key) const
 {
     // Return integer value.
-    return atoi(get(key).c_str());
+    return atoi(getWithAttributes(key).value.c_str());
 }
 
 float MetaDataList::getFloat(const std::string& key) const
 {
     // Return float value.
-    return static_cast<float>(atof(get(key).c_str()));
+    return static_cast<float>(atof(getWithAttributes(key).value.c_str()));
 }
 
 bool MetaDataList::wasChanged() const

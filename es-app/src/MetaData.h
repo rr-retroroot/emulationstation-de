@@ -51,6 +51,13 @@ struct MetaDataDecl {
     std::string displayPrompt;
     // If set to false, the scraper will not overwrite this metadata.
     bool shouldScrape;
+    // List of allowed attributes.
+    std::vector<std::string> attr;
+};
+
+struct MetaDataValue {
+    std::string value;
+    std::map<std::string, std::map<std::string, std::string>> attr;
 };
 
 enum MetaDataListType {
@@ -72,8 +79,11 @@ public:
 
     MetaDataList(MetaDataListType type);
 
-    void set(const std::string& key, const std::string& value);
+    void set(const std::string& key,
+             const std::string& value,
+             const std::map<std::string, std::map<std::string, std::string>>& attr = {});
 
+    const MetaDataValue& getWithAttributes(const std::string& key) const;
     const std::string& get(const std::string& key) const;
     int getInt(const std::string& key) const;
     float getFloat(const std::string& key) const;
@@ -90,8 +100,8 @@ public:
 
 private:
     MetaDataListType mType;
-    std::map<std::string, std::string> mMap;
-    std::string mNoResult = "";
+    std::map<std::string, MetaDataValue> mMap;
+    MetaDataValue mNoResult = {"", {}};
     bool mWasChanged;
 };
 
