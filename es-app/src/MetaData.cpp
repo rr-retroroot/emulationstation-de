@@ -103,7 +103,6 @@ MetaDataList MetaDataList::createFromXML(MetaDataListType type,
 
         // Find all nodes of given mdd type.
         const pugi::xml_object_range<pugi::xml_node_iterator>& children = node.children();
-        bool found = false;
         std::string value = iter->defaultValue;
         std::map<std::string, std::map<std::string, std::string>> attr = {};
         for (auto iter2 = children.begin(); iter2 != children.end(); iter2++) {
@@ -114,7 +113,7 @@ MetaDataList MetaDataList::createFromXML(MetaDataListType type,
             std::string v = iter2->text().get();
             if (iter->type == MD_PATH)
                 value = Utils::FileSystem::resolveRelativePath(v, relativeTo, true);
-            if (iter->attr.empty())
+            if (iter2->attributes().begin() == iter2->attributes().end())
                 value = v;
 
             // Parse attributes.
@@ -125,6 +124,7 @@ MetaDataList MetaDataList::createFromXML(MetaDataListType type,
                     attr[attrName] = m;
                 }
 
+                // Append attribute value.
                 std::string attrValue = iter2->attribute(attrName.c_str()).as_string("");
                 if (!attrValue.empty()) {
                     attr[attrName].insert({attrValue, v});
@@ -132,7 +132,7 @@ MetaDataList MetaDataList::createFromXML(MetaDataListType type,
             }
         }
 
-        // Set to default value if no node was found.
+        // Set.
         mdl.set(iter->key, value, attr);
     }
     return mdl;
@@ -150,7 +150,8 @@ void MetaDataList::appendToXML(pugi::xml_node& parent,
 
             // We have this value!
             // If it's just the default (and we ignore defaults), don't write it.
-            if (ignoreDefaults && mapIter->second.value == mddIter->defaultValue)
+            if (ignoreDefaults && mapIter->second.value == mddIter->defaultValue &&
+                mapIter->second.attr.empty())
                 continue;
 
             // Try and make paths relative if we can.
