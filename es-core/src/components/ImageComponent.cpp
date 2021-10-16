@@ -489,7 +489,9 @@ void ImageComponent::applyTheme(const std::shared_ptr<ThemeData>& theme,
                                             static_cast<float>(Renderer::getScreenHeight()))};
 
     if (properties & ThemeFlags::SIZE) {
-        float maxSize = glm::max(Renderer::getScreenWidth(), Renderer::getScreenHeight()) * 4;
+        float maxSize =
+            static_cast<float>(glm::max(Renderer::getScreenWidth(), Renderer::getScreenHeight())) *
+            4.0f;
         if (elem->has("size"))
             setResize(glm::clamp(elem->get<glm::vec2>("size") * scale, 1.0f, maxSize));
         else if (elem->has("maxSize"))
