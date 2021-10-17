@@ -490,11 +490,11 @@ void ImageComponent::applyTheme(const std::shared_ptr<ThemeData>& theme,
 
     if (properties & ThemeFlags::SIZE) {
         if (elem->has("size"))
-            setResize(elem->get<glm::vec2>("size") * scale);
+            setResize(Utils::Math::clamp(elem->get<glm::vec2>("size") * scale));
         else if (elem->has("maxSize"))
-            setMaxSize(elem->get<glm::vec2>("maxSize") * scale);
+            setMaxSize(Utils::Math::clamp(elem->get<glm::vec2>("maxSize") * scale));
         else if (elem->has("minSize"))
-            setMinSize(elem->get<glm::vec2>("minSize") * scale);
+            setMinSize(Utils::Math::clamp(elem->get<glm::vec2>("maxSize") * scale));
     }
 
     if (elem->has("default"))

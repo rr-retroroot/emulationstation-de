@@ -329,6 +329,15 @@ namespace Utils
             state[3] += d;
         }
 
+        glm::vec2 clamp(glm::vec2 s)
+        {
+            if (s.x > 0)
+                s.x = glm::max(s.x, 1.0f);
+            if (s.y > 0)
+                s.y = glm::max(s.y, 1.0f);
+            return s;
+        }
+
     } // namespace Math
 
 } // namespace Utils
