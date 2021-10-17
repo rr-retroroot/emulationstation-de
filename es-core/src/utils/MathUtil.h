@@ -44,6 +44,8 @@ namespace Utils
                        unsigned char (&buffer)[64]);
         void md5Transform(const unsigned char block[64], unsigned int (&state)[4]);
 
+        // The clamp function to prevent sub-pixel dimensions.
+        glm::vec2 clamp(glm::vec2 s);
     } // namespace Math
 
 } // namespace Utils
