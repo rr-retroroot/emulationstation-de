@@ -489,15 +489,12 @@ void ImageComponent::applyTheme(const std::shared_ptr<ThemeData>& theme,
                                             static_cast<float>(Renderer::getScreenHeight()))};
 
     if (properties & ThemeFlags::SIZE) {
-        float maxSize =
-            static_cast<float>(glm::max(Renderer::getScreenWidth(), Renderer::getScreenHeight())) *
-            4.0f;
         if (elem->has("size"))
-            setResize(glm::clamp(elem->get<glm::vec2>("size") * scale, 1.0f, maxSize));
+            setResize(glm::max(elem->get<glm::vec2>("size") * scale, 1.0f));
         else if (elem->has("maxSize"))
-            setMaxSize(glm::clamp(elem->get<glm::vec2>("maxSize") * scale, 1.0f, maxSize));
+            setMaxSize(glm::max(elem->get<glm::vec2>("maxSize") * scale, 1.0f));
         else if (elem->has("minSize"))
-            setMinSize(glm::clamp(elem->get<glm::vec2>("minSize") * scale, 1.0f, maxSize));
+            setMinSize(glm::max(elem->get<glm::vec2>("minSize") * scale, 1.0f));
     }
 
     if (elem->has("default"))
