@@ -13,8 +13,8 @@ based on:       Switch Theme by Lilbud
 	<!-- generic styles -->
 	<view name="system, basic, detailed, video">
 		<helpsystem name="help">
-			<fontSize>0.034</fontSize>
-			<entrySpacing>48</entrySpacing>
+			<fontSize>0.032</fontSize>
+			<entrySpacing>28</entrySpacing>
 			<iconTextSpacing>12</iconTextSpacing>
 		</helpsystem>
 		<image name="arrowblock" extra="true">
