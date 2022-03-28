@@ -36,15 +36,124 @@
             <entry>%EMUPATH%\cores</entry>
         </rule>
     </core>
-    <emulator name="DOSBOX_STAGING">
+    <emulator name="CEMU">
+        <!-- Nintendo Wii U emulator Cemu -->
+        <rule type="systempath">
+            <entry>Cemu.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\cemu\Cemu.exe</entry>
+            <entry>%ESPATH%\..\cemu\Cemu.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="CITRA">
+        <!-- Nintendo 3DS emulator Citra -->
+        <rule type="systempath">
+            <entry>citra.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>~\AppData\Local\Citra\nightly-mingw\citra.exe</entry>
+            <entry>~\AppData\Local\Citra\canary-mingw\citra.exe</entry>
+            <entry>%ESPATH%\Citra\nightly-mingw\citra.exe</entry>
+            <entry>%ESPATH%\..\Citra\nightly-mingw\citra.exe</entry>
+            <entry>%ESPATH%\Citra\canary-mingw\citra.exe</entry>
+            <entry>%ESPATH%\..\Citra\canary-mingw\citra.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="DOLPHIN">
+        <!-- Nintendo GameCube and Wii emulator Dolphin -->
+        <rule type="systempath">
+            <entry>dolphin.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\Dolphin-x64\Dolphin.exe</entry>
+            <entry>%ESPATH%\..\Dolphin-x64\Dolphin.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="DOSBOX-STAGING">
         <!-- DOS emulator DOSBox Staging -->
         <rule type="systempath">
             <entry>dosbox.exe</entry>
         </rule>
         <rule type="staticpath">
-            <!-- Portable installation -->
             <entry>%ESPATH%\dosbox-staging\dosbox.exe</entry>
             <entry>%ESPATH%\..\dosbox-staging\dosbox.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="DUCKSTATION">
+        <!-- Sony PlayStation 1 emulator DuckStation -->
+        <rule type="systempath">
+            <entry>duckstation-nogui-x64-ReleaseLTCG.exe</entry>
+            <entry>duckstation-qt-x64-ReleaseLTCG.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\duckstation\duckstation-nogui-x64-ReleaseLTCG.exe</entry>
+            <entry>%ESPATH%\duckstation\duckstation-qt-x64-ReleaseLTCG.exe</entry>
+            <entry>%ESPATH%\..\duckstation\duckstation-nogui-x64-ReleaseLTCG.exe</entry>
+            <entry>%ESPATH%\..\duckstation\duckstation-qt-x64-ReleaseLTCG.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="FLYCAST">
+        <!-- Sega Dreamcast emulator Flycast -->
+        <rule type="systempath">
+            <entry>flycast.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\flycast\flycast.exe</entry>
+            <entry>%ESPATH%\..\flycast\flycast.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="FS-UAE">
+        <!-- Commodore Amiga emulator FS-UAE -->
+        <rule type="systempath">
+            <entry>fs-uae.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\FS-UAE\Windows\x86-64\fs-uae.exe</entry>
+            <entry>%ESPATH%\..\FS-UAE\Windows\x86-64\fs-uae.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="MAME">
+        <!-- Arcade emulator MAME -->
+        <rule type="systempath">
+            <entry>mame.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\mame\mame.exe</entry>
+            <entry>%ESPATH%\..\mame\mame.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="MELONDS">
+        <!-- Nintendo DS and DSi emulator melonDS -->
+        <rule type="systempath">
+            <entry>melonDS.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\melonDS\melonDS.exe</entry>
+            <entry>%ESPATH%\..\melonDS\melonDS.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="MGBA">
+        <!-- Nintendo Game Boy Advance emulator mGBA -->
+        <rule type="winregistryvalue">
+            <entry>SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\mGBA_is1\InstallLocation|mGBA.exe</entry>
+        </rule>
+        <rule type="systempath">
+            <entry>mGBA.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>C:\Program Files\mGBA\mGBA.exe</entry>
+            <entry>D:\Program Files\mGBA\mGBA.exe</entry>
+            <entry>%ESPATH%\mGBA\mGBA.exe</entry>
+            <entry>%ESPATH%\..\mGBA\mGBA.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="MUPEN64PLUS">
+        <!-- Nintendo 64 emulator Mupen64Plus -->
+        <rule type="systempath">
+            <entry>mupen64plus-ui-console.exe</entry>
+            <entry>%ESPATH%\mupen64plus\mupen64plus-ui-console.exe</entry>
+            <entry>%ESPATH%\..\mupen64plus\mupen64plus-ui-console.exe</entry>
         </rule>
     </emulator>
     <emulator name="PCSX2">
@@ -58,9 +167,33 @@
         <rule type="staticpath">
             <entry>C:\Program Files (x86)\PCSX2\pcsx2.exe</entry>
             <entry>D:\Program Files (x86)\PCSX2\pcsx2.exe</entry>
-            <!-- Portable installation -->
             <entry>%ESPATH%\PCSX2\pcsx2.exe</entry>
             <entry>%ESPATH%\..\PCSX2\pcsx2.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="PPSSPP">
+        <!-- Sony PlayStation Portable emulator PPSSPP -->
+        <rule type="winregistryvalue">
+            <entry>SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\PPSSPP_is1\InstallLocation|PPSSPPWindows64.exe</entry>
+        </rule>
+        <rule type="systempath">
+            <entry>PPSSPPWindows64.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>C:\Program Files\PPSSPP\PPSSPPWindows64.exe</entry>
+            <entry>D:\Program Files\PPSSPP\PPSSPPWindows64.exe</entry>
+            <entry>%ESPATH%\PPSSPP\PPSSPPWindows64.exe</entry>
+            <entry>%ESPATH%\..\PPSSPP\PPSSPPWindows64.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="REDREAM">
+        <!-- Sega Dreamcast emulator Redream -->
+        <rule type="systempath">
+            <entry>redream.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\redream\redream.exe</entry>
+            <entry>%ESPATH%\..\redream\redream.exe</entry>
         </rule>
     </emulator>
     <emulator name="RPCS3">
@@ -69,9 +202,28 @@
             <entry>rpcs3.exe</entry>
         </rule>
         <rule type="staticpath">
-            <!-- Portable installation -->
             <entry>%ESPATH%\RPCS3\rpcs3.exe</entry>
             <entry>%ESPATH%\..\RPCS3\rpcs3.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="RYUJINX">
+        <!-- Nintendo Switch emulator Ryujinx -->
+        <rule type="systempath">
+            <entry>Ryujinx.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\ryujinx\Ryujinx.exe</entry>
+            <entry>%ESPATH%\..\ryujinx\Ryujinx.exe</entry>
+        </rule>
+    </emulator>
+    <emulator name="VBA-M">
+        <!-- Nintendo Game Boy Advance emulator VBA-M -->
+        <rule type="systempath">
+            <entry>visualboyadvance-m.exe</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>%ESPATH%\VBA-M\visualboyadvance-m.exe</entry>
+            <entry>%ESPATH%\..\VBA-M\visualboyadvance-m.exe</entry>
         </rule>
     </emulator>
     <emulator name="XEMU">
@@ -80,7 +232,6 @@
             <entry>xemu.exe</entry>
         </rule>
         <rule type="staticpath">
-            <!-- Portable installation -->
             <entry>%ESPATH%\xemu\xemu.exe</entry>
             <entry>%ESPATH%\..\xemu\xemu.exe</entry>
         </rule>
@@ -91,7 +242,6 @@
             <entry>xenia.exe</entry>
         </rule>
         <rule type="staticpath">
-            <!-- Portable installation -->
             <entry>%ESPATH%\xenia\xenia.exe</entry>
             <entry>%ESPATH%\..\xenia\xenia.exe</entry>
         </rule>
@@ -103,7 +253,6 @@
         </rule>
         <rule type="staticpath">
             <entry>~\AppData\Local\yuzu\yuzu-windows-msvc\yuzu.exe</entry>
-            <!-- Portable installation -->
             <entry>%ESPATH%\yuzu\yuzu-windows-msvc\yuzu.exe</entry>
             <entry>%ESPATH%\..\yuzu\yuzu-windows-msvc\yuzu.exe</entry>
         </rule>

@@ -16,6 +16,7 @@
         <path>%ROMPATH%\64dd</path>
         <extension>.n64 .N64 .v64 .V64 .z64 .Z64 .bin .BIN .u1 .U1 .7z .7Z .zip .ZIP</extension>
         <command label="Mupen64Plus-Next">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mupen64plus_next_libretro.dll %ROM%</command>
+        <command label="Mupen64Plus (Standalone)">%EMULATOR_MUPEN64PLUS% --fullscreen %ROM%</command>
         <command label="ParaLLEl N64">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\parallel_n64_libretro.dll %ROM%</command>
         <platform>n64</platform>
         <theme>64dd</theme>
@@ -34,7 +35,7 @@
         <fullname>Commodore Amiga</fullname>
         <path>%ROMPATH%\amiga</path>
         <extension>.adf .ADF .adz .ADZ .dms .DMS .fdi .FDI .ipf .IPF .hdf .HDF .hdz .HDZ .lha .LHA .cue .CUE .ccd .CCD .nrg .NRG .mds .MDS .iso .ISO .uae .UAE .m3u .M3U .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
+        <command label="PUAE">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
         <platform>amiga</platform>
         <theme>amiga</theme>
     </system>
@@ -43,7 +44,7 @@
         <fullname>Commodore Amiga 600</fullname>
         <path>%ROMPATH%\amiga600</path>
         <extension>.adf .ADF .adz .ADZ .dms .DMS .fdi .FDI .ipf .IPF .hdf .HDF .hdz .HDZ .lha .LHA .cue .CUE .ccd .CCD .nrg .NRG .mds .MDS .iso .ISO .uae .UAE .m3u .M3U .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
+        <command label="PUAE">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
         <platform>amiga</platform>
         <theme>amiga600</theme>
     </system>
@@ -52,7 +53,7 @@
         <fullname>Commodore Amiga 1200</fullname>
         <path>%ROMPATH%\amiga1200</path>
         <extension>.adf .ADF .adz .ADZ .dms .DMS .fdi .FDI .ipf .IPF .hdf .HDF .hdz .HDZ .lha .LHA .cue .CUE .ccd .CCD .nrg .NRG .mds .MDS .iso .ISO .uae .UAE .m3u .M3U .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
+        <command label="PUAE">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
         <platform>amiga</platform>
         <theme>amiga1200</theme>
     </system>
@@ -61,7 +62,7 @@
         <fullname>Commodore Amiga CD32</fullname>
         <path>%ROMPATH%\amigacd32</path>
         <extension>.adf .ADF .adz .ADZ .dms .DMS .fdi .FDI .ipf .IPF .hdf .HDF .hdz .HDZ .lha .LHA .cue .CUE .ccd .CCD .nrg .NRG .mds .MDS .iso .ISO .uae .UAE .m3u .M3U .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
+        <command label="PUAE">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
         <platform>amigacd32</platform>
         <theme>amigacd32</theme>
     </system>
@@ -113,6 +114,7 @@
         <command label="MAME 2010">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mame2010_libretro.dll %ROM%</command>
         <command label="FinalBurn Neo">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\fbneo_libretro.dll %ROM%</command>
         <command label="FB Alpha 2012">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\fbalpha2012_libretro.dll %ROM%</command>
+        <command label="MAME (Standalone)">%EMULATOR_MAME% %ROM%</command>
         <platform>arcade</platform>
         <theme>arcade</theme>
     </system>
@@ -213,7 +215,8 @@
         <fullname>Atomiswave</fullname>
         <path>%ROMPATH%\atomiswave</path>
         <extension>.chd .CHD .cdi .CDI .iso .ISO .elf .ELF .bin .BIN .cue .CUE .gdi .GDI .lst .LST .dat .DAT .m3u .M3U .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\flycast_libretro.dll %ROM%</command>
+        <command label="Flycast">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\flycast_libretro.dll %ROM%</command>
+        <command label="Flycast (Standalone)">%EMULATOR_FLYCAST% %ROM%</command>
         <platform>atomiswave</platform>
         <theme>atomiswave</theme>
     </system>
@@ -337,7 +340,7 @@
         <command label="DOSBox-Core">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\dosbox_core_libretro.dll %ROM%</command>
         <command label="DOSBox-Pure">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\dosbox_pure_libretro.dll %ROM%</command>
         <command label="DOSBox-SVN">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\dosbox_svn_libretro.dll %ROM%</command>
-        <command label="DOSBox Staging (Standalone)">%EMULATOR_DOSBOX_STAGING% %ROM%</command>
+        <command label="DOSBox Staging (Standalone)">%EMULATOR_DOSBOX-STAGING% %ROM%</command>
         <platform>dos</platform>
         <theme>dos</theme>
     </system>
@@ -355,7 +358,9 @@
         <fullname>Sega Dreamcast</fullname>
         <path>%ROMPATH%\dreamcast</path>
         <extension>.chd .CHD .cdi .CDI .iso .ISO .elf .ELF .cue .CUE .gdi .GDI .lst .LST .dat .DAT .m3u .M3U .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\flycast_libretro.dll %ROM%</command>
+        <command label="Flycast">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\flycast_libretro.dll %ROM%</command>
+        <command label="Flycast (Standalone)">%EMULATOR_FLYCAST% %ROM%</command>
+        <command label="Redream (Standalone)">%EMULATOR_REDREAM% %ROM%</command>
         <platform>dreamcast</platform>
         <theme>dreamcast</theme>
     </system>
@@ -452,7 +457,9 @@
         <path>%ROMPATH%\gba</path>
         <extension>.agb .AGB .bin .BIN .cgb .CGB .dmg .DMG .gb .GB .gba .GBA .gbc .GBC .sgb .SGB .7z .7Z .zip .ZIP</extension>
         <command label="mGBA">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mgba_libretro.dll %ROM%</command>
-        <command label="VBA-M">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\vbam_next_libretro.dll %ROM%</command>
+        <command label="mGBA (Standalone)">%EMULATOR_MGBA% -f %ROM%</command>
+        <command label="VBA-M">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\vbam_libretro.dll %ROM%</command>
+        <command label="VBA-M (Standalone)">%EMULATOR_VBA-M% /f %ROM%</command>
         <command label="VBA Next">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\vba_next_libretro.dll %ROM%</command>
         <command label="gpSP">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\gpsp_libretro.dll %ROM%</command>
         <platform>gba</platform>
@@ -476,8 +483,9 @@
         <name>gc</name>
         <fullname>Nintendo GameCube</fullname>
         <path>%ROMPATH%\gc</path>
-        <extension>.gcm .GCM .iso .ISO .wbfs .WBFS .ciso .CISO .gcz .GCZ .elf .ELF .dol .DOL .dff .DFF .tgc .TGC .wad .WAD .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\dolphin_libretro.dll %ROM%</command>
+        <extension>.gcm .GCM .iso .ISO .wbfs .WBFS .ciso .CISO .gcz .GCZ .elf .ELF .dol .DOL .dff .DFF .rvz .RVZ .tgc .TGC .wad .WAD .7z .7Z .zip .ZIP</extension>
+        <command label="Dolphin">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\dolphin_libretro.dll %ROM%</command>
+        <command label="Dolphin (Standalone)">%EMULATOR_DOLPHIN% -b -e %ROM%</command>
         <platform>gc</platform>
         <theme>gc</theme>
     </system>
@@ -567,6 +575,7 @@
         <command label="MAME - Current">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mame_libretro.dll %ROM%</command>
         <command label="FinalBurn Neo">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\fbneo_libretro.dll %ROM%</command>
         <command label="FB Alpha 2012">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\fbalpha2012_libretro.dll %ROM%</command>
+        <command label="MAME (Standalone)">%EMULATOR_MAME% %ROM%</command>
         <platform>arcade</platform>
         <theme>mame</theme>
     </system>
@@ -717,6 +726,7 @@
         <extension>.3ds .3DS .3dsx .3DSX .app .APP .axf .AXF .cci .CCI .cxi .CXI .elf .ELF .7z .7Z .zip .ZIP</extension>
         <command label="Citra">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\citra_libretro.dll %ROM%</command>
         <command label="Citra 2018">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\citra2018_libretro.dll %ROM%</command>
+        <command label="Citra (Standalone)">%EMULATOR_CITRA% %ROM%</command>
         <platform>n3ds</platform>
         <theme>n3ds</theme>
     </system>
@@ -726,6 +736,7 @@
         <path>%ROMPATH%\n64</path>
         <extension>.n64 .N64 .v64 .V64 .z64 .Z64 .bin .BIN .u1 .U1 .7z .7Z .zip .ZIP</extension>
         <command label="Mupen64Plus-Next">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mupen64plus_next_libretro.dll %ROM%</command>
+        <command label="Mupen64Plus (Standalone)">%EMULATOR_MUPEN64PLUS% --fullscreen %ROM%</command>
         <command label="ParaLLEl N64">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\parallel_n64_libretro.dll %ROM%</command>
         <platform>n64</platform>
         <theme>n64</theme>
@@ -735,7 +746,8 @@
         <fullname>Sega NAOMI</fullname>
         <path>%ROMPATH%\naomi</path>
         <extension>.chd .CHD .cdi .CDI .iso .ISO .elf .ELF .bin .BIN .cue .CUE .gdi .GDI .lst .LST .dat .DAT .m3u .M3U .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\flycast_libretro.dll %ROM%</command>
+        <command label="Flycast">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\flycast_libretro.dll %ROM%</command>
+        <command label="Flycast (Standalone)">%EMULATOR_FLYCAST% %ROM%</command>
         <platform>naomi</platform>
         <theme>naomi</theme>
     </system>
@@ -744,7 +756,8 @@
         <fullname>Sega NAOMI GD-ROM</fullname>
         <path>%ROMPATH%\naomigd</path>
         <extension>.chd .CHD .cdi .CDI .iso .ISO .elf .ELF .bin .BIN .cue .CUE .gdi .GDI .lst .LST .dat .DAT .m3u .M3U .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\flycast_libretro.dll %ROM%</command>
+        <command label="Flycast">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\flycast_libretro.dll %ROM%</command>
+        <command label="Flycast (Standalone)">%EMULATOR_FLYCAST% %ROM%</command>
         <platform>naomi</platform>
         <theme>naomigd</theme>
     </system>
@@ -756,6 +769,7 @@
         <command label="DeSmuME">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\desmume_libretro.dll %ROM%</command>
         <command label="DeSmuME 2015">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\desmume2015_libretro.dll %ROM%</command>
         <command label="melonDS">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\melonds_libretro.dll %ROM%</command>
+        <command label="melonDS (Standalone)">%EMULATOR_MELONDS% %ROM%</command>
         <platform>nds</platform>
         <theme>nds</theme>
     </system>
@@ -862,7 +876,7 @@
         <command label="DOSBox-Core">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\dosbox_core_libretro.dll %ROM%</command>
         <command label="DOSBox-Pure">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\dosbox_pure_libretro.dll %ROM%</command>
         <command label="DOSBox-SVN">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\dosbox_svn_libretro.dll %ROM%</command>
-        <command label="DOSBox Staging (Standalone)">%EMULATOR_DOSBOX_STAGING% %ROM%</command>
+        <command label="DOSBox Staging (Standalone)">%EMULATOR_DOSBOX-STAGING% %ROM%</command>
         <platform>pc</platform>
         <theme>pc</theme>
     </system>
@@ -965,7 +979,8 @@
         <fullname>Sony PlayStation Portable</fullname>
         <path>%ROMPATH%\psp</path>
         <extension>.elf .ELF .iso .ISO .cso .CSO .prx .PRX .pbp .PBP .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\ppsspp_libretro.dll %ROM%</command>
+        <command label="PPSSPP">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\ppsspp_libretro.dll %ROM%</command>
+        <command label="PPSSPP (Standalone)">%EMULATOR_PPSSPP% %ROM%</command>
         <platform>psp</platform>
         <theme>psp</theme>
     </system>
@@ -987,6 +1002,7 @@
         <command label="Beetle PSX HW">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mednafen_psx_hw_libretro.dll %ROM%</command>
         <command label="PCSX ReARMed">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\pcsx_rearmed_libretro.dll %ROM%</command>
         <command label="DuckStation">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\duckstation_libretro.dll %ROM%</command>
+        <command label="DuckStation (Standalone)">%EMULATOR_DUCKSTATION% %ROM%</command>
         <platform>psx</platform>
         <theme>psx</theme>
     </system>
@@ -1186,7 +1202,8 @@
         <fullname>Nintendo Switch</fullname>
         <path>%ROMPATH%\switch</path>
         <extension>.nca .NCA .nro .NRO .nso .NSO .nsp .NSP .xci .XCI .7z .7Z .zip .ZIP</extension>
-        <command label="Yuzu (Standalone)">%EMULATOR_YUZU% %ROM%</command>
+        <command label="Yuzu (Standalone)">%EMULATOR_YUZU% -f -g %ROM%</command>
+        <command label="Ryujinx (Standalone)">%EMULATOR_RYUJINX% %ROM%</command>
         <platform>switch</platform>
         <theme>switch</theme>
     </system>
@@ -1313,8 +1330,9 @@
         <name>wii</name>
         <fullname>Nintendo Wii</fullname>
         <path>%ROMPATH%\wii</path>
-        <extension>.gcm .GCM .iso .ISO .wbfs .WBFS .ciso .CISO .gcz .GCZ .elf .ELF .dol .DOL .dff .DFF .tgc .TGC .wad .WAD .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\dolphin_libretro.dll %ROM%</command>
+        <extension>.gcm .GCM .iso .ISO .wbfs .WBFS .ciso .CISO .gcz .GCZ .elf .ELF .dol .DOL .dff .DFF .rvz .RVZ .tgc .TGC .wad .WAD .7z .7Z .zip .ZIP</extension>
+        <command label="Dolphin">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\dolphin_libretro.dll %ROM%</command>
+        <command label="Dolphin (Standalone)">%EMULATOR_DOLPHIN% -b -e %ROM%</command>
         <platform>wii</platform>
         <theme>wii</theme>
     </system>
@@ -1322,8 +1340,8 @@
         <name>wiiu</name>
         <fullname>Nintendo Wii U</fullname>
         <path>%ROMPATH%\wiiu</path>
-        <extension>.7z .7Z .zip .ZIP</extension>
-        <command>PLACEHOLDER %ROM%</command>
+        <extension>.rpx .RPX</extension>
+        <command label="Cemu (Standalone)">%EMULATOR_CEMU% -f -g %ROM%</command>
         <platform>wiiu</platform>
         <theme>wiiu</theme>
     </system>
