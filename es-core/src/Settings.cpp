@@ -125,7 +125,7 @@ void Settings::setDefaults()
     mBoolMap["ScraperSemiautomatic"] = {true, true};
     mBoolMap["ScraperRespectExclusions"] = {true, true};
     mBoolMap["ScraperExcludeRecursively"] = {true, true};
-    mBoolMap["ScraperIncludeFolders"] = {false, false};
+    mBoolMap["ScraperIncludeFolders"] = {true, true};
     mBoolMap["ScraperRetryPeerVerification"] = {false, false};
 
     // UI settings.
@@ -198,7 +198,7 @@ void Settings::setDefaults()
     mIntMap["SoundVolumeVideos"] = {80, 80};
     mBoolMap["GamelistVideoAudio"] = {true, true};
     mBoolMap["MediaViewerVideoAudio"] = {true, true};
-    mBoolMap["ScreensaverVideoAudio"] = {false, false};
+    mBoolMap["ScreensaverVideoAudio"] = {true, true};
     mBoolMap["NavigationSounds"] = {true, true};
 
     // Input device settings.
