@@ -2,6 +2,30 @@
 
 [[_TOC_]]
 
+## Version 1.2.1
+
+**Release date:** 2022-03-30
+
+### Release overview
+
+v1.2 maintenance release. Some minor bugs were fixed and some smaller adjustments were made but most importantly this release brings support for a lot more standalone emulators on all supported platforms.
+
+### Detailed list of changes
+
+* Added support for the standalone emulators Citra, Dolphin, DuckStation, MAME, melonDS, mGBA, Mupen64Plus, PPSSPP, Redream, Ryujinx and VBA-M
+* Added support for the standalone emulators sixtyforce and xemu for macOS, Cemu for Windows and PrimeHack for Unix
+* Added the .m3u, .rvz and .wia file extensions for the Dolphin emulator
+* Set the option "Scrape actual folders" as enabled by default
+* Set the option "Play audio for screensaver videos" as enabled by default
+
+### Bug fixes
+
+* When multi-scraping in semi-automatic mode and a long game name was scrolling, the start position was not reset when scraping the next game
+* During multi-scraping the busy indicator was not displayed after a result was acquired but before the thumbnail was completely downloaded
+* The ScummVM platform entry was missing for TheGamesDB which resulted in very inaccurate scraper searches
+* Fixed an incorrect RetroArch core path for the emulator VBA-M
+* modern-DE: Small adjustment to make the help system fit on screen at all times
+
 ## Version 1.2.0
 
 **Release date:** 2021-12-28
