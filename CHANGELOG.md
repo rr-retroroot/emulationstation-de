@@ -2,6 +2,22 @@
 
 [[_TOC_]]
 
+## Version 1.2.2 (in development)
+
+**Release date:** TBD
+
+### Release overview
+
+v1.2 maintenance release.
+
+### Detailed list of changes
+
+* Added fallback for high resolution marquee/wheel image for ScreenScraper if no regular wheel image was found
+
+### Bug fixes
+
+* Fixed a font loading crash caused by an insufficient font texture size
+
 ## Version 1.2.1
 
 **Release date:** 2022-03-30
