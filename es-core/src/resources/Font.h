@@ -167,7 +167,7 @@ private:
 
     std::map<unsigned int, Glyph> mGlyphMap;
 
-    Glyph* getGlyph(unsigned int id);
+    Glyph* getGlyph(const unsigned int id);
 
     int mMaxGlyphHeight;
 
