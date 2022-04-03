@@ -31,6 +31,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Utils
 # Define the options.
 option(GL "Set to ON if targeting Desktop OpenGL" ${GL})
 option(GLES "Set to ON if targeting Embedded OpenGL" ${GLES})
+option(STEAM_DECK "Set to ON to enable Valve Steam Deck specific build" ${STEAM_DECK})
 option(RPI "Set to ON to enable Raspberry Pi specific build" ${RPI})
 option(BUNDLED_CERTS "Set to ON to use bundled TLS/SSL certificates" ${BUNDLED_CERTS})
 option(CEC "Set to ON to enable CEC" ${CEC})
@@ -259,6 +260,11 @@ if(GLSYSTEM MATCHES "Desktop OpenGL")
     add_definitions(-DUSE_OPENGL_21)
 else()
     add_definitions(-DUSE_OPENGLES_10)
+endif()
+
+if(STEAM_DECK)
+    add_definitions(-DSTEAM_DECK)
+    message("-- Building for the Valve Steam Deck")
 endif()
 
 if(RPI)
