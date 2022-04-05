@@ -44,7 +44,7 @@ public:
     GuiScraperSearch(Window* window, SearchType searchType, unsigned int scrapeCount = 1);
     ~GuiScraperSearch();
 
-    void search(const ScraperSearchParams& params);
+    void search(ScraperSearchParams& params);
     void openInputScreen(ScraperSearchParams& from);
     void stop();
     int getScraperResultsSize() { return static_cast<int>(mScraperResults.size()); }

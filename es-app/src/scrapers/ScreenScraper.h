@@ -81,6 +81,7 @@ public:
         std::string media_video = "video";
 
         bool isArcadeSystem;
+        bool automaticMode;
 
         // Which Region to use when selecting the artwork.
         // Applies to: artwork, name of the game, date of release.

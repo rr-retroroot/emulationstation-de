@@ -318,7 +318,7 @@ void GuiScraperSearch::updateViewStyle()
     }
 }
 
-void GuiScraperSearch::search(const ScraperSearchParams& params)
+void GuiScraperSearch::search(ScraperSearchParams& params)
 {
     mBlockAccept = true;
     mAcceptedResult = false;
@@ -333,6 +333,15 @@ void GuiScraperSearch::search(const ScraperSearchParams& params)
     mThumbnailReqMap.clear();
     mMDResolveHandle.reset();
     updateInfoPane();
+
+    // For ScreenScraper we always want to use the jeuInfos (single-game) API call when in
+    // automatic mode as this scraper service is not sorting the multi-search results based
+    // on most relevant result (as TheGamesDB does). Using jeuInfos is also much faster than
+    // using the jeuRecherche API call (multi-game search).
+    if (mSearchType == ALWAYS_ACCEPT_FIRST_RESULT)
+        params.automaticMode = true;
+    else
+        params.automaticMode = false;
 
     mLastSearch = params;
     mSearchHandle = startScraperSearch(params);

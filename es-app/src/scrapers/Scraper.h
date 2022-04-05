@@ -37,6 +37,7 @@ struct ScraperSearchParams {
     FileData* game;
 
     std::string nameOverride;
+    bool automaticMode;
 };
 
 struct ScraperSearchResult {
