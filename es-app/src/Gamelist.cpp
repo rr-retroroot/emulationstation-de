@@ -190,7 +190,14 @@ void parseGamelist(SystemData* system)
             }
             else if (!file->isArcadeAsset()) {
                 std::string defaultName = file->metadata.get("name");
-                file->metadata = MetaDataList::createFromXML(GAME_METADATA, fileNode, relativeTo);
+                if (file->getType() == FOLDER) {
+                    file->metadata =
+                        MetaDataList::createFromXML(FOLDER_METADATA, fileNode, relativeTo);
+                }
+                else {
+                    file->metadata =
+                        MetaDataList::createFromXML(GAME_METADATA, fileNode, relativeTo);
+                }
 
                 // Make sure a name gets set if one doesn't exist.
                 if (file->metadata.get("name").empty())
