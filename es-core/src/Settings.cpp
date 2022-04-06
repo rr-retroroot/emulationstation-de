@@ -121,7 +121,7 @@ void Settings::setDefaults()
     mBoolMap["ScraperOverwriteData"] = {true, true};
     mBoolMap["ScraperHaltOnInvalidMedia"] = {true, true};
     mBoolMap["ScraperSearchMetadataName"] = {true, true};
-    mBoolMap["ScraperInteractive"] = {true, true};
+    mBoolMap["ScraperInteractive"] = {false, false};
     mBoolMap["ScraperSemiautomatic"] = {true, true};
     mBoolMap["ScraperRespectExclusions"] = {true, true};
     mBoolMap["ScraperExcludeRecursively"] = {true, true};
