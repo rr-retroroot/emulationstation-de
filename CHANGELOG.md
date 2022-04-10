@@ -2,6 +2,26 @@
 
 [[_TOC_]]
 
+## Version 1.2.3 (in development)
+
+**Release date:** TBD
+
+### Release overview
+
+v1.2 maintenance release.
+
+### Detailed list of changes
+
+* Added a scraper setting to convert underscores _ to spaces when searching
+* Replaced the RetroArch core 4DO with Opera for the 3do system
+* Added the .wud and .wux file extensions for the wiiu system on Windows
+* Added missing scraper entries for samcoupe and zx81 for TheGamesDB and zmachine for ScreenScraper
+* neogeocd is now scraped specifically as "Neo Geo CD" instead of the more generic "Neo Geo"
+
+### Bug fixes
+
+* Navigating the list of alternative emulators would sometimes lead to an incorrect row positioning
+
 ## Version 1.2.2
 
 **Release date:** 2022-04-07
