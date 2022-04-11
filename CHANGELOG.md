@@ -15,6 +15,8 @@ v1.2 maintenance release.
 * Added a scraper setting to convert underscores _ to spaces when searching
 * Replaced the RetroArch core 4DO with Opera for the 3do system
 * Added the .wud and .wux file extensions for the wiiu system on Windows
+* Added the --escape-exit command line option for the PPSSPP standalone emulator
+* Added the -batch command line option for the DuckStation standalone emulator
 * Added missing scraper entries for samcoupe and zx81 for TheGamesDB and zmachine for ScreenScraper
 * neogeocd is now scraped specifically as "Neo Geo CD" instead of the more generic "Neo Geo"
 
