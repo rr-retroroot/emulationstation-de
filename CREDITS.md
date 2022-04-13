@@ -33,11 +33,11 @@ https://curl.haxx.se
 FFmpeg \
 https://ffmpeg.org
 
-FreeType \
-https://www.freetype.org
-
 FreeImage \
 http://www.freeimage.sourceforge.net
+
+FreeType \
+https://www.freetype.org
 
 GLEW \
 http://glew.sourceforge.net
@@ -48,8 +48,17 @@ https://github.com/g-truc/glm
 libVLC \
 https://wiki.videolan.org/LibVLC
 
+libvpx \
+https://github.com/webmproject/libvpx
+
 nanosvg \
 https://github.com/memononen/nanosvg
+
+Ogg \
+https://github.com/xiph/ogg
+
+Opus \
+https://gitlab.xiph.org/xiph/opus
 
 pugixml \
 https://pugixml.org
@@ -60,6 +69,8 @@ https://rapidjson.org
 SDL \
 https://www.libsdl.org
 
+Vorbis \
+https://gitlab.xiph.org/xiph/vorbis
 
 # Code
 
@@ -69,7 +80,7 @@ https://batocera.org
 The MD5 hash functions were adapted from code by the BZFlag project \
 https://www.bzflag.org
 
-A few of the GLSL shaders were borrowed from the RetroArch project \
+A couple of GLSL shaders were borrowed from the RetroArch project \
 https://www.retroarch.com
 
 
