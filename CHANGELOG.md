@@ -13,8 +13,11 @@ v1.2 maintenance release.
 ### Detailed list of changes
 
 * Added a scraper setting to convert underscores _ to spaces when searching
+* Added support for using the manually downloaded emulators Redream and Ryujinx on Unix/Linux
 * Replaced the RetroArch core 4DO with Opera for the 3do system
+* Added the .ps3 file extension to the ps3 system
 * Added the .rom file extension to the atari800 system
+* Added the .svm file extension to the scummvm system and removed support for .7z and .zip extensions
 * Added the .wud and .wux file extensions for the wiiu system on Windows
 * Added --escape-exit command line option for the PPSSPP standalone emulator
 * Added -batch command line option for the DuckStation standalone emulator

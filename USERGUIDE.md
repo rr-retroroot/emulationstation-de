@@ -516,17 +516,17 @@ There is a very special use case which ES-DE supports where you can interpret a 
 
 If you add the extension that is configured for the emulator to a directory name it will be loaded as if it was a file when ES-DE starts up.
 
-As an example using the Sony PlayStation 3 system, the extension in es_systems.xml is .ps3dir so this is what such a directory could look like:
+As an example using the Sony PlayStation 3 system, the extension in es_systems.xml is .ps3 so this is what such a directory could look like:
 ```
-~/ROMs/ps3/Gran Turismo 5.ps3dir
+~/ROMs/ps3/Gran Turismo 5.ps3
 ```
 
 It's also possible to combine these types of special directories with normal directories, for a setup like this:
 ```
-~/ROMs/ps3/racing/Gran Turismo 5.ps3dir
+~/ROMs/ps3/racing/Gran Turismo 5.ps3
 ```
 
-For all intents and purposes the `Gran Turismo 5.ps3dir` directory will now be considered a file within ES-DE, i.e. all file metadata fields can be used and the directory can be part of both automatic and custom collections.
+For all intents and purposes the `Gran Turismo 5.ps3` directory will now be considered a file within ES-DE, i.e. all file metadata fields can be used and the directory can be part of both automatic and custom collections.
 
 The only exception is that the _Delete_ button in the metadata editor will be disabled for these special types of entries as ES-DE does not support deletion of directories for safety reasons.
 
@@ -590,33 +590,33 @@ When downloading the AppImage from [https://rpcs3.net](https://rpcs3.net) it wil
 
 Note that the name is case sensitive, so _rpcs3.appimage_ will not be found by ES-DE.
 
-As for the game installation on both Windows and Linux, you need to retain the directory structure of the Blu-ray disc or the directory created by installing the .pkg file. Each directory needs to be renamed by adding the .ps3dir extension, which will make ES-DE interpret the directory as if it were a file and pass that directory to the emulator when launching a game.
+As for the game installation on both Windows and Linux, you need to retain the directory structure of the Blu-ray disc or the directory created by installing the .pkg file. Each directory needs to be renamed by adding the .ps3 extension, which will make ES-DE interpret the directory as if it were a file and pass that directory to the emulator when launching a game.
 
 Here's an example of what a Blu-ray disc directory could look like:
 ```
-~/ROMs/ps3/Gran Turismo 5.ps3dir
+~/ROMs/ps3/Gran Turismo 5.ps3
 ```
 
-It's possible to create a symlink instead, and in this case only the symlink needs to have the .ps3dir extension.
+It's possible to create a symlink instead, and in this case only the symlink needs to have the .ps3 extension.
 
 Here's how to do it on Linux:
 ```
 cd ~/ROMs
-ln -s ~/games/PS3/Gran\ Turismo\ 5 Gran\ Turismo\ 5.ps3dir
+ln -s ~/games/PS3/Gran\ Turismo\ 5 Gran\ Turismo\ 5.ps3
 ```
 
 And here's how to do it on Windows (you need to run this as Administrator):
 ```
 cd C:\Users\Myusername\ROMs\ps3
-mklink /D "Gran Turismo 5.ps3dir" "C:\Games\PS3\Gran Turismo 5"
+mklink /D "Gran Turismo 5.ps3" "C:\Games\PS3\Gran Turismo 5"
 ```
 
-If you've installed a .pkg using RPCS3 you can either symlink to the installation directory or move the directory to the ROMs folder. Also in this case the directory (or symlink) needs to be named with the .ps3dir extension.
+If you've installed a .pkg using RPCS3 you can either symlink to the installation directory or move the directory to the ROMs folder. Also in this case the directory (or symlink) needs to be named with the .ps3 extension.
 
 An example on Linux:
 ```
 cd ~/ROMs
-ln -s ~/.config/rpcs3/dev_hdd0/game/NPUA30002 Bejeweled2.ps3dir
+ln -s ~/.config/rpcs3/dev_hdd0/game/NPUA30002 Bejeweled2.ps3
 ```
 
 This example is for the AppImage version of RPCS3, for the Snap or Flatpak versions, the installed games will be located in a different directory.
@@ -624,10 +624,10 @@ This example is for the AppImage version of RPCS3, for the Snap or Flatpak versi
 Here's how to achieve the same on Windows:
 ```
 cd C:\Users\Myusername\ROMs\ps3
-mklink /D "Bejeweled2.ps3dir" "C:\Emulators\RPCS3\dev_hdd0\game\NPUA30002"
+mklink /D "Bejeweled2.ps3" "C:\Emulators\RPCS3\dev_hdd0\game\NPUA30002"
 ```
 
-Of course you can name the symlink anything you want as long as it has the .ps3dir extension.
+Of course you can name the symlink anything you want as long as it has the .ps3 extension.
 
 Apparently some specific games have issues launching when using symlinks so you need to test and experiment with what works for your collection.
 
@@ -2035,7 +2035,7 @@ All emulators are RetroArch cores unless marked as **(Standalone**)
 | pokemini              | Nintendo Pokémon Mini                          | PokeMini                          |                                   | No           |                                      |
 | ports                 | Ports                                          | N/A                               |                                   | No           | Shell/batch script in separate folder (possibly combined with game data) |
 | ps2                   | Sony PlayStation 2                             | PCSX2 [UW],<br>PCSX2 **(Standalone)** [M] | PCSX2 **(Standalone)** [UW] | Yes          |                                      |
-| ps3                   | Sony PlayStation 3                             | RPCS3 **(Standalone)** [UMW*]     |                                   | Yes          | In separate folder (one folder per game with complete file structure retained, renamed to the .ps3dir extension) |
+| ps3                   | Sony PlayStation 3                             | RPCS3 **(Standalone)** [UMW*]     |                                   | Yes          | In separate folder (one folder per game with complete file structure retained, renamed to the .ps3 extension) |
 | ps4                   | Sony PlayStation 4                             | _Placeholder_                     |                                   |              |                                      |
 | psp                   | Sony PlayStation Portable                      | PPSSPP                            | PPSSPP **(Standalone)**           | No           | Single ISO file in root folder       |
 | psvita                | Sony PlayStation Vita                          | _Placeholder_                     |                                   |              |                                      |
