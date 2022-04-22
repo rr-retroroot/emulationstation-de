@@ -813,8 +813,21 @@ void FileData::launchGame(Window* window)
         command = mEnvData->mLaunchCommands.front().first;
 
     std::string commandRaw = command;
+    std::string romPath = Utils::FileSystem::getEscapedPath(getPath());
 
-    const std::string romPath = Utils::FileSystem::getEscapedPath(getPath());
+    // For the special case where a directory has a supported file extension and is therefore
+    // interpreted as a file, check if there is a matching filename inside the directory.
+    // This is used as a shortcut to be able to launch games directly inside folders.
+    if (mType == GAME && Utils::FileSystem::isDirectory(mPath)) {
+        for (std::string& file : Utils::FileSystem::getDirContent(mPath)) {
+            if (Utils::FileSystem::getFileName(file) == Utils::FileSystem::getFileName(mPath) &&
+                (Utils::FileSystem::isRegularFile(file) || Utils::FileSystem::isSymlink(file))) {
+                romPath = Utils::FileSystem::getEscapedPath(file);
+                break;
+            }
+        }
+    }
+
     const std::string baseName = Utils::FileSystem::getStem(getPath());
     const std::string romRaw = Utils::FileSystem::getPreferredPath(getPath());
     const std::string esPath = Utils::FileSystem::getExePath();
