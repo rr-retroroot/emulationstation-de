@@ -31,6 +31,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Utils
 # Define the options.
 option(GL "Set to ON if targeting Desktop OpenGL" ${GL})
 option(GLES "Set to ON if targeting Embedded OpenGL" ${GLES})
+option(FLATPAK_BUILD "Set to ON when building as a Flatpak" ${FLATPAK_BUILD})
 option(STEAM_DECK "Set to ON to enable Valve Steam Deck specific build" ${STEAM_DECK})
 option(RPI "Set to ON to enable Raspberry Pi specific build" ${RPI})
 option(BUNDLED_CERTS "Set to ON to use bundled TLS/SSL certificates" ${BUNDLED_CERTS})
@@ -260,6 +261,12 @@ if(GLSYSTEM MATCHES "Desktop OpenGL")
     add_definitions(-DUSE_OPENGL_21)
 else()
     add_definitions(-DUSE_OPENGLES_10)
+endif()
+
+# When building as a Flatpak, all launch commands will be prefixed by "flatpak-spawn --host".
+if(FLATPAK_BUILD)
+    add_compile_definitions(FLATPAK_BUILD)
+    message("-- Building as a Flatpak")
 endif()
 
 if(STEAM_DECK)
