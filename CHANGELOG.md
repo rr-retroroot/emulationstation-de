@@ -14,6 +14,7 @@ v1.2 maintenance release. Support has been added for displaying multi-disc/multi
 
 * Made it possible to directly launch files inside directories that are interpreted as files
 * Added a scraper setting to convert underscores _ to spaces when searching
+* The %ROMPATH% variable can now be used inside the es_systems.xml command tag
 * Added support for using the manually downloaded emulators Redream and Ryujinx on Unix/Linux
 * Replaced the RetroArch core 4DO with Opera for the 3do system
 * Removed the RetroArch DuckStation core as it has been superseded by SwanStation
@@ -35,6 +36,7 @@ v1.2 maintenance release. Support has been added for displaying multi-disc/multi
 
 ### Bug fixes
 
+* The configuration entry for MAME standalone was incorrect so the emulator couldn't be used
 * Using a custom image directory for the slideshow screensaver would hang the application if there was only a single image
 * Navigating the list of alternative emulators would sometimes lead to an incorrect row positioning
 * On Windows, the find rule for the Mupen64Plus standalone emulator was not setup correctly
