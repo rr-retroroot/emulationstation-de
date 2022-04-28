@@ -8,7 +8,7 @@
 
 ### Release overview
 
-v1.2 maintenance release.
+v1.2 maintenance release. Support has been added for displaying multi-disc/multi-file games as single entries, underscores can now be filtered out when doing scraper searches and a number of additional emulators and emulator file extensions have been added. A few bugs have been fixed as well.
 
 ### Detailed list of changes
 
@@ -16,6 +16,7 @@ v1.2 maintenance release.
 * Added a scraper setting to convert underscores _ to spaces when searching
 * Added support for using the manually downloaded emulators Redream and Ryujinx on Unix/Linux
 * Replaced the RetroArch core 4DO with Opera for the 3do system
+* Removed the RetroArch DuckStation core as it has been superseded by SwanStation
 * Added the .ps3 file extension to the ps3 system
 * Added the .rom file extension to the atari800 system
 * Added the .svm file extension to the scummvm system and removed support for .7z and .zip extensions
@@ -28,6 +29,7 @@ v1.2 maintenance release.
 * neogeocd is now scraped specifically as "Neo Geo CD" instead of the more generic "Neo Geo"
 * (rbsimple-DE) Made the xbox console graphics slightly darker
 * Added a CMake flag to build as Flatpak which prefixes "flatpak-spawn --host" to all launch commands
+* Added some Flatpak-specific code to work around the sandbox restrictions of this package format
 * A check is now done on game launch that emulator binaries are actually files or symlinks
 * (Unix) Renamed the icon emulationstation.svg to org.es_de.emulationstation-de.svg
 
