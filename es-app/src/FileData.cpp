@@ -1090,6 +1090,7 @@ void FileData::launchGame(Window* window)
     command = Utils::String::replace(command, "%ROM%", romPath);
     command = Utils::String::replace(command, "%BASENAME%", baseName);
     command = Utils::String::replace(command, "%ROMRAW%", romRaw);
+    command = Utils::String::replace(command, "%ROMPATH%", getROMDirectory());
 
     // Trim any leading and trailing whitespace characters as they could cause launch issues.
     command = Utils::String::trim(command);
