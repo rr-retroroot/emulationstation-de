@@ -70,7 +70,9 @@ int runSystemCommand(const std::wstring& cmd_utf16)
 #endif
 }
 
-int launchGameUnix(const std::string& cmd_utf8, bool runInBackground)
+int launchGameUnix(const std::string& cmd_utf8,
+                   const std::string& startDirectory,
+                   bool runInBackground)
 {
 #if defined(__unix__) || defined(__APPLE__)
     std::string command = std::string(cmd_utf8) + " 2>&1 &";
@@ -88,6 +90,9 @@ int launchGameUnix(const std::string& cmd_utf8, bool runInBackground)
     std::array<char, 128> buffer;
     std::string commandOutput;
     int returnValue;
+
+    if (startDirectory != "")
+        command = "cd " + startDirectory + " && " + command;
 
     if (!(commandPipe = reinterpret_cast<FILE*>(popen(command.c_str(), "r")))) {
         LOG(LogError) << "Couldn't open pipe to command.";
@@ -135,7 +140,10 @@ int launchGameUnix(const std::string& cmd_utf8, bool runInBackground)
 #endif
 }
 
-int launchGameWindows(const std::wstring& cmd_utf16, bool runInBackground, bool hideWindow)
+int launchGameWindows(const std::wstring& cmd_utf16,
+                      std::wstring& startDirectory,
+                      bool runInBackground,
+                      bool hideWindow)
 {
 #if defined(_WIN64)
     STARTUPINFOW si{};
@@ -151,6 +159,8 @@ int launchGameWindows(const std::wstring& cmd_utf16, bool runInBackground, bool 
     bool processReturnValue = true;
     DWORD errorCode = 0;
 
+    wchar_t* startDir{startDirectory == L"" ? nullptr : &startDirectory[0]};
+
     // clang-format off
     processReturnValue = CreateProcessW(
         nullptr,                                 // No application name (use command line).
@@ -160,7 +170,7 @@ int launchGameWindows(const std::wstring& cmd_utf16, bool runInBackground, bool 
         FALSE,                                   // Handles inheritance.
         0,                                       // Creation flags.
         nullptr,                                 // Use parent's environment block.
-        nullptr,                                 // Use parent's starting directory.
+        startDir,                                // Starting directory, possibly the same as parent.
         &si,                                     // Pointer to the STARTUPINFOW structure.
         &pi);                                    // Pointer to the PROCESS_INFORMATION structure.
     // clang-format on
