@@ -15,7 +15,16 @@ v1.2 maintenance release. Support has been added for displaying multi-disc/multi
 * Made it possible to directly launch files inside directories that are interpreted as files
 * Added a scraper setting to convert underscores _ to spaces when searching
 * The %ROMPATH% variable can now be used inside the es_systems.xml command tag
-* Added support for using the manually downloaded emulators Redream and Ryujinx on Unix/Linux
+* Added a %STARTDIR% variable to set the start directory when running an emulator (required by MAME standalone)
+* Added an %EMUDIR% variable that expands to the emulator binary directory
+* If no ScreenScraper video is found when scraping, a fallback will now be done to the normalized (low quality) video
+* Added support for using the manually downloaded emulators Redream and Ryujinx on Unix
+* Added Play! standalone as an alternative emulator for the ps2 system
+* Added Snes9x standalone as an alternative emulator for the sfc, snes and snesna systems
+* Added Atari800 standalone as an alternative emulator for the atari800 system
+* Added BlastEm standalone as an alternative emulator for the megadrive and genesis systems on Unix
+* Added the SAME CDi and CDi 2015 RetroArch cores for the cdimono1 system
+* Added the PUAE 2021 RetroArch core to the amiga, amiga600, amiga1200 and amigacd32 systems
 * Replaced the RetroArch core 4DO with Opera for the 3do system
 * Removed the RetroArch DuckStation core as it has been superseded by SwanStation
 * Added the .ps3 file extension to the ps3 system
@@ -36,8 +45,9 @@ v1.2 maintenance release. Support has been added for displaying multi-disc/multi
 
 ### Bug fixes
 
-* The configuration entry for MAME standalone was incorrect so the emulator couldn't be used
+* The MAME standalone emulator couldn't be launched
 * Using a custom image directory for the slideshow screensaver would hang the application if there was only a single image
+* On Unix and macOS, staticpaths rules in es_find_rules.xml containing blank spaces would not work
 * Navigating the list of alternative emulators would sometimes lead to an incorrect row positioning
 * On Windows, the find rule for the Mupen64Plus standalone emulator was not setup correctly
 
