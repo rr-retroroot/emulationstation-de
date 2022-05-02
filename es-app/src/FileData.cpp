@@ -877,7 +877,11 @@ void FileData::launchGame(Window* window)
 
     // If there's a quotation mark before the %CORE_ variable, then remove it.
     // The closing quotation mark will be removed later below.
-    command = Utils::String::replace(command, "\"%CORE_", "%CORE_");
+    bool hasCoreQuotation{false};
+    if (command.find("\"%CORE_") != std::string::npos) {
+        command = Utils::String::replace(command, "\"%CORE_", "%CORE_");
+        hasCoreQuotation = true;
+    }
 
     coreEntryPos = command.find("%CORE_");
     if (coreEntryPos != std::string::npos) {
@@ -945,8 +949,14 @@ void FileData::launchGame(Window* window)
         std::string coreFile;
         if (spacePos != std::string::npos) {
             coreRaw = command.substr(emuPathPos, spacePos - emuPathPos);
+#if defined(_WIN64)
+            coreFile = Utils::FileSystem::getParent(Utils::String::replace(binaryPath, "\"", "")) +
+                       command.substr(emuPathPos + 9, spacePos - emuPathPos - 9);
+            coreFile = Utils::String::replace(coreFile, "/", "\\");
+#else
             coreFile = Utils::FileSystem::getParent(binaryPath) +
                        command.substr(emuPathPos + 9, spacePos - emuPathPos - 9);
+#endif
             if (hasQuotationMark) {
                 coreRaw.pop_back();
                 coreFile.pop_back();
@@ -1026,9 +1036,10 @@ void FileData::launchGame(Window* window)
             size_t stringPos = coreFile.find("%EMUPATH%");
             if (stringPos != std::string::npos) {
 #if defined(_WIN64)
-                coreFile = Utils::String::replace(
-                    coreFile.replace(stringPos, 9, Utils::FileSystem::getParent(binaryPath)), "/",
-                    "\\");
+                coreFile = coreFile.replace(
+                    stringPos, 9,
+                    Utils::FileSystem::getParent(Utils::String::replace(binaryPath, "\"", "")));
+                coreFile = Utils::String::replace(coreFile, "/", "\\");
 #else
                 coreFile = coreFile.replace(stringPos, 9, Utils::FileSystem::getParent(binaryPath));
 #endif
@@ -1049,7 +1060,8 @@ void FileData::launchGame(Window* window)
                 // Escape any blankspaces.
                 if (coreFile.find(" ") != std::string::npos)
                     coreFile = Utils::FileSystem::getEscapedPath(coreFile);
-                command.replace(coreEntryPos, separatorPos - coreEntryPos, coreFile);
+                command.replace(coreEntryPos,
+                                separatorPos - coreEntryPos + (hasCoreQuotation ? 1 : 0), coreFile);
 #if !defined(_WIN64)
                 // Remove any quotation marks as it would make the launch function fail.
                 if (command.find("\"") != std::string::npos)
@@ -1175,10 +1187,13 @@ void FileData::launchGame(Window* window)
     command = Utils::String::replace(command, "%ROMPATH%",
                                      Utils::FileSystem::getEscapedPath(getROMDirectory()));
 #if defined(_WIN64)
+    command = Utils::String::replace(
+        command, "%ESPATH%", Utils::String::replace(Utils::FileSystem::getExePath(), "/", "\\"));
     command = Utils::String::replace(command, "%EMUDIR%",
                                      Utils::FileSystem::getEscapedPath(Utils::FileSystem::getParent(
                                          Utils::String::replace(binaryPath, "\"", ""))));
 #else
+    command = Utils::String::replace(command, "%ESPATH%", Utils::FileSystem::getExePath());
     command = Utils::String::replace(command, "%EMUDIR%",
                                      Utils::FileSystem::getEscapedPath(Utils::FileSystem::getParent(
                                          Utils::String::replace(binaryPath, "\\", ""))));
