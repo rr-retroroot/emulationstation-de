@@ -20,6 +20,7 @@ v1.2 maintenance release. Support has been added for displaying multi-disc/multi
 * Added Snes9x standalone as an alternative emulator for the sfc, snes and snesna systems
 * Added Atari800 standalone as an alternative emulator for the atari800 system
 * Added BlastEm standalone as an alternative emulator for the megadrive and genesis systems on Unix
+* Added MAME standalone as an alternative emulator for the arcade and mame systems on macOS
 * Added the SAME CDi and CDi 2015 RetroArch cores for the cdimono1 system
 * Added the PUAE 2021 RetroArch core to the amiga, amiga600, amiga1200 and amigacd32 systems
 * Replaced the RetroArch core 4DO with Opera for the 3do system
