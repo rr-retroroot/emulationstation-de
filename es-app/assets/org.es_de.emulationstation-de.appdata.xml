@@ -38,9 +38,6 @@
         </screenshot>
     </screenshots>
     <releases>
-        <release version="1.2.3-beta" date="2022-04-24">
-            <url>https://gitlab.com/leonstyhre/emulationstation-de/-/releases</url>
-        </release>
         <release version="1.2.2" date="2022-04-07">
             <url>https://gitlab.com/leonstyhre/emulationstation-de/-/releases</url>
         </release>
