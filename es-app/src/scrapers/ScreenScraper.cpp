@@ -64,7 +64,7 @@ namespace
         {MSX2, 116},
         {MSX_TURBO_R, 118},
         {SNK_NEO_GEO, 142},
-        {SNK_NEO_GEO_CD, 142},
+        {SNK_NEO_GEO_CD, 70},
         {SNK_NEO_GEO_POCKET, 25},
         {SNK_NEO_GEO_POCKET_COLOR, 82},
         {NINTENDO_3DS, 17},
@@ -106,6 +106,7 @@ namespace
         {SHARP_X1, 220},
         {SHARP_X68000, 79},
         {GAMEENGINE_SOLARUS, 223},
+        {GAMEENGINE_Z_MACHINE, 215},
         {SONY_PLAYSTATION, 57},
         {SONY_PLAYSTATION_2, 58},
         {SONY_PLAYSTATION_3, 59},
@@ -569,6 +570,10 @@ void ScreenScraperRequest::processGame(const pugi::xml_document& xmldoc,
             // Video.
             processMedia(result, media_list, ssConfig.media_video, result.videoUrl,
                          result.videoFormat, region);
+            // Fallback to normalized video if no regular video was found.
+            if (result.videoUrl == "")
+                processMedia(result, media_list, ssConfig.media_video_normalized, result.videoUrl,
+                             result.videoFormat, region);
         }
         result.mediaURLFetch = COMPLETED;
         out_results.push_back(result);
@@ -678,6 +683,9 @@ std::string ScreenScraperRequest::ScreenScraperConfig::getGameSearchUrl(
 
     // Trim leading and trailing whitespaces.
     searchName = Utils::String::trim(searchName);
+
+    if (Settings::getInstance()->getBool("ScraperConvertUnderscores"))
+        searchName = Utils::String::replace(searchName, "_", " ");
 
     // If only whitespaces were entered as the search string, then search using a random string
     // that will not return any results. This is a quick and dirty way to avoid french error

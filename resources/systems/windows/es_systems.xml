@@ -6,7 +6,7 @@
         <fullname>3DO</fullname>
         <path>%ROMPATH%\3do</path>
         <extension>.iso .ISO .bin .BIN .chd .CHD .cue .CUE .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\4do_libretro.dll %ROM%</command>
+        <command label="Opera">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\opera_libretro.dll %ROM%</command>
         <platform>3do</platform>
         <theme>3do</theme>
     </system>
@@ -36,6 +36,7 @@
         <path>%ROMPATH%\amiga</path>
         <extension>.adf .ADF .adz .ADZ .dms .DMS .fdi .FDI .ipf .IPF .hdf .HDF .hdz .HDZ .lha .LHA .cue .CUE .ccd .CCD .nrg .NRG .mds .MDS .iso .ISO .uae .UAE .m3u .M3U .7z .7Z .zip .ZIP</extension>
         <command label="PUAE">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
+        <command label="PUAE 2021">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae2021_libretro.dll %ROM%</command>
         <platform>amiga</platform>
         <theme>amiga</theme>
     </system>
@@ -45,6 +46,7 @@
         <path>%ROMPATH%\amiga600</path>
         <extension>.adf .ADF .adz .ADZ .dms .DMS .fdi .FDI .ipf .IPF .hdf .HDF .hdz .HDZ .lha .LHA .cue .CUE .ccd .CCD .nrg .NRG .mds .MDS .iso .ISO .uae .UAE .m3u .M3U .7z .7Z .zip .ZIP</extension>
         <command label="PUAE">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
+        <command label="PUAE 2021">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae2021_libretro.dll %ROM%</command>
         <platform>amiga</platform>
         <theme>amiga600</theme>
     </system>
@@ -54,6 +56,7 @@
         <path>%ROMPATH%\amiga1200</path>
         <extension>.adf .ADF .adz .ADZ .dms .DMS .fdi .FDI .ipf .IPF .hdf .HDF .hdz .HDZ .lha .LHA .cue .CUE .ccd .CCD .nrg .NRG .mds .MDS .iso .ISO .uae .UAE .m3u .M3U .7z .7Z .zip .ZIP</extension>
         <command label="PUAE">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
+        <command label="PUAE 2021">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae2021_libretro.dll %ROM%</command>
         <platform>amiga</platform>
         <theme>amiga1200</theme>
     </system>
@@ -63,6 +66,7 @@
         <path>%ROMPATH%\amigacd32</path>
         <extension>.adf .ADF .adz .ADZ .dms .DMS .fdi .FDI .ipf .IPF .hdf .HDF .hdz .HDZ .lha .LHA .cue .CUE .ccd .CCD .nrg .NRG .mds .MDS .iso .ISO .uae .UAE .m3u .M3U .7z .7Z .zip .ZIP</extension>
         <command label="PUAE">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae_libretro.dll %ROM%</command>
+        <command label="PUAE 2021">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\puae2021_libretro.dll %ROM%</command>
         <platform>amigacd32</platform>
         <theme>amigacd32</theme>
     </system>
@@ -114,7 +118,7 @@
         <command label="MAME 2010">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mame2010_libretro.dll %ROM%</command>
         <command label="FinalBurn Neo">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\fbneo_libretro.dll %ROM%</command>
         <command label="FB Alpha 2012">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\fbalpha2012_libretro.dll %ROM%</command>
-        <command label="MAME (Standalone)">%EMULATOR_MAME% %ROM%</command>
+        <command label="MAME (Standalone)">%HIDEWINDOW% %EMULATOR_MAME% %STARTDIR%=%EMUDIR% -rompath %ROMPATH%\arcade %BASENAME%</command>
         <platform>arcade</platform>
         <theme>arcade</theme>
     </system>
@@ -160,8 +164,9 @@
         <name>atari800</name>
         <fullname>Atari 800</fullname>
         <path>%ROMPATH%\atari800</path>
-        <extension>.xfd .XFD .atr .ATR .atx .ATX .cdm .CDM .cas .CAS .bin .BIN .a52 .A52 .xex .XEX .7z .7Z .zip .ZIP</extension>
-        <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\atari800_libretro.dll %ROM%</command>
+        <extension>.xfd .XFD .atr .ATR .atx .ATX .cdm .CDM .cas .CAS .bin .BIN .a52 .A52 .xex .XEX .rom .ROM .7z .7Z .zip .ZIP</extension>
+        <command label="Atari800">%EMULATOR_RETROARCH% %STARTDIR%=%EMUDIR% -L %CORE_RETROARCH%\atari800_libretro.dll %ROM%</command>
+        <command label="Atari800 (Standalone)">%EMULATOR_ATARI800% %STARTDIR%=%EMUDIR% %ROM%</command>
         <platform>atari800</platform>
         <theme>atari800</theme>
     </system>
@@ -256,8 +261,9 @@
         <name>cdimono1</name>
         <fullname>Philips CD-i</fullname>
         <path>%ROMPATH%\cdimono1</path>
-        <extension>.7z .7Z .zip .ZIP</extension>
-        <command>PLACEHOLDER %ROM%</command>
+        <extension>.chd .CHD .cue .CUE .iso .ISO</extension>
+        <command label="SAME CDi">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\same_cdi_libretro.dll %ROM%</command>
+        <command label="CDi 2015">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\cdi2015_libretro.dll %ROM%</command>
         <platform>cdimono1</platform>
         <theme>cdimono1</theme>
     </system>
@@ -586,7 +592,7 @@
         <command label="MAME - Current">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mame_libretro.dll %ROM%</command>
         <command label="FinalBurn Neo">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\fbneo_libretro.dll %ROM%</command>
         <command label="FB Alpha 2012">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\fbalpha2012_libretro.dll %ROM%</command>
-        <command label="MAME (Standalone)">%EMULATOR_MAME% %ROM%</command>
+        <command label="MAME (Standalone)">%HIDEWINDOW% %EMULATOR_MAME% %STARTDIR%=%EMUDIR% -rompath %ROMPATH%\mame %BASENAME%</command>
         <platform>arcade</platform>
         <theme>mame</theme>
     </system>
@@ -964,6 +970,7 @@
         <extension>.bin .BIN .chd .CHD .cso .CSO .elf .ELF .iso .ISO .isz .ISZ</extension>
         <command label="PCSX2">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\pcsx2_libretro.dll %ROM%</command>
         <command label="PCSX2 (Standalone)">%EMULATOR_PCSX2% --nogui %ROM%</command>
+        <command label="Play! (Standalone)">%EMULATOR_PLAY!% --disc %ROM%</command>
         <platform>ps2</platform>
         <theme>ps2</theme>
     </system>
@@ -971,7 +978,7 @@
         <name>ps3</name>
         <fullname>Sony PlayStation 3</fullname>
         <path>%ROMPATH%\ps3</path>
-        <extension>.ps3dir .PS3DIR</extension>
+        <extension>.ps3 .PS3 .ps3dir .PS3DIR</extension>
         <command label="RPCS3 (Standalone)">%EMULATOR_RPCS3% --no-gui %ROM%</command>
         <platform>ps3</platform>
         <theme>ps3</theme>
@@ -991,7 +998,7 @@
         <path>%ROMPATH%\psp</path>
         <extension>.elf .ELF .iso .ISO .cso .CSO .prx .PRX .pbp .PBP .7z .7Z .zip .ZIP</extension>
         <command label="PPSSPP">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\ppsspp_libretro.dll %ROM%</command>
-        <command label="PPSSPP (Standalone)">%EMULATOR_PPSSPP% %ROM%</command>
+        <command label="PPSSPP (Standalone)">%EMULATOR_PPSSPP% --escape-exit %ROM%</command>
         <platform>psp</platform>
         <theme>psp</theme>
     </system>
@@ -1013,8 +1020,7 @@
         <command label="Beetle PSX HW">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mednafen_psx_hw_libretro.dll %ROM%</command>
         <command label="PCSX ReARMed">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\pcsx_rearmed_libretro.dll %ROM%</command>
         <command label="SwanStation">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\swanstation_libretro.dll %ROM%</command>
-        <command label="DuckStation">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\duckstation_libretro.dll %ROM%</command>
-        <command label="DuckStation (Standalone)">%EMULATOR_DUCKSTATION% %ROM%</command>
+        <command label="DuckStation (Standalone)">%EMULATOR_DUCKSTATION% -batch %ROM%</command>
         <platform>psx</platform>
         <theme>psx</theme>
     </system>
@@ -1069,7 +1075,7 @@
         <name>scummvm</name>
         <fullname>ScummVM Game Engine</fullname>
         <path>%ROMPATH%\scummvm</path>
-        <extension>.scummvm .7z .7Z .zip .ZIP</extension>
+        <extension>.scummvm .SCUMMVM .svm .SVM</extension>
         <command>%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\scummvm_libretro.dll %ROM%</command>
         <platform>scummvm</platform>
         <theme>scummvm</theme>
@@ -1119,6 +1125,7 @@
         <extension>.bin .BIN .bml .BML .bs .BS .bsx .BSX .dx2 .DX2 .fig .FIG .gd3 .GD3 .gd7 .GD7 .mgd .MGD .sfc .SFC .smc .SMC .st .ST .swc .SWC .7z .7Z .zip .ZIP</extension>
         <command label="Snes9x - Current">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\snes9x_libretro.dll %ROM%</command>
         <command label="Snes9x 2010">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\snes9x2010_libretro.dll %ROM%</command>
+        <command label="Snes9x (Standalone)">%EMULATOR_SNES9X% %ROM%</command>
         <command label="bsnes">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_libretro.dll %ROM%</command>
         <command label="bsnes-hd">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_hd_beta_libretro.dll %ROM%</command>
         <command label="bsnes-mercury Accuracy">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_mercury_accuracy_libretro.dll %ROM%</command>
@@ -1146,6 +1153,7 @@
         <extension>.bin .BIN .bml .BML .bs .BS .bsx .BSX .dx2 .DX2 .fig .FIG .gd3 .GD3 .gd7 .GD7 .mgd .MGD .sfc .SFC .smc .SMC .st .ST .swc .SWC .7z .7Z .zip .ZIP</extension>
         <command label="Snes9x - Current">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\snes9x_libretro.dll %ROM%</command>
         <command label="Snes9x 2010">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\snes9x2010_libretro.dll %ROM%</command>
+        <command label="Snes9x (Standalone)">%EMULATOR_SNES9X% %ROM%</command>
         <command label="bsnes">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_libretro.dll %ROM%</command>
         <command label="bsnes-hd">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_hd_beta_libretro.dll %ROM%</command>
         <command label="bsnes-mercury Accuracy">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_mercury_accuracy_libretro.dll %ROM%</command>
@@ -1161,6 +1169,7 @@
         <extension>.bin .BIN .bml .BML .bs .BS .bsx .BSX .dx2 .DX2 .fig .FIG .gd3 .GD3 .gd7 .GD7 .mgd .MGD .sfc .SFC .smc .SMC .st .ST .swc .SWC .7z .7Z .zip .ZIP</extension>
         <command label="Snes9x - Current">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\snes9x_libretro.dll %ROM%</command>
         <command label="Snes9x 2010">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\snes9x2010_libretro.dll %ROM%</command>
+        <command label="Snes9x (Standalone)">%EMULATOR_SNES9X% %ROM%</command>
         <command label="bsnes">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_libretro.dll %ROM%</command>
         <command label="bsnes-hd">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_hd_beta_libretro.dll %ROM%</command>
         <command label="bsnes-mercury Accuracy">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_mercury_accuracy_libretro.dll %ROM%</command>
@@ -1371,7 +1380,7 @@
         <name>wiiu</name>
         <fullname>Nintendo Wii U</fullname>
         <path>%ROMPATH%\wiiu</path>
-        <extension>.rpx .RPX</extension>
+        <extension>.rpx .RPX .wua .WUA .wud .WUD .wux .WUX</extension>
         <command label="Cemu (Standalone)">%EMULATOR_CEMU% -f -g %ROM%</command>
         <platform>wiiu</platform>
         <theme>wiiu</theme>

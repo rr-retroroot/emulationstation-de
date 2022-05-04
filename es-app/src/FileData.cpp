@@ -813,8 +813,21 @@ void FileData::launchGame(Window* window)
         command = mEnvData->mLaunchCommands.front().first;
 
     std::string commandRaw = command;
+    std::string romPath = Utils::FileSystem::getEscapedPath(getPath());
 
-    const std::string romPath = Utils::FileSystem::getEscapedPath(getPath());
+    // For the special case where a directory has a supported file extension and is therefore
+    // interpreted as a file, check if there is a matching filename inside the directory.
+    // This is used as a shortcut to be able to launch games directly inside folders.
+    if (mType == GAME && Utils::FileSystem::isDirectory(mPath)) {
+        for (std::string& file : Utils::FileSystem::getDirContent(mPath)) {
+            if (Utils::FileSystem::getFileName(file) == Utils::FileSystem::getFileName(mPath) &&
+                (Utils::FileSystem::isRegularFile(file) || Utils::FileSystem::isSymlink(file))) {
+                romPath = Utils::FileSystem::getEscapedPath(file);
+                break;
+            }
+        }
+    }
+
     const std::string baseName = Utils::FileSystem::getStem(getPath());
     const std::string romRaw = Utils::FileSystem::getPreferredPath(getPath());
     const std::string esPath = Utils::FileSystem::getExePath();
@@ -864,7 +877,11 @@ void FileData::launchGame(Window* window)
 
     // If there's a quotation mark before the %CORE_ variable, then remove it.
     // The closing quotation mark will be removed later below.
-    command = Utils::String::replace(command, "\"%CORE_", "%CORE_");
+    bool hasCoreQuotation{false};
+    if (command.find("\"%CORE_") != std::string::npos) {
+        command = Utils::String::replace(command, "\"%CORE_", "%CORE_");
+        hasCoreQuotation = true;
+    }
 
     coreEntryPos = command.find("%CORE_");
     if (coreEntryPos != std::string::npos) {
@@ -907,10 +924,9 @@ void FileData::launchGame(Window* window)
     }
     else {
 #if defined(_WIN64)
-        LOG(LogDebug) << "FileData::launchGame(): Found emulator binary \""
+        LOG(LogDebug) << "FileData::launchGame(): Found emulator binary "
                       << Utils::String::replace(
-                             Utils::String::replace(binaryPath, "%ESPATH%", esPath), "/", "\\")
-                      << "\"";
+                             Utils::String::replace(binaryPath, "%ESPATH%", esPath), "/", "\\");
 #else
         LOG(LogDebug) << "FileData::launchGame(): Found emulator binary \""
                       << Utils::String::replace(binaryPath, "%ESPATH%", esPath) << "\"";
@@ -933,8 +949,14 @@ void FileData::launchGame(Window* window)
         std::string coreFile;
         if (spacePos != std::string::npos) {
             coreRaw = command.substr(emuPathPos, spacePos - emuPathPos);
+#if defined(_WIN64)
+            coreFile = Utils::FileSystem::getParent(Utils::String::replace(binaryPath, "\"", "")) +
+                       command.substr(emuPathPos + 9, spacePos - emuPathPos - 9);
+            coreFile = Utils::String::replace(coreFile, "/", "\\");
+#else
             coreFile = Utils::FileSystem::getParent(binaryPath) +
                        command.substr(emuPathPos + 9, spacePos - emuPathPos - 9);
+#endif
             if (hasQuotationMark) {
                 coreRaw.pop_back();
                 coreFile.pop_back();
@@ -1014,9 +1036,10 @@ void FileData::launchGame(Window* window)
             size_t stringPos = coreFile.find("%EMUPATH%");
             if (stringPos != std::string::npos) {
 #if defined(_WIN64)
-                coreFile = Utils::String::replace(
-                    coreFile.replace(stringPos, 9, Utils::FileSystem::getParent(binaryPath)), "/",
-                    "\\");
+                coreFile = coreFile.replace(
+                    stringPos, 9,
+                    Utils::FileSystem::getParent(Utils::String::replace(binaryPath, "\"", "")));
+                coreFile = Utils::String::replace(coreFile, "/", "\\");
 #else
                 coreFile = coreFile.replace(stringPos, 9, Utils::FileSystem::getParent(binaryPath));
 #endif
@@ -1037,7 +1060,8 @@ void FileData::launchGame(Window* window)
                 // Escape any blankspaces.
                 if (coreFile.find(" ") != std::string::npos)
                     coreFile = Utils::FileSystem::getEscapedPath(coreFile);
-                command.replace(coreEntryPos, separatorPos - coreEntryPos, coreFile);
+                command.replace(coreEntryPos,
+                                separatorPos - coreEntryPos + (hasCoreQuotation ? 1 : 0), coreFile);
 #if !defined(_WIN64)
                 // Remove any quotation marks as it would make the launch function fail.
                 if (command.find("\"") != std::string::npos)
@@ -1073,13 +1097,116 @@ void FileData::launchGame(Window* window)
         return;
     }
 
+    std::string startDirectory;
+    size_t startDirPos{command.find("%STARTDIR%")};
+
+    if (startDirPos != std::string::npos) {
+        bool invalidEntry{false};
+
+        if (startDirPos + 12 >= command.size())
+            invalidEntry = true;
+        else if (command[startDirPos + 10] != '=')
+            invalidEntry = true;
+
+        if (!invalidEntry && command[startDirPos + 11] == '\"') {
+            size_t closingQuotation{command.find("\"", startDirPos + 12)};
+
+            if (closingQuotation != std::string::npos) {
+                startDirectory =
+                    command.substr(startDirPos + 12, closingQuotation - startDirPos - 12);
+                command = command.replace(startDirPos, closingQuotation - startDirPos + 2, "");
+            }
+            else {
+                invalidEntry = true;
+            }
+        }
+        else if (!invalidEntry) {
+            size_t spacePos{command.find(" ", startDirPos)};
+            if (spacePos != std::string::npos) {
+                startDirectory = command.substr(startDirPos + 11, spacePos - startDirPos - 11);
+                command = command.replace(startDirPos, spacePos - startDirPos + 1, "");
+            }
+            else {
+                startDirectory = command.substr(startDirPos + 11, command.size() - startDirPos);
+                command = command.replace(startDirPos, command.size() - startDirPos, "");
+            }
+        }
+
+        if (invalidEntry) {
+            LOG(LogError) << "Couldn't launch game, invalid %STARTDIR% entry";
+            LOG(LogError) << "Raw emulator launch command:";
+            LOG(LogError) << commandRaw;
+
+            window->queueInfoPopup("ERROR: INVALID %STARTDIR% VARIABLE ENTRY", 6000);
+            window->setAllowTextScrolling(true);
+            return;
+        }
+
+        if (startDirectory != "") {
+            startDirectory = Utils::FileSystem::expandHomePath(startDirectory);
+#if defined(_WIN64)
+            startDirectory = Utils::String::replace(
+                startDirectory, "%EMUDIR%",
+                Utils::FileSystem::getParent(Utils::String::replace(binaryPath, "\"", "")));
+#else
+            startDirectory = Utils::String::replace(
+                startDirectory, "%EMUDIR%",
+                Utils::FileSystem::getParent(Utils::String::replace(binaryPath, "\\", "")));
+#endif
+            if (!Utils::FileSystem::isDirectory(startDirectory)) {
+                Utils::FileSystem::createDirectory(startDirectory);
+
+                if (!Utils::FileSystem::isDirectory(startDirectory)) {
+                    LOG(LogError)
+                        << "Couldn't launch game, directory defined by %STARTDIR% could not be "
+                           "created, permission problems?";
+                    LOG(LogError) << "Raw emulator launch command:";
+                    LOG(LogError) << commandRaw;
+
+                    window->queueInfoPopup("ERROR: DIRECTORY DEFINED BY %STARTDIR% COULD NOT BE "
+                                           "CREATED, PERMISSION PROBLEMS?",
+                                           6000);
+                    window->setAllowTextScrolling(true);
+                    return;
+                }
+            }
+#if defined(_WIN64)
+            startDirectory = Utils::String::replace(startDirectory, "/", "\\");
+#else
+            startDirectory = Utils::FileSystem::getEscapedPath(startDirectory);
+#endif
+            LOG(LogDebug) << "FileData::launchGame(): Setting start directory to \""
+                          << startDirectory << "\"";
+        }
+    }
+
     // Replace the remaining variables with their actual values.
     command = Utils::String::replace(command, "%ROM%", romPath);
     command = Utils::String::replace(command, "%BASENAME%", baseName);
     command = Utils::String::replace(command, "%ROMRAW%", romRaw);
+    command = Utils::String::replace(command, "%ROMPATH%",
+                                     Utils::FileSystem::getEscapedPath(getROMDirectory()));
+#if defined(_WIN64)
+    command = Utils::String::replace(
+        command, "%ESPATH%", Utils::String::replace(Utils::FileSystem::getExePath(), "/", "\\"));
+    command = Utils::String::replace(command, "%EMUDIR%",
+                                     Utils::FileSystem::getEscapedPath(Utils::FileSystem::getParent(
+                                         Utils::String::replace(binaryPath, "\"", ""))));
+#else
+    command = Utils::String::replace(command, "%ESPATH%", Utils::FileSystem::getExePath());
+    command = Utils::String::replace(command, "%EMUDIR%",
+                                     Utils::FileSystem::getEscapedPath(Utils::FileSystem::getParent(
+                                         Utils::String::replace(binaryPath, "\\", ""))));
+#endif
 
     // Trim any leading and trailing whitespace characters as they could cause launch issues.
     command = Utils::String::trim(command);
+
+#if defined(_WIN64)
+    // Hack to be able to surround paths with quotation marks when using the %ROMPATH% and
+    // %EMUDIR% variables.
+    command = Utils::String::replace(command, "\"\"", "");
+#endif
 
     // swapBuffers() is called here to turn the screen black to eliminate some potential
     // flickering and to avoid showing the game launch message briefly when returning
@@ -1097,13 +1224,19 @@ void FileData::launchGame(Window* window)
     LOG(LogInfo) << "Expanded emulator launch command:";
     LOG(LogInfo) << command;
 
+#if defined(FLATPAK_BUILD)
+    // Break out of the sandbox.
+    command = "flatpak-spawn --host " + command;
+#endif
+
     // Possibly keep ES-DE running in the background while the game is launched.
 
 #if defined(_WIN64)
-    returnValue =
-        launchGameWindows(Utils::String::stringToWideString(command), runInBackground, hideWindow);
+    returnValue = launchGameWindows(Utils::String::stringToWideString(command),
+                                    Utils::String::stringToWideString(startDirectory),
+                                    runInBackground, hideWindow);
 #else
-    returnValue = launchGameUnix(command, runInBackground);
+    returnValue = launchGameUnix(command, startDirectory, runInBackground);
 #endif
     // Notify the user in case of a failed game launch using a popup window.
     if (returnValue != 0) {
@@ -1373,6 +1506,7 @@ const std::string FileData::findEmulatorPath(std::string& command)
         path = Utils::String::replace(path, "%ROMPATH%", getROMDirectory());
 
         if (Utils::FileSystem::isRegularFile(path) || Utils::FileSystem::isSymlink(path)) {
+            path = Utils::FileSystem::getEscapedPath(path);
             command.replace(startPos, endPos - startPos + 1, path);
             return path;
         }
@@ -1410,10 +1544,11 @@ const std::string FileData::findEmulatorPath(std::string& command)
 #else
     if (Utils::FileSystem::isRegularFile(emuExecutable) ||
         Utils::FileSystem::isSymlink(emuExecutable)) {
-        exePath = emuExecutable;
+        exePath = Utils::FileSystem::getEscapedPath(emuExecutable);
     }
     else {
-        exePath = Utils::FileSystem::getPathToBinary(emuExecutable);
+        exePath =
+            Utils::FileSystem::getEscapedPath(Utils::FileSystem::getPathToBinary(emuExecutable));
         if (exePath != "")
             exePath += "/" + emuExecutable;
     }

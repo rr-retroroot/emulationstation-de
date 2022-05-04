@@ -1511,6 +1511,8 @@ The following variables are expanded for the `command` tag:
 
 `%ROMRAW%`	- Replaced with the unescaped, absolute path to the selected ROM.  If your emulator is picky about paths, you might want to use this instead of %ROM%, but enclosed in quotes.
 
+`%ROMPATH%` - Replaced with the path defined in the setting ROMDirectory in es_settings.xml.
+
 `%BASENAME%` - Replaced with the "base" name of the path to the selected ROM. For example, a path of `/foo/bar.rom`, this tag would be `bar`. This tag is useful for setting up AdvanceMAME.
 
 `%EMUPATH%` - Replaced with the path to the emulator binary. This is expanded using either the PATH environmental variable of the operating system, or using an absolute emulator path if this has been defined.
@@ -1655,6 +1657,7 @@ Here's an example es_find_rules.xml file for Unix (this is not the complete file
         </rule>
         <rule type="staticpath">
             <entry>/var/lib/flatpak/exports/bin/org.libretro.RetroArch</entry>
+            <entry>~/.local/share/flatpak/exports/bin/org.libretro.RetroArch</entry>
             <entry>~/Applications/RetroArch-Linux-x86_64.AppImage</entry>
             <entry>~/.local/bin/RetroArch-Linux-x86_64.AppImage</entry>
             <entry>~/bin/RetroArch-Linux-x86_64.AppImage</entry>

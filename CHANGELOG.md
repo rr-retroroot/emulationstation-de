@@ -2,6 +2,57 @@
 
 [[_TOC_]]
 
+## Version 1.2.3 (in development)
+
+**Release date:** TBD
+
+### Release overview
+
+v1.2 maintenance release. Support has been added for displaying multi-disc/multi-file games as single entries, underscores can now be filtered out when doing scraper searches and a number of additional emulators and emulator file extensions have been added. A few bugs have been fixed as well.
+
+### Detailed list of changes
+
+* Made it possible to directly launch files inside directories that are interpreted as files
+* Added a scraper setting to convert underscores _ to spaces when searching
+* If no ScreenScraper video is found when scraping, a fallback will now be done to the normalized (low quality) video
+* Added support for using the manually downloaded emulators Redream and Ryujinx on Unix
+* Added Play! standalone as an alternative emulator for the ps2 system
+* Added Snes9x standalone as an alternative emulator for the sfc, snes and snesna systems
+* Added Atari800 standalone as an alternative emulator for the atari800 system
+* Added BlastEm standalone as an alternative emulator for the megadrive and genesis systems on Unix
+* Added MAME standalone as an alternative emulator for the arcade and mame systems on macOS
+* Added the SAME CDi and CDi 2015 RetroArch cores for the cdimono1 system
+* Added the PUAE 2021 RetroArch core to the amiga, amiga600, amiga1200 and amigacd32 systems
+* Replaced the RetroArch core 4DO with Opera for the 3do system
+* Removed the RetroArch DuckStation core as it has been superseded by SwanStation
+* Added the .ps3 file extension to the ps3 system
+* Added the .rom file extension to the atari800 system
+* Added the .svm file extension to the scummvm system and removed support for .7z and .zip extensions
+* Added the .wua, .wud and .wux file extensions for the wiiu system on Windows
+* Added --escape-exit command line option for the PPSSPP standalone emulator
+* Added -batch command line option for the DuckStation standalone emulator
+* (Windows) Added a separate find rules configuration file for use with portable installations
+* (Windows) Added an "Emulators" directory to all emulators for portable installations
+* Added missing scraper entries for samcoupe and zx81 for TheGamesDB and zmachine for ScreenScraper
+* neogeocd is now scraped specifically as "Neo Geo CD" instead of the more generic "Neo Geo"
+* (rbsimple-DE) Made the xbox console graphics slightly darker
+* The %ROMPATH% variable can now be used inside the es_systems.xml command tag
+* Added a %STARTDIR% variable to set the start directory when running an emulator (required by MAME standalone)
+* Added an %EMUDIR% variable that expands to the emulator binary directory
+* Added a CMake flag to build as Flatpak which prefixes "flatpak-spawn --host" to all launch commands
+* Added some Flatpak-specific code to work around the sandbox restrictions of this package format
+* A check is now done on game launch that emulator binaries are actually files or symlinks
+* (Unix) Renamed the icon emulationstation.svg to org.es_de.emulationstation-de.svg
+
+### Bug fixes
+
+* The MAME standalone emulator couldn't be launched
+* Using a custom image directory for the slideshow screensaver would hang the application if there was only a single image
+* On Unix and macOS, staticpaths rules in es_find_rules.xml containing blank spaces would not work
+* %ESPATH% variables could not be used in es_systems.xml
+* Navigating the list of alternative emulators would sometimes lead to an incorrect row positioning
+* On Windows, the find rule for the Mupen64Plus standalone emulator was not setup correctly
+
 ## Version 1.2.2
 
 **Release date:** 2022-04-07

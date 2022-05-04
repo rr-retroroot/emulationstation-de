@@ -19,6 +19,7 @@
 #include "utils/FileSystemUtil.h"
 
 #include "Log.h"
+#include "Platform.h"
 #include "utils/StringUtil.h"
 
 #include <fstream>
@@ -208,18 +209,58 @@ namespace Utils
 #if defined(_WIN64)
             return "";
 #else
-            std::string pathVariable = std::string(getenv("PATH"));
-            std::vector<std::string> pathList =
-                Utils::String::delimitedStringToVector(pathVariable, ":");
+#if defined(FLATPAK_BUILD)
+            // Ugly hack to compensate for the Flatpak sandbox restrictions. We traverse
+            // this hardcoded list of paths and use the "which" command to check outside the
+            // sandbox if the emulator binary exists.
+            std::string pathVariable{"/var/lib/flatpak/exports/bin:/usr/bin:/usr/local/"
+                                     "bin:/usr/local/sbin:/usr/sbin:/sbin:/bin:/usr/games:/usr/"
+                                     "local/games:/snap/bin:/var/lib/snapd/snap/bin"};
+
+            std::vector<std::string> pathList{
+                Utils::String::delimitedStringToVector(pathVariable, ":")};
+
+            // Using a temporary file is the only viable solution I've found to communicate
+            // between the sandbox and the outside world.
+            std::string tempFile{Utils::FileSystem::getHomePath() + "/.emulationstation/" +
+                                 ".flatpak_emulator_binary_path.tmp"};
+
+            std::string emulatorPath;
+
+            for (auto it = pathList.cbegin(); it != pathList.cend(); ++it) {
+                runSystemCommand("flatpak-spawn --host which " + *it + "/" + executable + " > " +
+                                 tempFile + " 2>/dev/null");
+                std::ifstream tempFileStream;
+                tempFileStream.open(tempFile);
+                getline(tempFileStream, emulatorPath);
+                tempFileStream.close();
+
+                if (emulatorPath != "") {
+                    emulatorPath = getParent(emulatorPath);
+                    break;
+                }
+            }
+
+            if (exists(tempFile))
+                removeFile(tempFile);
+
+            return emulatorPath;
+#else
+            std::string pathVariable{std::string(getenv("PATH"))};
+
+            std::vector<std::string> pathList{
+                Utils::String::delimitedStringToVector(pathVariable, ":")};
 
             std::string pathTest;
 
             for (auto it = pathList.cbegin(); it != pathList.cend(); ++it) {
                 pathTest = it->c_str() + ("/" + executable);
-                if (exists(pathTest))
+                if (Utils::FileSystem::isRegularFile(pathTest) ||
+                    Utils::FileSystem::isSymlink(pathTest))
                     return it->c_str();
             }
             return "";
+#endif
 #endif
         }
 

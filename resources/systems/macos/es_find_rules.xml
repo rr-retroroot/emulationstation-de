@@ -14,6 +14,13 @@
             <entry>/Applications/RetroArch.app/Contents/Resources/cores</entry>
         </rule>
     </core>
+    <emulator name="ATARI800">
+        <!-- Atari 8-bit computer emulator Atari800 -->
+        <rule type="staticpath">
+            <entry>/opt/homebrew/bin/atari800</entry>
+            <entry>/usr/local/bin/atari800</entry>
+        </rule>
+    </emulator>
     <emulator name="CITRA">
         <!-- Nintendo 3DS emulator Citra -->
         <rule type="staticpath">
@@ -56,6 +63,13 @@
             <entry>/usr/local/bin/fs-uae</entry>
         </rule>
     </emulator>
+    <emulator name="MAME">
+        <!-- Arcade emulator MAME -->
+        <rule type="staticpath">
+            <entry>/opt/homebrew/bin/mame</entry>
+            <entry>/usr/local/bin/mame</entry>
+        </rule>
+    </emulator>
     <emulator name="MELONDS">
         <!-- Nintendo DS and DSi emulator melonDS -->
         <rule type="staticpath">
@@ -83,10 +97,10 @@
             <entry>/Applications/PCSX2.app/Contents/MacOS/PCSX2</entry>
         </rule>
     </emulator>
-    <emulator name="RPCS3">
-        <!-- Sony PlayStation 3 emulator RPCS3 -->
+    <emulator name="PLAY!">
+        <!-- Sony PlayStation 2 emulator Play! -->
         <rule type="staticpath">
-            <entry>/Applications/RPCS3.app/Contents/MacOS/rpcs3</entry>
+            <entry>/Applications/Play.app/Contents/MacOS/Play</entry>
         </rule>
     </emulator>
     <emulator name="PPSSPP">
@@ -103,10 +117,22 @@
             <entry>/Applications/redream.app/Contents/MacOS/redream</entry>
         </rule>
     </emulator>
+    <emulator name="RPCS3">
+        <!-- Sony PlayStation 3 emulator RPCS3 -->
+        <rule type="staticpath">
+            <entry>/Applications/RPCS3.app/Contents/MacOS/rpcs3</entry>
+        </rule>
+    </emulator>
     <emulator name="SIXTYFORCE">
         <!-- Nintendo 64 emulator sixtyforce -->
         <rule type="staticpath">
             <entry>/Applications/sixtyforce.app/Contents/MacOS/sixtyforce</entry>
+        </rule>
+    </emulator>
+    <emulator name="SNES9X">
+        <!-- Super Nintendo emulator Snes9x -->
+        <rule type="staticpath">
+            <entry>/Applications/Snes9x.app/Contents/MacOS/Snes9x</entry>
         </rule>
     </emulator>
     <emulator name="VBA-M">

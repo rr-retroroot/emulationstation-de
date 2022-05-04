@@ -68,7 +68,7 @@ namespace
         {MSX2, "4929"},
         {MSX_TURBO_R, "4929"},
         {SNK_NEO_GEO, "24"},
-        {SNK_NEO_GEO_CD, "24"},
+        {SNK_NEO_GEO_CD, "4956"},
         {SNK_NEO_GEO_POCKET, "4922"},
         {SNK_NEO_GEO_POCKET_COLOR, "4923"},
         {NINTENDO_3DS, "4912"},
@@ -95,6 +95,7 @@ namespace
         {VALVE_STEAM, "1"},
         {NEC_PCFX, "4930"},
         {PHILIPS_CDI, "4917"},
+        {SAMCOUPE, "4979"},
         {SEGA_32X, "33"},
         {SEGA_CD, "21"},
         {SEGA_DREAMCAST, "16"},
@@ -121,6 +122,7 @@ namespace
         {BANDAI_WONDERSWAN, "4925"},
         {BANDAI_WONDERSWAN_COLOR, "4926"},
         {SINCLAIR_ZX_SPECTRUM, "4913"},
+        {SINCLAIR_ZX81_SINCLAR, "5010"},
         {VIDEOPAC_ODYSSEY2, "4927"},
         {VECTREX, "4939"},
         {TANDY_COLOR_COMPUTER, "4941"},
@@ -177,6 +179,9 @@ void thegamesdb_generate_json_scraper_requests(
 
         // Trim leading and trailing whitespaces.
         cleanName = Utils::String::trim(cleanName);
+
+        if (Settings::getInstance()->getBool("ScraperConvertUnderscores"))
+            cleanName = Utils::String::replace(cleanName, "_", " ");
 
         path += "/Games/ByGameName?" + apiKey +
                 "&fields=players,publishers,genres,overview,last_updated,rating,"

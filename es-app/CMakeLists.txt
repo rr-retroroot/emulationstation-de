@@ -249,8 +249,10 @@ else()
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/emulationstation)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/org.es_de.emulationstation-de.desktop
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
-    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/emulationstation.svg
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/org.es_de.emulationstation-de.svg
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/pixmaps)
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/org.es_de.emulationstation-de.svg
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/org.es_de.emulationstation-de.appdata.xml
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/metainfo)
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/licenses
@@ -283,7 +285,7 @@ endif()
 set(CPACK_PACKAGE_VENDOR "Leon Styhre")
 
 # Update this when there has been a new release.
-set(CPACK_PACKAGE_VERSION "1.2.2")
+set(CPACK_PACKAGE_VERSION "1.2.3")
 
 # Use the shorter x64 descriptor if on the x86_64/AMD64 architecture.
 if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL x86_64 OR CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL AMD64)

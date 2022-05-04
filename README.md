@@ -53,8 +53,6 @@ The latest version is 1.2.0 (released 2021-12-28)
 
 All previous releases can be downloaded from [here](https://gitlab.com/leonstyhre/emulationstation-de/-/packages).
 
-Flatpak will not be supported on Linux as this packaging system is too restrictive with its sandbox approach, making ES-DE virtually useless as it can't freely locate and launch emulators on the system.
-
 If using FreeBSD, NetBSD or OpenBSD you will need to build ES-DE from source code for the time being, as explained in [INSTALL.md](INSTALL.md).
 
 Please refer to [CHANGELOG.md](CHANGELOG.md) for more information about the releases, including known issues.

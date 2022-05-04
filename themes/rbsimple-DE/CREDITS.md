@@ -1,13 +1,18 @@
-The EmulationStation theme 'rbsimple-DE' is based on 'recalbox-multi' by the Recalbox community. \
-Some graphics was also taken from 'carbon' by Rookervik.
+# EmulationStation Desktop Edition (ES-DE) - rbsimple-DE credits
 
+The theme set rbsimple-DE is based on recalbox-multi by the Recalbox community.
 
-Recalbox credits
-================
+Some graphics was also taken from the carbon theme by Rookervik.
+
+## Original vector graphics for rbsimple-DE
+
+- Matthew Stapleton
+- Leon Styhre
+
+## recalbox-multi
+
 - Supernature2k
 - Paradadf
-
-Original work from the Recalbox community:
 - Zuco
 - Sm3ck
 - Th4Shin
@@ -21,8 +26,7 @@ Original work from the Recalbox community:
 - Bigboo3000
 - Paradadf
 
+## carbon
 
-Other credits
-=============
-Theme 'carbon' v2.4 - 2016-08-16 by Rookervik, \
-based on simple(c) Nils Bonenberger - nilsbyte@nilsbyte.de - http://blog.nilsbyte.de/
+- Rookervik
+- Nils Bonenberger (original simple theme on which carbon is based)
