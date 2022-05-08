@@ -2,6 +2,27 @@
 
 [[_TOC_]]
 
+## Version 1.2.4 (in development)
+
+**Release date:** TBD
+
+### Release overview
+
+v1.2 maintenance release.
+
+### Detailed list of changes
+
+* Added AetherSX2 standalone as an alternative emulator for the ps2 system on macOS
+* (macOS) Categorized the application as a game in Info.plist
+* (Windows) Added an %ESCAPESPECIALS% variable that escapes the special characters &()^=;,
+* Updated the StringUtil::replace function as the old function was dangerous and could run into an endless loop
+
+### Bug fixes
+
+* (Windows) Fixed an issue where symlinking game media directories would crash the application
+* (Windows) Scripts and links executed using cmd.exe could not contain the special characters &()^=;,
+* (Windows) ROM directories could not be created in the root of a device such as D:\ or E:\
+
 ## Version 1.2.3
 
 **Release date:** 2022-05-04
@@ -48,7 +69,7 @@ v1.2 maintenance release. Support has been added for displaying multi-disc/multi
 
 * The MAME standalone emulator couldn't be launched
 * Using a custom image directory for the slideshow screensaver would hang the application if there was only a single image
-* On Unix and macOS, staticpaths rules in es_find_rules.xml containing blank spaces would not work
+* On Unix and macOS, staticpaths rules in es_find_rules.xml containing spaces would not work
 * %ESPATH% variables could not be used in es_systems.xml
 * Navigating the list of alternative emulators would sometimes lead to an incorrect row positioning
 * On Windows, the find rule for the Mupen64Plus standalone emulator was not setup correctly

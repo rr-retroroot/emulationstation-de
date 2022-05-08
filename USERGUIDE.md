@@ -528,6 +528,18 @@ For the first scenario, to automatically launch a file inside a directory, just 
 
 In this case the directory is named _Jet Grind Radio.cue_, i.e. exactly the same name as one of the files inside the directory. This means that when launching the game, `~/ROMs/dreamcast/Jet Grind Radio.cue/Jet Grind Radio.cue` will actually be passed to the emulator.
 
+Here's another example when using .m3u files:
+
+```
+~/ROMs/psx/Final Fantasy VII.m3u/
+~/ROMs/psx/Final Fantasy VII.m3u/Final Fantasy VII (Disc 1).chd
+~/ROMs/psx/Final Fantasy VII.m3u/Final Fantasy VII (Disc 2).chd
+~/ROMs/psx/Final Fantasy VII.m3u/Final Fantasy VII (Disc 3).chd
+~/ROMs/psx/Final Fantasy VII.m3u/Final Fantasy VII.m3u
+```
+
+In exactly the same manner, the file `~/ROMs/psx/Final Fantasy VII.m3u/Final Fantasy VII.m3u` will be passed to the emulator on game launch. See the section just above this one, _Multiple game files installation_ for details on how .m3u files work.
+
 The second scenario is when an emulator supports passing a directory rather than a file to launch a game. Such an example is the PlayStation 3 emulator RPCS3.
 
 For PS3 games the extension in es_systems.xml is .ps3 so this is what a game directory could look like:
@@ -2077,7 +2089,7 @@ All emulators are RetroArch cores unless marked as **(Standalone**)
 | pcfx                  | NEC PC-FX                                      | Beetle PC-FX                      |                                   |              |                                      |
 | pokemini              | Nintendo Pokémon Mini                          | PokeMini                          |                                   | No           |                                      |
 | ports                 | Ports                                          | N/A                               |                                   | No           | Shell/batch script in separate folder (possibly combined with game data) |
-| ps2                   | Sony PlayStation 2                             | PCSX2 [UW],<br>PCSX2 **(Standalone)** [M] | PCSX2 **(Standalone)** [UW],<br>Play! **(Standalone)** [UMW*] | Yes (No for Play!) |                                      |
+| ps2                   | Sony PlayStation 2                             | PCSX2 [UW],<br>PCSX2 **(Standalone)** [M] | PCSX2 **(Standalone)** [UW],<br>Play! **(Standalone)** [UMW*],<br>AetherSX2 **(Standalone)** [M] | Yes (No for Play!) |                      |
 | ps3                   | Sony PlayStation 3                             | RPCS3 **(Standalone)** [UMW*]     |                                   | Yes          | In separate folder (one folder per game with complete file structure retained, renamed to the .ps3 extension) |
 | ps4                   | Sony PlayStation 4                             | _Placeholder_                     |                                   |              |                                      |
 | psp                   | Sony PlayStation Portable                      | PPSSPP                            | PPSSPP **(Standalone)**           | No           | Single .iso file in root folder       |
