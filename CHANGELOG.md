@@ -12,13 +12,18 @@ v1.2 maintenance release.
 
 ### Detailed list of changes
 
+* (Windows) Set %RUNINBACKGROUND% when launching MAME standalone as this emulator may otherwise hang on exit
+* Removed the --escape-exit command line option for the PPSSPP standalone emulator as it caused issues for some users
 * Added AetherSX2 standalone as an alternative emulator for the ps2 system on macOS
-* (macOS) Categorized the application as a game in Info.plist
+* (macOS) Categorized the application as a game so it shows up in the Launchpad games section
 * (Windows) Added an %ESCAPESPECIALS% variable that escapes the special characters &()^=;,
 * Updated the StringUtil::replace function as the old function was dangerous and could run into an endless loop
 
 ### Bug fixes
 
+* Chinese characters would sometimes not render correctly
+* The "Jump to.." quick selector didn't work correctly with multi-byte Unicode characters
+* (Linux) Flatpak directories were missing for user installations of the standalone emulators BlastEm, Play! and Snes9x
 * (Windows) Fixed an issue where symlinking game media directories would crash the application
 * (Windows) Scripts and links executed using cmd.exe could not contain the special characters &()^=;,
 * (Windows) ROM directories could not be created in the root of a device such as D:\ or E:\
