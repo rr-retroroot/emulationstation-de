@@ -12,6 +12,9 @@ v1.2 maintenance release.
 
 ### Detailed list of changes
 
+* Added configuration for the OpenBOR game engine on Linux and Windows
+* Added emulator configuration for the astrocde (Bally Astrocade) system
+* Added scraper support for the astrocde system (ScreenScraper and TheGamesDB)
 * Removed the --escape-exit command line option for the PPSSPP standalone emulator as it caused issues for some users
 * Changed the default emulator for the famicom, fds and nes systems from Nestopia UE to Mesen
 * Changed the default emulator for the gb and gbc systems from SameBoy to Gambatte
@@ -20,9 +23,16 @@ v1.2 maintenance release.
 * Changed the default emulator for the mame system from MAME 2003-Plus to MAME - Current
 * Added DOSBox-X standalone as an alternative emulator for the dos and pc systems
 * Added AetherSX2 standalone as an alternative emulator for the ps2 system on macOS
+* Changed the steam platform to use the ScreenScraper "PC Windows" platform ID
+* Added a new pcwindows platform for scraping PC (Windows) games
+* Changed the platform to pcwindows for the epic system
+* Added an Xbox Kinect controller badge icon
+* (macOS) Categorized the application as a game so it shows up in the Launchpad games section
+* Replaced the explicit shell commands in es_systems.xml with %EMULATOR_OS-SHELL% find rules
+* Added a new %GAMEDIR% variable to be used in conjunction with the %STARTDIR% variable (required by OpenBOR)
 * (Windows) Set %RUNINBACKGROUND% when launching MAME standalone as this emulator may otherwise hang on exit
 * (Windows) Added an %ESCAPESPECIALS% variable that escapes the special characters &()^=;,
-* (macOS) Categorized the application as a game so it shows up in the Launchpad games section
+* (Windows) Added %ESCAPESPECIALS% to the desktop, epic, kodi, ports and steam systems
 * Updated the StringUtil::replace function as the old function was dangerous and could run into an endless loop
 
 ### Bug fixes
