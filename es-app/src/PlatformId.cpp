@@ -90,6 +90,7 @@ namespace PlatformIds
         "pcengine",             // NEC PC Engine / TurboGrafx-16
         "pcenginecd",           // NEC PC Engine CD / TurboGrafx-CD
         "pcfx",                 // NEC PC-FX
+        "pcwindows",            // PC (Windows)
         "pokemini",             // Nintendo Pokémon Mini
         "ps2",                  // Sony PlayStation 2
         "ps3",                  // Sony PlayStation 3
