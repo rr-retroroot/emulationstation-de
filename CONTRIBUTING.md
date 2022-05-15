@@ -14,7 +14,7 @@ Another area where help is really needed is for creation of installation instruc
 
 The ES-DE development is tracked using a Kanban board which is publicly visible at the GitLab project site:
 
-[https://gitlab.com/leonstyhre/emulationstation-de/-/boards](https://gitlab.com/leonstyhre/emulationstation-de/-/boards)
+[https://gitlab.com/es-de/emulationstation-de/-/boards](https://gitlab.com/es-de/emulationstation-de/-/boards)
 
 Development takes place in the `master` branch, and bug fixes/point releases are handled in the `stable` branch.
 

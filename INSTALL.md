@@ -146,7 +146,7 @@ make install
 To clone the source repository, run the following:
 
 ```
-git clone https://gitlab.com/leonstyhre/emulationstation-de.git
+git clone https://gitlab.com/es-de/emulationstation-de.git
 ```
 
 Then generate the Makefile and build the software:
@@ -518,7 +518,7 @@ I suppose you should add this to your shell profile file or similar, but I didn'
 To clone the source repository, run the following:
 
 ```
-git clone https://gitlab.com/leonstyhre/emulationstation-de.git
+git clone https://gitlab.com/es-de/emulationstation-de.git
 ```
 
 For macOS all dependencies are built in-tree in the `external` directory tree. There are two scripts in the tools directory that automate this entirely and they are executed such as this:
@@ -892,7 +892,7 @@ make
 This works the same as on Unix or macOS, just run the following:
 
 ```
-git clone https://gitlab.com/leonstyhre/emulationstation-de.git
+git clone https://gitlab.com/es-de/emulationstation-de.git
 ```
 
 By default the master branch will be used, which is where development takes place. To instead build a stable release, switch to the `stable-x.x` branch for the version, for example:

@@ -11,6 +11,9 @@ YouTube channel with installation instruction videos:\
 Discord server:\
 [https://discord.gg/EVVX4DqWAP](https://discord.gg/EVVX4DqWAP)
 
+Reddit (r/EmulationStation_DE):\
+[https://www.reddit.com/r/EmulationStation_DE](https://www.reddit.com/r/EmulationStation_DE)
+
 Although there are multiple forks of EmulationStation in existence, the goal of this edition is to make the software as easy as possible to install and use as a standalone application, and to support the major desktop operating systems, i.e. Windows, macOS and Unix/Linux. Since it's intended to be used as a desktop application rather than as the primary interface for the computer, there are no plans to provide system administration utilities or control over emulator settings from within ES-DE.
 
 The software comes preconfigured for use primarily with [RetroArch](https://www.retroarch.com), although this can be changed as all emulator settings are fully configurable, even on a per-game basis.
@@ -19,51 +22,60 @@ Two comprehensive theme sets, **rbsimple-DE** and **modern-DE** are bundled with
 
 The following operating systems have been tested (all for the x86 architecture unless otherwise stated):
 
-* Windows 10
-* Windows 8.1
-* macOS 10.14 "Mojave" to 12 "Monterey" (the M1 processor is supported via Rosetta 2)
+* Windows 11, 10 and 8.1
+* macOS 10.14 "Mojave" to 12 "Monterey" (M1 and Intel)
 * macOS 10.11 "El Capitan" (legacy release)
-* Ubuntu 20.04 to 21.10
-* Linux Mint 20.2
-* Manjaro 21.1
+* Ubuntu 20.04 to 22.04
+* Linux Mint 20
+* Manjaro 21
 * Fedora 35 Workstation
+* SteamOS 3.0
 * elementary OS 6
 * Raspberry Pi OS 10 and 11 (armv7l and aarch64)
 * FreeBSD 13.0
 * NetBSD 9.1
 * OpenBSD 6.8
 
-If using a Mac with an M1 processor you need to install the x86 version of RetroArch and any other emulators, or you won't be able to launch any games. This will be fixed whenever a native macOS M1 build of ES-DE is released.
-
-
 ### Download
 
-The latest version is 1.2.0 (released 2021-12-28)
+The latest version is 1.2.3 (released 2022-05-04)
 
-| Package             | Operating systems                                       | Architecture | Download link  |
-| :------------------ | :------------------------------------------------------ | :----------- | :------------- |
-| Windows installer   | Windows 10 and 8.1 (probably Windows 11 as well)        | x64 (x86)    | [EmulationStation-DE-1.2.0-x64.exe](https://gitlab.com/leonstyhre/emulationstation-de/-/package_files/25023950/download)|
-| macOS DMG installer | macOS 10.14 "Mojave" to 12 "Monterey"                   | x64 (x86)    | [EmulationStation-DE-1.2.0-x64.dmg](https://gitlab.com/leonstyhre/emulationstation-de/-/package_files/25023939/download)|
-| macOS DMG installer | Legacy macOS 10.11 "El Capitan" to 10.13 "High Sierra"  | x64 (x86)    | [EmulationStation-DE-1.2.0-x64_legacy.dmg](https://gitlab.com/leonstyhre/emulationstation-de/-/package_files/25023954/download)|
-| Debian DEB package  | Ubuntu 20.04 to 21.10, Linux Mint 20.2, possibly others | x64 (x86)    | [emulationstation-de-1.2.0-x64.deb](https://gitlab.com/leonstyhre/emulationstation-de/-/package_files/25023934/download)|
-| Fedora RPM package  | Fedora Workstation 35, possibly others                  | x64 (x86)    | [emulationstation-de-1.2.0-x64.rpm](https://gitlab.com/leonstyhre/emulationstation-de/-/package_files/25023958/download)|
-| Linux AppImage      | Most modern Linux distributions                         | x64 (x86)    | [emulationstation-de-1.2.0-x64.AppImage](https://gitlab.com/leonstyhre/emulationstation-de/-/package_files/25023919/download)|
-| Debian DEB package  | Raspberry Pi OS (Raspian)                               | ARM 32-bit   | [emulationstation-de-1.2.0-armv7l.deb](https://gitlab.com/leonstyhre/emulationstation-de/-/package_files/25023905/download)|
-| Debian DEB package  | Raspberry Pi OS (Raspian)                               | ARM 64-bit   | [emulationstation-de-1.2.0-aarch64.deb](https://gitlab.com/leonstyhre/emulationstation-de/-/package_files/25023885/download)|
+| Package              | Operating systems                                       | Architecture | Download link  |
+| :------------------- | :------------------------------------------------------ | :----------- | :------------- |
+| Windows installer    | Windows 11, 10 and 8.1                                  | x64 (x86)    | [EmulationStation-DE-1.2.3-x64.exe](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880279/download)|
+| Windows portable     | Windows 11, 10 and 8.1                                  | x64 (x86)    | [EmulationStation-DE-1.2.3-x64_Portable.zip](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880305/download)|
+| macOS DMG installer  | macOS 10.14 "Mojave" to 12 "Monterey"                   | x64 (x86)    | [EmulationStation-DE-1.2.3-x64.dmg](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880259/download)|
+| macOS DMG installer  | macOS 11 "Big Sur" to 12 "Monterey"                     | arm64 (M1)   | [EmulationStation-DE-1.2.3-arm64.dmg](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880205/download)|
+| Debian DEB package   | Ubuntu 20.04 to 21.10, Linux Mint 20, possibly others   | x64 (x86)    | [emulationstation-de-1.2.3-x64.deb](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880232/download)|
+| Fedora RPM package   | Fedora Workstation 35, possibly others                  | x64 (x86)    | [emulationstation-de-1.2.3-x64.rpm](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880315/download)|
+| Arch User Repository | Arch Linux, Manjaro, possibly others                    | x64 (x86)    | [https://aur.archlinux.org/packages/emulationstation-de](https://aur.archlinux.org/packages/emulationstation-de)|
+| Linux AppImage       | Most Linux distributions                                | x64 (x86)    | [EmulationStation-DE-x64.AppImage](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880344/download)|
+| Linux AppImage       | Current Linux distributions with libc 2.34 or later     | x64 (x86)    | [EmulationStation-DE-x64_Current.AppImage](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880370/download)|
+| Linux AppImage       | Steam Deck / SteamOS 3.0 specific                       | x64 (x86)    | [EmulationStation-DE-x64_SteamDeck.AppImage](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880401/download)|
+| Debian DEB package   | Raspberry Pi OS (Raspian)                               | ARM 32-bit   | [emulationstation-de-1.2.3-armv7l.deb](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880216/download)|
+| Debian DEB package   | Raspberry Pi OS (Raspian)                               | ARM 64-bit   | [emulationstation-de-1.2.3-aarch64.deb](https://gitlab.com/es-de/emulationstation-de/-/package_files/36880165/download)|
 
-All previous releases can be downloaded from [here](https://gitlab.com/leonstyhre/emulationstation-de/-/packages).
+Version 1.2.0 (released 2021-12-28) will be the last legacy release for macOS
+
+| Package              | Operating systems                                       | Architecture | Download link  |
+| :------------------- | :------------------------------------------------------ | :----------- | :------------- |
+| macOS DMG installer  | Legacy macOS 10.11 "El Capitan" to 10.13 "High Sierra"  | x64 (x86)    | [EmulationStation-DE-1.2.0-x64_legacy.dmg](https://gitlab.com/es-de/emulationstation-de/-/package_files/25023954/download)|
+
+All previous releases can be downloaded from [here](https://gitlab.com/es-de/emulationstation-de/-/packages).
+
+The _current_ version of the Linux AppImage ships with newer libraries and better controller support but requires distributions with libc 2.34 or later to work.
 
 If using FreeBSD, NetBSD or OpenBSD you will need to build ES-DE from source code for the time being, as explained in [INSTALL.md](INSTALL.md).
 
 Please refer to [CHANGELOG.md](CHANGELOG.md) for more information about the releases, including known issues.
 
-
 ### Contributing
 
 If you would like to contribute to the development of ES-DE, then that's great! Please read how to participate [here](CONTRIBUTING.md) where you can also read about planned future releases and features.
 
-
 # Additional information
+
+[FAQ.md](FAQ.md) covers a number of Frequently Asked Questions and is recommended reading before diving into the other documents listed below.
 
 [USERGUIDE.md](USERGUIDE.md) is a comprehensive guide on how to use ES-DE and it also contains a complete reference to all application settings.
 

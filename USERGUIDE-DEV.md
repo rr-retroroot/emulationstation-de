@@ -37,7 +37,7 @@ The following operating systems have been tested (all for the x86 architecture u
 * Windows 8.1
 * macOS 10.14 "Mojave" to 12 "Monterey" (the M1 processor is supported via Rosetta 2)
 * macOS 10.11 "El Capitan" (legacy release)
-* Ubuntu 20.04 to 21.10
+* Ubuntu 20.04 to 22.04
 * Linux Mint 20.2
 * Manjaro 21.1
 * Fedora 35 Workstation
