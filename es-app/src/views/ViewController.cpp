@@ -859,6 +859,13 @@ bool ViewController::input(InputConfig* config, Input input)
         // queued when leaving the game.
         if (config->isMappedTo("a", input) && input.value != 0)
             return true;
+        // Trigger the game-end event.
+        if (mGameEndEventParams.size() == 5) {
+            Scripting::fireEvent(mGameEndEventParams[0], mGameEndEventParams[1],
+                                 mGameEndEventParams[2], mGameEndEventParams[3],
+                                 mGameEndEventParams[4]);
+            mGameEndEventParams.clear();
+        }
     }
 
     // Open the main menu.
