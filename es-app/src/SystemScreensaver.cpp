@@ -19,6 +19,7 @@
 #include "resources/Font.h"
 #include "utils/FileSystemUtil.h"
 #include "utils/StringUtil.h"
+#include "views/UIModeController.h"
 #include "views/ViewController.h"
 #include "views/gamelist/IGameListView.h"
 
@@ -438,8 +439,12 @@ void SystemScreensaver::generateImageList()
         if (!(*it)->isGameSystem() || (*it)->isCollection())
             continue;
 
-        std::vector<FileData*> allFiles = (*it)->getRootFolder()->getFilesRecursive(GAME, true);
+        std::vector<FileData*> allFiles{(*it)->getRootFolder()->getFilesRecursive(GAME, true)};
         for (auto it2 = allFiles.cbegin(); it2 != allFiles.cend(); ++it2) {
+            // Only include games suitable for children if we're in Kid UI mode.
+            if (UIModeController::getInstance()->isUIModeKid() &&
+                (*it2)->metadata.get("kidgame") != "true")
+                continue;
             std::string imagePath = (*it2)->getImagePath();
             if (imagePath != "")
                 mImageFiles.push_back((*it2));
@@ -455,8 +460,12 @@ void SystemScreensaver::generateVideoList()
         if (!(*it)->isGameSystem() || (*it)->isCollection())
             continue;
 
-        std::vector<FileData*> allFiles = (*it)->getRootFolder()->getFilesRecursive(GAME, true);
+        std::vector<FileData*> allFiles{(*it)->getRootFolder()->getFilesRecursive(GAME, true)};
         for (auto it2 = allFiles.cbegin(); it2 != allFiles.cend(); ++it2) {
+            // Only include games suitable for children if we're in Kid UI mode.
+            if (UIModeController::getInstance()->isUIModeKid() &&
+                (*it2)->metadata.get("kidgame") != "true")
+                continue;
             std::string videoPath = (*it2)->getVideoPath();
             if (videoPath != "")
                 mVideoFiles.push_back((*it2));
