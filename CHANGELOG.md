@@ -28,6 +28,8 @@ v1.2 maintenance release.
 * Added a new pcwindows platform for scraping PC (Windows) games
 * Changed the platform to pcwindows for the epic system
 * Enabled screensaver controls when running in Kid UI mode
+* Added custom event script triggers on application startup, screensaver start and screensaver end
+* Added a --create-systemdirs command line option to generate the game system directories
 * Added an Xbox Kinect controller badge icon
 * (macOS) Categorized the application as a game so it shows up in the Launchpad games section
 * Replaced the explicit shell commands in es_systems.xml with %EMULATOR_OS-SHELL% find rules
@@ -35,6 +37,7 @@ v1.2 maintenance release.
 * (Windows) Set %RUNINBACKGROUND% when launching MAME standalone as this emulator may otherwise hang on exit
 * (Windows) Added an %ESCAPESPECIALS% variable that escapes the special characters &()^=;,
 * (Windows) Added %ESCAPESPECIALS% to the desktop, epic, kodi, ports and steam systems
+* Added experimental support for folder flattening
 * Updated the StringUtil::replace function as the old function was dangerous and could run into an endless loop
 
 ### Bug fixes
@@ -43,6 +46,7 @@ v1.2 maintenance release.
 * The "Jump to.." quick selector didn't work correctly with multi-byte Unicode characters
 * All games were included in the video and slideshow screeensavers when in Kid UI mode
 * The game-end event was triggered immediately on game launch if running in the background
+* The "quit" custom event script trigger was not executed when quitting the application using the quit key combo
 * (Linux) Flatpak directories were missing for user installations of the standalone emulators BlastEm, Play! and Snes9x
 * (Windows) Fixed an issue where symlinking game media directories would crash the application
 * (Windows) Scripts and links executed using cmd.exe could not contain the special characters &()^=;,
