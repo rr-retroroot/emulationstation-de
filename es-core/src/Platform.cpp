@@ -309,15 +309,15 @@ void processQuitMode()
     switch (quitMode) {
         case QuitMode::REBOOT: {
             LOG(LogInfo) << "Rebooting system";
-            Scripting::fireEvent("quit");
             Scripting::fireEvent("reboot");
+            Scripting::fireEvent("quit");
             runRebootCommand();
             break;
         }
         case QuitMode::POWEROFF: {
             LOG(LogInfo) << "Powering off system";
-            Scripting::fireEvent("quit");
             Scripting::fireEvent("poweroff");
+            Scripting::fireEvent("quit");
             runPoweroffCommand();
             break;
         }
