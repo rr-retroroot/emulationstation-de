@@ -10,6 +10,7 @@
 
 #include "Log.h"
 #include "MameNames.h"
+#include "Scripting.h"
 #include "Settings.h"
 #include "renderers/Renderer.h"
 #include "utils/StringUtil.h"
@@ -280,6 +281,7 @@ int quitES(QuitMode mode)
 void emergencyShutdown()
 {
     LOG(LogError) << "Critical - Performing emergency shutdown...";
+    Scripting::fireEvent("quit");
 
     // Most of the SDL deinitialization is done in Renderer.
     Renderer::deinit();
@@ -307,15 +309,20 @@ void processQuitMode()
     switch (quitMode) {
         case QuitMode::REBOOT: {
             LOG(LogInfo) << "Rebooting system";
+            Scripting::fireEvent("quit");
+            Scripting::fireEvent("reboot");
             runRebootCommand();
             break;
         }
         case QuitMode::POWEROFF: {
             LOG(LogInfo) << "Powering off system";
+            Scripting::fireEvent("quit");
+            Scripting::fireEvent("poweroff");
             runPoweroffCommand();
             break;
         }
         default: {
+            Scripting::fireEvent("quit");
             break;
         }
     }

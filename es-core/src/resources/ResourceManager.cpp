@@ -82,7 +82,6 @@ std::string ResourceManager::getResourcePath(const std::string& path, bool termi
 #endif
                 LOG(LogError) << testExePath;
                 LOG(LogError) << "Has EmulationStation been properly installed?";
-                Scripting::fireEvent("quit");
                 emergencyShutdown();
             }
             else {

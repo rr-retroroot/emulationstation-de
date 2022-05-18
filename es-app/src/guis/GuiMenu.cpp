@@ -1155,7 +1155,6 @@ void GuiMenu::openQuitMenu()
         mWindow->pushGui(new GuiMsgBox(
             mWindow, this->getHelpStyle(), "REALLY QUIT?", "YES",
             [this] {
-                Scripting::fireEvent("quit");
                 close(true);
                 quitES();
             },
@@ -1173,7 +1172,6 @@ void GuiMenu::openQuitMenu()
             window->pushGui(new GuiMsgBox(
                 window, this->getHelpStyle(), "REALLY QUIT?", "YES",
                 [this] {
-                    Scripting::fireEvent("quit");
                     close(true);
                     quitES();
                 },
@@ -1190,8 +1188,6 @@ void GuiMenu::openQuitMenu()
             window->pushGui(new GuiMsgBox(
                 window, this->getHelpStyle(), "REALLY REBOOT?", "YES",
                 [] {
-                    Scripting::fireEvent("quit", "reboot");
-                    Scripting::fireEvent("reboot");
                     if (quitES(QuitMode::REBOOT) != 0) {
                         LOG(LogWarning) << "Reboot terminated with non-zero result!";
                     }
@@ -1209,8 +1205,6 @@ void GuiMenu::openQuitMenu()
             window->pushGui(new GuiMsgBox(
                 window, this->getHelpStyle(), "REALLY POWER OFF?", "YES",
                 [] {
-                    Scripting::fireEvent("quit", "poweroff");
-                    Scripting::fireEvent("poweroff");
                     if (quitES(QuitMode::POWEROFF) != 0) {
                         LOG(LogWarning) << "Power off terminated with non-zero result!";
                     }
