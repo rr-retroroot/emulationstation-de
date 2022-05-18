@@ -83,12 +83,14 @@ FileData* findOrCreateFile(SystemData* system, const std::string& path, FileType
                 return nullptr;
             }
 
-            // Create missing folder.
-            FileData* folder = new FileData(
-                FOLDER, Utils::FileSystem::getStem(treeNode->getPath()) + "/" + *path_it,
-                system->getSystemEnvData(), system);
-            treeNode->addChild(folder);
-            treeNode = folder;
+            if (!system->getFlattenFolders()) {
+                // Create missing folder.
+                FileData* folder{new FileData(
+                    FOLDER, Utils::FileSystem::getStem(treeNode->getPath()) + "/" + *path_it,
+                    system->getSystemEnvData(), system)};
+                treeNode->addChild(folder);
+                treeNode = folder;
+            }
         }
 
         ++path_it;
