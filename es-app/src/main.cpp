@@ -492,6 +492,8 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    Scripting::fireEvent("startup");
+
     // Check if the configuration file exists, and if not, create it.
     // This should only happen on first application startup.
     if (!Utils::FileSystem::exists(Utils::FileSystem::getHomePath() +

@@ -210,6 +210,7 @@ void Window::input(InputConfig* config, Input input)
                 }
                 else if (config->isMappedTo("a", input) && input.value != 0) {
                     // Launch game.
+                    Scripting::fireEvent("screensaver-end", "game-start");
                     stopScreensaver();
                     mScreensaver->launchGame();
                     // To force handling the wake up process.
@@ -217,6 +218,7 @@ void Window::input(InputConfig* config, Input input)
                 }
                 else if (config->isMappedTo("y", input) && input.value != 0) {
                     // Jump to the game in its gamelist, but do not launch it.
+                    Scripting::fireEvent("screensaver-end", "game-jump");
                     stopScreensaver();
                     NavigationSounds::getInstance().playThemeNavigationSound(SCROLLSOUND);
                     mScreensaver->goToGame();
@@ -237,6 +239,7 @@ void Window::input(InputConfig* config, Input input)
 
     // Any keypress cancels the screensaver.
     if (input.value != 0 && isScreensaverActive()) {
+        Scripting::fireEvent("screensaver-end", "cancel");
         stopScreensaver();
         return;
     }
@@ -566,7 +569,7 @@ void Window::render()
         else if (mGameLaunchedState)
             mTimeSinceLastInput = 0;
         else if (!isProcessing() && !mScreensaver->isScreensaverActive())
-            startScreensaver();
+            startScreensaver(true);
     }
 
     if (mInfoPopup)
@@ -723,9 +726,13 @@ void Window::stopInfoPopup()
         std::queue<std::pair<std::string, int>>().swap(mInfoPopupQueue);
 }
 
-void Window::startScreensaver()
+void Window::startScreensaver(bool onTimer)
 {
     if (mScreensaver && !mRenderScreensaver) {
+        if (onTimer)
+            Scripting::fireEvent("screensaver-start", "timer");
+        else
+            Scripting::fireEvent("screensaver-start", "manual");
         // Tell the GUI components the screensaver is starting.
         for (auto it = mGuiStack.cbegin(); it != mGuiStack.cend(); ++it)
             (*it)->onScreensaverActivate();

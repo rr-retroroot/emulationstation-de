@@ -114,7 +114,7 @@ public:
     }
     void stopInfoPopup();
 
-    void startScreensaver();
+    void startScreensaver(bool onTimer);
     bool stopScreensaver();
     void renderScreensaver();
     void screensaverTriggerNextGame() { mScreensaver->triggerNextGame(); }
@@ -147,8 +147,8 @@ public:
     bool getChangedThemeSet() { return mChangedThemeSet; }
 
 private:
-    void onSleep() { Scripting::fireEvent("sleep"); }
-    void onWake() { Scripting::fireEvent("wake"); }
+    void onSleep() {}
+    void onWake() {}
 
     // Returns true if at least one component on the stack is processing.
     bool isProcessing();
