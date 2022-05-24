@@ -1,11 +1,5 @@
 # EmulationStation Desktop Edition (ES-DE) - Missing rbsimple-DE theme set data
 
-# Missing systems
-
-None at the moment.
-
-# Missing (or not updated) theme data
-
 * 64dd : Nintendo 64DD - consolegame.svg, console.svg, game.svg
 * ags: Adventure Game Studio - consolegame.svg, console.svg, controller.svg
 * amigacd32: Amiga CD32 - consolegame.svg, console.svg, controller.svg, game.svg
@@ -60,8 +54,8 @@ None at the moment.
 * psvita: Sony PlayStation Vita - consolegame.svg, console.svg, controller.svg, game.svg
 * samcoupe: SAM Coupé - consolegame.svg, console.svg, game.svg
 * satellaview: Nintendo Satellaview - consolegame.svg, console.svg, game.svg
-* saturn: Sega Saturn - consolegame.svg, console.svg, controller.svg, game.svg
-* saturnjp: Sega Saturn - consolegame.svg, console.svg, controller.svg, game.svg
+* saturn: Sega Saturn - controller.svg
+* saturnjp: Sega Saturn - controller.svg
 * solarus: Solarus game engine - consolegame.svg, console.svg
 * spectravideo: Spectravideo - consolegame.svg, console.svg, controller.svg, game.svg
 * steam: Steam game distribution service - consolegame.svg, console.svg, controller.svg, game.svg
