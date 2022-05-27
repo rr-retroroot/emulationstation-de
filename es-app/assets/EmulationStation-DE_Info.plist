@@ -19,7 +19,7 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleVersion</key>
-    <string>1.2.4-beta1</string>
+    <string>1.2.4</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.games</string>
     <key>LSMinimumSystemVersion</key>
