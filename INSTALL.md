@@ -16,7 +16,6 @@ For automatic code formatting [clang-format](https://clang.llvm.org/docs/ClangFo
 
 Any code editor can be used of course, but I recommend [VSCode](https://code.visualstudio.com).
 
-
 ## Building on Unix
 
 There are some dependencies that need to be fulfilled in order to build ES-DE. These are detailed per operating system below.
@@ -133,7 +132,7 @@ In the same manner as for FreeBSD, Clang/LLVM and cURL should already be install
 Pugixml does exist in the package collection but somehow this version is not properly detected by CMake, so you need to compile this manually as well:
 
 ```
-git clone git://github.com/zeux/pugixml.git
+git clone https://github.com/zeux/pugixml.git
 cd pugixml
 git checkout v1.10
 cmake .
@@ -156,14 +155,6 @@ cd emulationstation-de
 cmake .
 make
 ```
-
-To make a build specifically for the Valve Steam Deck, run this:
-```
-cmake -DSTEAM_DECK=on .
-make
-```
-
-This will change some Steam Deck-specific settings like increasing the default VRAM limit.
 
 By default the master branch will be used, which is where development takes place. To instead build a stable release, switch to the `stable-x.x` branch for the version, for example:
 
@@ -211,7 +202,7 @@ cmake -DCMAKE_BUILD_TYPE=Debug -UBSAN=on .
 make
 ```
 
-To get stack traces printed as well, set this environmental variable:
+To get stack traces printed as well, set this environment variable:
 ```
 export UBSAN_OPTIONS=print_stacktrace=1
 ```
@@ -480,9 +471,13 @@ Install the Command Line Tools which include Clang/LLVM, Git, make etc. Simply o
 
 Following this, install the Homebrew package manager which will simplify the installation of some additional required packages. Run the following in a terminal window:
 ```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-Be aware that Homebrew can be really slow, especially when it compiles packages from source code.
+
+If running on an M1 Mac, you also need to add the following to your `~/.zshrc` shell profile file:
+```
+export PATH=/opt/homebrew/bin:$PATH
+```
 
 **Package installation with Homebrew**
 
@@ -498,20 +493,12 @@ If building with the optional VLC video player, then run this as well:
 brew install --cask vlc
 ```
 
-**Some additional/optional steps**
+**Developer mode**
 
 Enable developer mode to avoid annoying password requests when attaching the debugger to a process:
 ```
 sudo /usr/sbin/DevToolsSecurity --enable
 ```
-It makes me wonder who designed this functionality and what was their thinking, quite strange.
-
-If required, define SDKROOT. This is only needed if during compilation you get error messages regarding missing include files. Running the following will properly setup the development environment paths:
-```
-export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
-```
-
-I suppose you should add this to your shell profile file or similar, but I didn't have to do this step so I'm not sure.
 
 **Cloning and compiling**
 
@@ -592,7 +579,7 @@ cmake -DCMAKE_BUILD_TYPE=Debug -UBSAN=on .
 make
 ```
 
-To get stack traces printed as well, set this environmental variable:
+To get stack traces printed as well, set this environment variable:
 ```
 export UBSAN_OPTIONS=print_stacktrace=1
 ```
@@ -606,7 +593,7 @@ export ASAN_OPTIONS=detect_container_overflow=0
 
 Running `make -j6` (or whatever number of parallel jobs you prefer) speeds up the compilation time if you have cores to spare.
 
-After building ES-DE and trying to execute the application, there could be issues with finding the dynamic link libraries for VLC (assuming VLC was enabled for the build) as these are not installed into a standard location but rather into the /Applications folder. As such, you may need to set the DYLD_LIBRARY_PATH environmental variable to find the VLC libraries. Note that this is not intended or required for the release build that will be shipped in a DMG installer or if you manually install ES-DE using _make install_. It's only needed to be able to run the binary from the build directory. You should add this to your shell profile file to avoid having to set it each time you open a new terminal window:
+After building ES-DE and trying to execute the application, there could be issues with finding the dynamic link libraries for VLC (assuming VLC was enabled for the build) as these are not installed into a standard location but rather into the /Applications folder. As such, you may need to set the DYLD_LIBRARY_PATH environment variable to find the VLC libraries. Note that this is not intended or required for the release build that will be shipped in a DMG installer or if you manually install ES-DE using _make install_. It's only needed to be able to run the binary from the build directory. You should add this to your shell profile file to avoid having to set it each time you open a new terminal window:
 ```
 export DYLD_LIBRARY_PATH=/Applications/VLC.app/Contents/MacOS/lib
 ```
@@ -869,7 +856,7 @@ make
 
 [pugixml](https://pugixml.org)
 ```
-git clone git://github.com/zeux/pugixml.git
+git clone https://github.com/zeux/pugixml.git
 cd pugixml
 git checkout v1.10
 ```
@@ -1368,6 +1355,7 @@ You can use **--help** or **-h** to view the list of command line options, as sh
 --force-kiosk                   Force the UI mode to Kiosk
 --force-kid                     Force the UI mode to Kid
 --force-input-config            Force configuration of input device
+--create-system-dirs            Create game system directories
 --home [path]                   Directory to use as home path
 --debug                         Print debug information
 --version, -v                   Display version information
@@ -1377,6 +1365,8 @@ You can use **--help** or **-h** to view the list of command line options, as sh
 As you can see above, you can override the home directory path using the `--home` flag. So by running for instance the command `emulationstation --home ~/games/emulation`, ES-DE will use `~/games/emulation/.emulationstation` as its application home directory. Be aware that this option completely replaces what is considered the home directory, meaning the default ROM directory ~/ROMs would be resolved to ~/games/emulation/ROMs. The same is true for the emulator core locations if es_find_rules.xml is configured to look for them relative to the home directory. So of course RetroArch and other emulators would also need to be configured to use ~/games/emulation as its base directory in this instance.
 
 Setting the resolution to a lower or higher value than the display resolution will add a border to the application window.
+
+Running with the --create-system-dirs option will generate all the game system directories in the ROMs folder. This is equivalent to starting ES-DE with no game ROMs present and pressing the _Create directories_ button. Detailed output for the directory creation will be available in es_log.txt and the application will quit immediately after the directories have been created.
 
 For the following options, the es_settings.xml file is immediately updated/saved when passing the parameter:
 ```
@@ -1464,7 +1454,7 @@ Below is an overview of the file layout with various examples. For the command t
 
         <!-- This is an example for Windows. The .exe extension is optional and both forward slashes and backslashes are allowed as
         directory separators. As there is no standardized installation directory structure for this operating system, the %EMUPATH%
-        variable is used here to find the cores relative to the RetroArch binary. The emulator binary must be in the PATH environmental
+        variable is used here to find the cores relative to the RetroArch binary. The emulator binary must be in the PATH environment
         variable or otherwise the complete path to the retroarch.exe file needs to be defined. Batch scripts (.bat) are also supported. -->
         <command>retroarch.exe -L %EMUPATH%\cores\snes9x_libretro.dll %ROM%</command>
 
@@ -1476,6 +1466,13 @@ Below is an overview of the file layout with various examples. For the command t
         <!-- An example for use in a portable Windows emulator installation, for instance on a USB memory stick. The %ESPATH% variable is
         expanded to the directory of the ES-DE executable. -->
         <command>"%ESPATH%\RetroArch\retroarch.exe" -L "%ESPATH%\RetroArch\cores\snes9x_libretro.dll" %ROM%</command>
+
+        <!-- An example of setting the start directory to the directory of the emulator binary, which is required for standalone MAME
+        on Windows. The %ROMPATH% variable is also used as this emulator needs to receive the ROM directory and game file separately. -->
+        <command label="MAME (Standalone)">%HIDEWINDOW% %EMULATOR_MAME% %STARTDIR%=%EMUDIR% -rompath %ROMPATH%\arcade %BASENAME%</command>
+
+        <!-- The equivalent setup of standalone MAME for Unix. If not existing, the start directory will be created on game launch. -->
+        <command label="MAME (Standalone)">%EMULATOR_MAME% %STARTDIR%=~/.mame -rompath %ROMPATH%/arcade %BASENAME%</command>
 
         <!-- An example on Unix which launches a script, this is for example used by source ports, Steam games etc. The %RUNINBACKGROUND%
         variable does exactly what it sounds like, it keeps ES-DE running in the background while a game is launched. This is required
@@ -1512,11 +1509,19 @@ The following variables are expanded for the `command` tag:
 
 `%ROMRAW%`	- Replaced with the unescaped, absolute path to the selected ROM.  If your emulator is picky about paths, you might want to use this instead of %ROM%, but enclosed in quotes.
 
-`%ROMPATH%` - Replaced with the path defined in the setting ROMDirectory in es_settings.xml.
+`%ROMPATH%` - Replaced with the path defined in the setting ROMDirectory in es_settings.xml. If combined with a path that contains blankspaces, then it must be surrounded by quotation marks, for example `%ROMPATH%"\Arcade Games"`. Note that the quotation mark must be located before the directory separator in this case.
 
 `%BASENAME%` - Replaced with the "base" name of the path to the selected ROM. For example, a path of `/foo/bar.rom`, this tag would be `bar`. This tag is useful for setting up AdvanceMAME.
 
-`%EMUPATH%` - Replaced with the path to the emulator binary. This is expanded using either the PATH environmental variable of the operating system, or using an absolute emulator path if this has been defined.
+`%STARTDIR%` - The directory to start in when launching the emulator. Must be defined as a pair separated by an equal sign. This is normally not required, but some emulators and game engines like standalone MAME and OpenBOR will not work properly unless you're in the correct directory when launching a game. Either an absolute path can be used with this variable, such as `%STARTDIR%=C:\Games\mame` or the `%EMUDIR%` variable can be used to start in the directory where the emulator binary is located, i.e. `%STARTDIR%=%EMUDIR%` or the `%GAMEDIR%` variable can be used to start in the directory where the game file is located, i.e. `%STARTDIR%=%GAMEDIR%`. If an absolute path is set that contains blankspaces, then it must be surrounded by quotation marks, for example `%STARTDIR%="C:\Retro games\mame"`. If the directory defined by this variable does not exist, it will be created on game launch. The variable can be placed anywhere in the launch command if the %EMULATOR_ variable is used, otherwise it has to be placed after the emulator binary.
+
+`%INJECT%` - This allows the injection of launch arguments stored in a text file on the filesystem. This is for example required by the Hypseus Singe (arcade LaserDisc) emulator. The variable must be defined as a pair separated by an equal sign, for example `%INJECT%=game.commands`. The `%BASENAME%` variable can also be used in conjunction with this variable, such as `%INJECT%=%BASENAME%.commands`. By default a path relative to the game file will be assumed but it's also possible to use an absolute path or the tilde ~ symbol which will expand to the home directory. If a path contains spaces it needs to be surrounded by quotation marks, such as `%INJECT%="C:\My games\ROMs\daphne\%BASENAME%.daphne\%BASENAME%.commands"` The variable can be placed anywhere in the launch command and the arguments will be injected at that position. The specified file is optional, if it does not exist or if there are insufficient permissions to read the file content, then it will simply be skipped. For safety reasons the arguments file can only have a maximum size of 4096 bytes and if it's larger than this it will be skipped.
+
+`%EMUPATH%` - Replaced with the path to the emulator binary. This variable is used for manually specifying emulator core locations, and a check for the existence of the core file will be done on game launch and an error displayed if it can't be found. Normally %EMUPATH% should not be used as the %CORE_ variable is the recommended method for defining core locations.
+
+`%EMUDIR%` - Replaced with the path to the emulator binary. This is a general purpose variable as opposed to %EMUPATH% which is intended specifically for core locations.
+
+`%GAMEDIR%` - Replaced with the path to the game.
 
 `%ESPATH%` - Replaced with the path to the ES-DE binary. Mostly useful for portable emulator installations, for example on a USB memory stick.
 
@@ -1992,17 +1997,17 @@ For folders, most of the fields are identical although some are removed. In the 
 By passing the --debug command line option, ES-DE will increase the logging to include a lot of additional debug output which is useful both for development and in order to pinpoint issues as a user.
 In addition to this extra logging, a few key combinations are enabled when in debug mode. These are useful both for working on ES-DE itself as well as for theme developers.
 
-**Ctrl + g**
-
-This will render a grid on the user interface, most notably in the menus, showing the layout of all the GUI elements. Note that any open screen needs to be closed and reopened again after using the key combination in order for it to have any effect.
-
 **Ctrl + i**
 
-This will draw a semi-transparent red frame behind all image elements.
+This will draw a semi-transparent red frame behind all image and animation components.
 
 **Ctrl + t**
 
-This will draw a semi-transparent blue frame around all text elements.
+This will draw a semi-transparent blue frame around all text components.
+
+**Ctrl + g**
+
+This option only applies to menus, where it will render a grid on the user interace. Note that any open screen needs to be closed and reopened again after using the key combination in order for it to have any effect.
 
 **Ctrl + r**
 
@@ -2010,8 +2015,34 @@ This will reload either a single gamelist or all gamelists depending on where yo
 
 By default all controller input (keyboard and controller button presses) will be logged when the --debug flag has been passed. To disable the input logging, the setting DebugSkipInputLogging kan be set to false in the es_settings.xml file. There is no menu entry to change this as it's intended for developers and not for end users.
 
+## Adding custom controller profiles
+
+Before attempting to add a custom profile for your controller you need to check whether there is device driver support for it in your operating system. If the controller works in other applications and games, then proceed with the instructions below, but if it doesn't work anywhere else then chances are very low that you can get it to work in ES-DE.
+
+ES-DE uses the [SDL](https://www.libsdl.org) (Simple DirectMedia Layer) library to handle controller input, so in order for a controller to work in ES-DE, it has to be supported by SDL. There is however a possibility to add custom controller profiles to SDL which in some cases could enable devices in ES-DE that would otherwise not be supported. This is generally a temporary solution though, as controller support is constantly getting improved natively in SDL. As a first step it's therefore recommended to open a request at the SDL [issue tracker](https://github.com/libsdl-org/SDL/issues) to have your specific controller added to a future SDL release.
+
+Assuming the controller works in other applications than ES-DE, you can attempt to add a custom profile by creating the file `~/.emulationstation/es_controller_mappings.cfg` and enter the appropriate configuration inside this file.
+
+The required format is described here:\
+https://github.com/gabomdq/SDL_GameControllerDB
+
+The really blunt approach is to copy the entire content of the following file into es_controller_mappings.cfg: \
+https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt
+
+But just do this as a first step to see whether you controller gets enabled. If it does, then you should remove all entries that are not relevant. That is important as this file will take precedence over the built-in controller profiles in the SDL library, so any future controller bug fixes and similar would not apply. In the past the gamecontrollerdb.txt file has also included some invalid configuration entries, so even though it may make your controller work, it could actually break some other controllers that you may want to use now or in the future.
+
+Therefore only keep the entries in the es_controller_mappings.cfg file that are relevant for your devices. You can find each relevant controller GUID by starting ES-DE and then looking in the ~/.emulationstation/es_log.txt file. You should see entries such as the following:
+```
+May 16 18:26:17 Info:   Added controller with custom configuration: "X360 Controller" (GUID: 030000005e0400008e02000010010000, instance ID: 0, device index: 0)
+```
+
+It's the GUID that is the key, and it's the lines matching these IDs that you want to retain inside the es_controller_mappings.cfg file. All other rows can be deleted.
+
+Even if pasting the entire content of gamecontrollerdb.txt into the es_controller_mappings.cfg file did not enable your controller, all hope is not lost. You may still be able to create your own custom controller entry, but doing that is beyond the scope of this document and you would have to look into the instructions at the SDL_GameControllerDB URL mentioned above.
 
 ## Portable installation on Windows
+
+_As there is a preconfigured portable release available for Windows, this section is mostly relevant for understanding how the setup works, as well as to provide information on how to make customizations._
 
 It's possible to easily create a portable installation of ES-DE on Windows, for example to place on a USB memory stick.
 
@@ -2019,53 +2050,29 @@ For this example, let's assume that the removable media has the device name `F:\
 
 These are the steps to perform:
 
+* Install ES-DE
 * Copy the EmulationStation-DE installation directory to F:\
-* Copy your emulator directories to F:\EmulationStation-DE\
+* Create a directory named F:\EmulationStation-DE\Emulators
+* Copy your emulator directories to F:\EmulationStation-DE\Emulators\
 * Copy your ROMs directory to F:\EmulationStation-DE\
 * Create an empty file named portable.txt in F:\EmulationStation-DE\
 
 You should end up with something like this:
 ```
 F:\EmulationStation-DE\
-F:\EmulationStation-DE\dosbox-staging\
-F:\EmulationStation-DE\PCSX2\
-F:\EmulationStation-DE\RetroArch-Win64\
+F:\EmulationStation-DE\Emulators\dosbox-staging\
+F:\EmulationStation-DE\Emulators\RetroArch-Win64\
+F:\EmulationStation-DE\Emulators\RPCS3\
+F:\EmulationStation-DE\Emulators\xemu\
 F:\EmulationStation-DE\ROMs\
-F:\EmulationStation-DE\RPCS3\
-F:\EmulationStation-DE\xemu\
-F:\EmulationStation-DE\xenia\
-F:\EmulationStation-DE\yuzu\
 F:\EmulationStation-DE\portable.txt
 ```
 
-This is just an example, you may not have all these emulators installed and as well there will of course be many more files and directories than those listed above inside the F:\EmulationStation-DE directory.
+This is just an example as you may of course not use these specific emulators. There are also many more emulators supported as detailed in the `es_find_rules.xml` configuration file. As well there will be many more files and directories than those listed above inside the F:\EmulationStation-DE folder.
 
-How the portable setup works is that when ES-DE finds a file named portable.txt in its executable directory, it will by default locate the .emulationstation directory directly inside this folder. It's also possible to modify portable.txt with a path relative to the ES-DE executable directory. For instance if two dots `..` are placed inside the portable.txt file, then the .emulationstation directory will be located in the parent folder, which would be directly under F:\ in this example.
+How the portable setup works is that when ES-DE finds a file named portable.txt in its executable directory, it will by default locate the .emulationstation directory directly inside this folder. It's also possible to modify portable.txt with a path relative to the ES-DE executable directory. For instance if two dots `..` are placed inside the portable.txt file, then the .emulationstation directory will be located in the parent folder, which would be directly under F:\ for this example.
 
 If the --home command line parameter is passed when starting ES-DE, that will override the portable.txt file.
-
-By default the emulators that will be automatically searched for by ES-DE are (relative to the EmulationStation-DE directory):
-
-```
-RetroArch-Win64\retroarch.exe
-RetroArch\retroarch.exe
-dosbox-staging\dosbox.exe
-PCSX2\pcsx2.exe
-RPCS3\rpcs3.exe
-xemu\xemu.exe
-xenia\xenia.exe
-yuzu\yuzu-windows-msvc\yuzu.exe
-..\RetroArch-Win64\retroarch.exe
-..\RetroArch\retroarch.exe
-..\dosbox-staging\dosbox.exe
-..\PCSX2\pcsx2.exe
-..\RPCS3\rpcs3.exe
-..\xemu\xemu.exe
-..\xenia\xenia.exe
-..\yuzu\yuzu-windows-msvc\yuzu.exe
-```
-
-If you want to place your emulators elsewhere, you need to create a customized es_find_rules.xml file, which is explained earlier in this document.
 
 Start ES-DE from the F:\ device and check that everything works as expected. Just be aware that some emulators may not play that well with a portable setup and may store their configuration files in your home directory (probably on your C: drive) or at some other location. So when using the portable installation on another computer you may need to perform some additional emulator-specific setup.
 
@@ -2077,26 +2084,44 @@ F:\EmulationStation-DE\.emulationstation\downloaded_media\
 F:\EmulationStation-DE\.emulationstation\gamelists\
 ```
 
-You could also copy over your entire .emulationstation directory, but in this case make sure that you have no settings in es_settings.xml that point to a specific location on your local filesystem, such as the game ROMs or game media directories.
+You could alternatively copy over your entire .emulationstation directory, but in this case make sure that you have no settings in es_settings.xml that point to a specific location on your local filesystem, such as the game ROMs or game media directories.
 
 You now have a fully functional portable retrogaming installation!
 
 The portable installation works exactly as a normal installation, i.e. you can use the built-in scraper, edit metadata, launch games etc.
 
+Just make sure to not place the portable installation on a network share that uses the Microsoft SMB protocol and run it from there as this will lead to unacceptably poor application performance.
 
 ## Custom event scripts
 
-There are numerous locations throughout ES-DE where custom scripts will be executed if the option to do so has been enabled in the settings. You'll find the option on the Main menu under `Other settings`. By default it's deactivated so be sure to enable it to use this feature.
+There are numerous locations throughout ES-DE where custom scripts can be executed if the option to do so has been enabled in the settings. You'll find the option _Enable custom event scripts_ on the Main menu under _Other settings_. By default this setting is deactivated so make sure to enable it to use this feature.
 
-The approach is quite straightforward, ES-DE will look for any files inside a script directory that corresponds to the event that is triggered and will then execute all these files.
+The approach is quite straightforward, ES-DE will look for any files inside a script directory that corresponds to the event that is triggered and will then execute all these files. There are up to four parameters that will be passed to these scripts, as detailed below:
+
+| Event                    | Parameters*                                        | Description                                                                 |
+| :----------------------- | :------------------------------------------------- | :-------------------------------------------------------------------------- |
+| startup                  |                                                    | Application startup                                                         |
+| quit                     |                                                    | Application quit/shutdown                                                   |
+| reboot                   |                                                    | System reboot (quit event triggered as well)                                |
+| poweroff                 |                                                    | System power off (quit event triggered as well)                             |
+| config-changed           |                                                    | On saving application settings or controller configuration                  |
+| settings-changed         |                                                    | On saving application settings (config-changed event triggered as well)     |
+| controls-changed         |                                                    | On saving controller configuration (config-changed event triggered as well) |
+| theme-changed            | New theme name, old theme name                     | When manually changing theme sets in the UI Settings menu                   |
+| game-start               | ROM path, game name, system name, system full name | On game launch                                                              |
+| game-end                 | ROM path, game name, system name, system full name | On game end (or on application wakeup if running in the background)         |
+| screensaver-start        | _timer_ or _manual_                                | Screensaver started via timer or manually                                   |
+| screensaver-end          | _cancel_ or _game-jump_ or _game-start_            | Screensaver ends via cancellation, jump to game or start/launch of game     |
+
+***)** Parameters in _italics_ are literal strings.
 
 We'll go through two examples:
 * Creating a log file that will record the start and end time for each game we play, letting us see how much time we spend on retro-gaming
 * Changing the system resolution when launching and returning from a game in order to run the emulator at a lower resolution than ES-DE
 
-The following examples are for Unix systems, but it works the same way on macOS (which is also Unix after all), and on Windows (although .bat batch files are then used instead of shell scripts and any spaces in the parameters are not escaped as is the case on Unix).
+The following examples are for Unix systems, but it works the same way on macOS and Windows (although .bat batch files are used on Windows instead of shell scripts and any spaces in the parameters are not escaped as is the case on Unix and macOS).
 
-The events executed when a game starts and ends are named `game-start` and `game-end` respectively. Finding these event names is easily achieved by starting ES-DE with the `--debug` flag. If this is done, all attempts to execute custom event scripts will be logged to es_log.txt, including the event names.
+As can be seen in the table above, the events executed when a game starts and ends are named _game-start_ and _game-end_
 
 So let's create the folders for these events in the scripts directory. The location is `~/.emulationstation/scripts`
 
