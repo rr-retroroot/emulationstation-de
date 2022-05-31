@@ -956,12 +956,13 @@ void FileData::launchGame(Window* window)
         window->setAllowTextScrolling(true);
         return;
     }
-    else if (!isShortcut) {
 #if defined(_WIN64)
+    else {
         LOG(LogDebug) << "FileData::launchGame(): Found emulator binary "
                       << Utils::String::replace(
                              Utils::String::replace(binaryPath, "%ESPATH%", esPath), "/", "\\");
 #else
+    else if (!isShortcut) {
         LOG(LogDebug) << "FileData::launchGame(): Found emulator binary \""
                       << Utils::String::replace(binaryPath, "%ESPATH%", esPath) << "\"";
 #endif
