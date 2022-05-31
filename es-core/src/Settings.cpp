@@ -228,7 +228,11 @@ void Settings::setDefaults()
 #if defined(BUILD_VLC_PLAYER)
     mStringMap["VideoPlayer"] = {"ffmpeg", "ffmpeg"};
 #endif
-    mStringMap["ExitButtonCombo"] = {"F4", "F4"};
+#if defined(__APPLE__)
+    mStringMap["KeyboardQuitShortcut"] = {"CmdQ", "CmdQ"};
+#else
+    mStringMap["KeyboardQuitShortcut"] = {"AltF4", "AltF4"};
+#endif
     mStringMap["SaveGamelistsMode"] = {"always", "always"};
 #if defined(_WIN64)
     mBoolMap["HideTaskbar"] = {false, false};
