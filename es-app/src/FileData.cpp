@@ -302,7 +302,11 @@ const std::string FileData::getTitleScreenPath() const
 const std::string FileData::getThumbnailPath() const
 {
     // Return path to the thumbnail image.
-    return getMediafilePath("thumbnails");
+    std::string thumbnail{getMediafilePath("thumbnails")};
+    if (thumbnail == "")
+        return getImagePath();
+    else
+        return thumbnail;
 }
 
 const std::string FileData::getVideoPath() const

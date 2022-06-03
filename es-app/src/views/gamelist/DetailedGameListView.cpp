@@ -393,11 +393,19 @@ void DetailedGameListView::updateInfoPanel()
         mGamelistInfo.setValue(gamelistInfoString);
 
         // Fade in the game image.
-        auto func = [this](float t) {
+        auto funcImage = [this](float t) {
             mImage.setOpacity(static_cast<unsigned char>(
                 glm::mix(static_cast<float>(FADE_IN_START_OPACITY), 1.0f, t) * 255));
         };
-        mImage.setAnimation(new LambdaAnimation(func, FADE_IN_TIME), 0, nullptr, false);
+        mImage.setAnimation(new LambdaAnimation(funcImage, FADE_IN_TIME), 0, nullptr, false);
+
+        // Fade in the thumbnail.
+        auto funcThumbnail = [this](float t) {
+            mThumbnail.setOpacity(static_cast<unsigned char>(
+                glm::mix(static_cast<float>(FADE_IN_START_OPACITY), 1.0f, t) * 255));
+        };
+        mThumbnail.setAnimation(new LambdaAnimation(funcThumbnail, FADE_IN_TIME), 0, nullptr,
+                                false);
 
         mDescription.setText(file->metadata.get("desc"));
         mDescContainer.reset();
