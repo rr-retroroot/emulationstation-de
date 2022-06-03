@@ -102,9 +102,9 @@
         <rule type="staticpath">
             <entry>/var/lib/flatpak/exports/bin/org.DolphinEmu.dolphin-emu</entry>
             <entry>~/.local/share/flatpak/exports/bin/org.DolphinEmu.dolphin-emu</entry>
-            <entry>~/Applications/Dolphin_Emulator.AppImage</entry>
-            <entry>~/.local/bin/Dolphin_Emulator.AppImage</entry>
-            <entry>~/bin/Dolphin_Emulator.AppImage</entry>
+            <entry>~/Applications/Dolphin_Emulator*.AppImage</entry>
+            <entry>~/.local/bin/Dolphin_Emulator*.AppImage</entry>
+            <entry>~/bin/Dolphin_Emulator*.AppImage</entry>
         </rule>
     </emulator>
     <emulator name="DOSBOX-STAGING">
@@ -208,9 +208,9 @@
         <rule type="staticpath">
             <entry>/var/lib/flatpak/exports/bin/io.mgba.mGBA</entry>
             <entry>~/.local/share/flatpak/exports/bin/io.mgba.mGBA</entry>
-            <entry>~/Applications/mGBA.AppImage</entry>
-            <entry>~/.local/bin/mGBA.AppImage</entry>
-            <entry>~/bin/mGBA.AppImage</entry>
+            <entry>~/Applications/mGBA*.AppImage</entry>
+            <entry>~/.local/bin/mGBA*.AppImage</entry>
+            <entry>~/bin/mGBA*.AppImage</entry>
         </rule>
     </emulator>
     <emulator name="MUPEN64PLUS">
@@ -251,9 +251,9 @@
         <rule type="staticpath">
             <entry>/var/lib/flatpak/exports/bin/org.purei.Play</entry>
             <entry>~/.local/share/flatpak/exports/bin/org.purei.Play</entry>
-            <entry>~/Applications/Play!.AppImage</entry>
-            <entry>~/.local/bin/Play!.AppImage</entry>
-            <entry>~/bin/Play!.AppImage</entry>
+            <entry>~/Applications/Play!*.AppImage</entry>
+            <entry>~/.local/bin/Play!*.AppImage</entry>
+            <entry>~/bin/Play!*.AppImage</entry>
         </rule>
     </emulator>
     <emulator name="PPSSPP">
@@ -299,9 +299,9 @@
         <rule type="staticpath">
             <entry>/var/lib/flatpak/exports/bin/net.rpcs3.RPCS3</entry>
             <entry>~/.local/share/flatpak/exports/bin/net.rpcs3.RPCS3</entry>
-            <entry>~/Applications/rpcs3.AppImage</entry>
-            <entry>~/.local/bin/rpcs3.AppImage</entry>
-            <entry>~/bin/rpcs3.AppImage</entry>
+            <entry>~/Applications/rpcs3*.AppImage</entry>
+            <entry>~/.local/bin/rpcs3*.AppImage</entry>
+            <entry>~/bin/rpcs3*.AppImage</entry>
         </rule>
     </emulator>
     <emulator name="SNES9X">
@@ -343,9 +343,9 @@
         <rule type="staticpath">
             <entry>/var/lib/flatpak/exports/bin/app.xemu.xemu</entry>
             <entry>~/.local/share/flatpak/exports/bin/app.xemu.xemu</entry>
-            <entry>~/Applications/Xemu.AppImage</entry>
-            <entry>~/.local/bin/Xemu.AppImage</entry>
-            <entry>~/bin/Xemu.AppImage</entry>
+            <entry>~/Applications/Xemu*.AppImage</entry>
+            <entry>~/.local/bin/Xemu*.AppImage</entry>
+            <entry>~/bin/Xemu*.AppImage</entry>
         </rule>
     </emulator>
     <emulator name="YUZU">
@@ -357,9 +357,9 @@
         <rule type="staticpath">
             <entry>/var/lib/flatpak/exports/bin/org.yuzu_emu.yuzu</entry>
             <entry>~/.local/share/flatpak/exports/bin/org.yuzu_emu.yuzu</entry>
-            <entry>~/Applications/yuzu.AppImage</entry>
-            <entry>~/.local/bin/yuzu.AppImage</entry>
-            <entry>~/bin/yuzu.AppImage</entry>
+            <entry>~/Applications/yuzu*.AppImage</entry>
+            <entry>~/.local/bin/yuzu*.AppImage</entry>
+            <entry>~/bin/yuzu*.AppImage</entry>
         </rule>
     </emulator>
 </ruleList>
