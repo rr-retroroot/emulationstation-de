@@ -23,6 +23,7 @@
 #include "utils/StringUtil.h"
 
 #include <fstream>
+#include <regex>
 #include <string>
 #include <sys/stat.h>
 
@@ -120,6 +121,51 @@ namespace Utils
             }
             contentList.sort();
             return contentList;
+        }
+
+        stringList getMatchingFiles(const std::string& pattern)
+        {
+            stringList files;
+            size_t entry{pattern.find('*')};
+
+            if (entry == std::string::npos)
+                return files;
+
+            std::string parent{getParent(pattern)};
+
+            // Don't allow wildcard matching for the parent directory.
+            if (entry <= parent.size())
+                return files;
+
+            stringList dirContent{getDirContent(parent)};
+
+            if (dirContent.size() == 0)
+                return files;
+
+            // Some characters need to be escaped in order for the regular expression to work.
+            std::string escPattern{Utils::String::replace(pattern, "*", ".*")};
+            escPattern = Utils::String::replace(escPattern, ")", "\\)");
+            escPattern = Utils::String::replace(escPattern, "(", "\\(");
+            escPattern = Utils::String::replace(escPattern, "]", "\\]");
+            escPattern = Utils::String::replace(escPattern, "[", "\\[");
+
+            std::regex expression;
+
+            try {
+                expression = escPattern;
+            }
+            catch (...) {
+                LOG(LogError) << "FileSystemUtil::getMatchingFiles(): Invalid regular expression "
+                              << "\"" << pattern << "\"";
+                return files;
+            }
+
+            for (auto& entry : dirContent) {
+                if (std::regex_match(entry, expression))
+                    files.emplace_back(entry);
+            }
+
+            return files;
         }
 
         stringList getPathList(const std::string& path)

@@ -21,6 +21,7 @@ namespace Utils
         typedef std::list<std::string> stringList;
 
         stringList getDirContent(const std::string& path, const bool recursive = false);
+        stringList getMatchingFiles(const std::string& pattern);
         stringList getPathList(const std::string& path);
         void setHomePath(const std::string& path);
         std::string getHomePath();
