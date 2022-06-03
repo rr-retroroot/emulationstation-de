@@ -2,6 +2,41 @@
 
 [[_TOC_]]
 
+## Version 1.2.5 (in development)
+
+**Release date:** TBD
+
+### Release overview
+
+v1.2 maintenance release.
+
+### Detailed list of changes
+
+* Added an %ENABLESHORTCUTS% variable to support launching of .desktop files on Unix and apps and aliases on macOS
+* Added support for launching .desktop files to the desktop, epic, kodi, lutris, ports and steam systems on Unix
+* Added support for launching .app directories and alias files to the desktop, epic, kodi, ports and steam systems on macOS
+* Changed the ps3 system to use shortcuts and created an alternative emulator entry for backward compatibility with symlinks
+* Added the .lnk file extension to the epic system on Windows
+* Added support for asterisks/wildcards for emulator name matching, usable both in es_find_rules.xml and es_systems.xml
+* (Linux) Changed to find rule wildcard matching for the AppImages for Dolphin, mGBA, Play!, RPCS3, Xemu and Yuzu
+* Changed the sorting in the Alternative emulators interface to use short system names instead of full system names
+* Added the pcwindows platform to the lutris system on Unix to improve scraping
+* Renamed the "Exit button combo" menu option to "Keyboard quit shortcut"
+* Changed the default quit shortcut from F4 to Alt + F4 on Windows and Unix
+* Changed the default quit shortcut from F4 to Command + Q on macOS
+* Added Ctrl + Q as a user-selectable quit shortcut
+* Increased the window width slightly for the Alternative emulators interface when displaying long system names
+* Changed to a new API key for TheGamesDB
+* (Linux) Changed the manually downloaded Redream emulator location from ~/Applications/redream to ~/Applications/redream/redream
+
+### Bug fixes
+
+* When running ES-DE in the background, quitting a game or application using Alt + F4 sometimes made ES-DE quit as well
+* Thumbnails were not included in theme sets that used them for the Detailed view style
+* Game images were not included in theme sets that used them for the Video view style
+* The menu scroll indicators and title sometimes overlapped (e.g. seen in the Alternative emulators interface)
+* There was a small rounding error that caused a minimal distortion when rendering the menu titles
+
 ## Version 1.2.4
 
 **Release date:** 2022-05-27
