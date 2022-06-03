@@ -82,7 +82,16 @@ VideoGameListView::VideoGameListView(Window* window, FileData* root)
     mMarquee.setPosition(mSize.x * 0.25f, mSize.y * 0.10f);
     mMarquee.setMaxSize(mSize.x * (0.5f - 2.0f * padding), mSize.y * 0.18f);
     mMarquee.setDefaultZIndex(35.0f);
+    mMarquee.setVisible(false);
     addChild(&mMarquee);
+
+    // Image.
+    mImage.setOrigin(0.5f, 0.5f);
+    mImage.setPosition(mSize.x * 0.25f, mSize.y * 0.6f);
+    mImage.setMaxSize(mSize.x * (0.5f - 2.0f * padding), mSize.y * 0.4f);
+    mImage.setDefaultZIndex(30.0f);
+    mImage.setVisible(false);
+    addChild(&mImage);
 
     // Video.
     mVideo->setOrigin(0.5f, 0.5f);
@@ -387,6 +396,7 @@ void VideoGameListView::updateInfoPanel()
         else {
             mThumbnail.setImage(file->getThumbnailPath());
             mMarquee.setImage(file->getMarqueePath(), false, true);
+            mImage.setImage(file->getImagePath());
             mVideo->setImage(file->getImagePath());
             mVideo->onHide();
 
@@ -431,12 +441,19 @@ void VideoGameListView::updateInfoPanel()
 
         mGamelistInfo.setValue(gamelistInfoString);
 
-        // Fade in the game image.
-        auto func = [this](float t) {
+        // Fade in the static image.
+        auto funcVideo = [this](float t) {
             mVideo->setOpacity(static_cast<unsigned char>(
                 glm::mix(static_cast<float>(FADE_IN_START_OPACITY), 1.0f, t) * 255));
         };
-        mVideo->setAnimation(new LambdaAnimation(func, FADE_IN_TIME), 0, nullptr, false);
+        mVideo->setAnimation(new LambdaAnimation(funcVideo, FADE_IN_TIME), 0, nullptr, false);
+
+        // Fade in the game image.
+        auto funcImage = [this](float t) {
+            mImage.setOpacity(static_cast<unsigned char>(
+                glm::mix(static_cast<float>(FADE_IN_START_OPACITY), 1.0f, t) * 255));
+        };
+        mImage.setAnimation(new LambdaAnimation(funcImage, FADE_IN_TIME), 0, nullptr, false);
 
         mDescription.setText(file->metadata.get("desc"));
         mDescContainer.reset();
@@ -492,6 +509,7 @@ void VideoGameListView::updateInfoPanel()
     std::vector<GuiComponent*> comps = getMDValues();
     comps.push_back(&mThumbnail);
     comps.push_back(&mMarquee);
+    comps.push_back(&mImage);
     comps.push_back(mVideo);
     comps.push_back(&mDescription);
     comps.push_back(&mName);
