@@ -1,18 +1,20 @@
 <theme>
+    <formatVersion>7</formatVersion>
+
     <view name="system">
-        <text name="info1">
+        <text name="info1" extra="true">
             <text>Manufacturer:  Capcom</text>
         </text>
-        <text name="info2">
+        <text name="info2" extra="true">
             <text>Released:  1988 (CPS) / 1993 (CPS-2) / 1996 (CPS-3)</text>
         </text>
-        <text name="info3">
+        <text name="info3" extra="true">
             <text>CPU:   Motorola 68000 / Capcom DL-1525 / Hitachi HD6417099</text>
         </text>
-        <text name="info4">
+        <text name="info4" extra="true">
             <text>Resolution:   384×224 pixels + overscan (CPS-2) / widescreen (CPS-3)</text>
         </text>
-        <text name="info5">
+        <text name="info5" extra="true">
             <text>Media:  ROM board + CD-ROM (CPS-3)</text>
         </text>
     </view>
