@@ -92,6 +92,7 @@ namespace PlatformIds
         NEC_PC_ENGINE_CD,
         NEC_PCFX,
         PC_WINDOWS,
+        GAMEENGINE_PICO8,
         NINTENDO_POKEMON_MINI,
         SONY_PLAYSTATION_2,
         SONY_PLAYSTATION_3,
