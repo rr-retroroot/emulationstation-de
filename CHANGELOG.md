@@ -17,6 +17,9 @@ v1.2 maintenance release.
 * Added support for launching .app directories and alias files to the desktop, epic, kodi, ports and steam systems on macOS
 * Changed the ps3 system to use shortcuts and created an alternative emulator entry for backward compatibility with symlinks
 * Added the .lnk file extension to the epic system on Windows
+* Added support for the PICO-8 (pico8) game system
+* Added support for the Capcom Play System (cps) game system
+* Added support for the Sega Model 2 and 3 (model2 and model3) game systems on Windows
 * Added support for asterisks/wildcards for emulator name matching, usable both in es_find_rules.xml and es_systems.xml
 * (Linux) Changed to find rule wildcard matching for the AppImages for Dolphin, mGBA, Play!, RPCS3, Xemu and Yuzu
 * Changed the sorting in the Alternative emulators interface to use short system names instead of full system names
@@ -25,7 +28,10 @@ v1.2 maintenance release.
 * Changed the default quit shortcut from F4 to Alt + F4 on Windows and Unix
 * Changed the default quit shortcut from F4 to Command + Q on macOS
 * Added Ctrl + Q as a user-selectable quit shortcut
+* Added support for placing a noload.txt file in the root of a system/ROM directory to keep it from getting loaded
+* (Windows) Added support for creating a portable installation in the root of a device, such as E: or F:
 * Increased the window width slightly for the Alternative emulators interface when displaying long system names
+* Added size restrictions to the "size" and "maxSize" theme properties for the image and video elements
 * Changed to a new API key for TheGamesDB
 * (Linux) Changed the manually downloaded Redream emulator location from ~/Applications/redream to ~/Applications/redream/redream
 
@@ -34,8 +40,10 @@ v1.2 maintenance release.
 * When running ES-DE in the background, quitting a game or application using Alt + F4 sometimes made ES-DE quit as well
 * Thumbnails were not included in theme sets that used them for the Detailed view style
 * Game images were not included in theme sets that used them for the Video view style
+* Themes with large pixelated fonts sometimes displayed too many textlist rows
+* When entering the text edit field for the virtual keyboard, a navigation key repeat would sometimes continue to run
 * The menu scroll indicators and title sometimes overlapped (e.g. seen in the Alternative emulators interface)
-* There was a small rounding error that caused a minimal distortion when rendering the menu titles
+* There was a small rounding error that caused a minimal distortion when rendering menu titles
 
 ## Version 1.2.4
 
