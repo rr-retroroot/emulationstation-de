@@ -23,6 +23,8 @@ v1.2 maintenance release.
 * Added support for asterisks/wildcards for emulator name matching, usable both in es_find_rules.xml and es_systems.xml
 * (Linux) Changed to find rule wildcard matching for the AppImages for Dolphin, mGBA, Play!, RPCS3, Xemu and Yuzu
 * Changed the sorting in the Alternative emulators interface to use short system names instead of full system names
+* Added scraper support for the ti99 platform
+* Added TheGamesDB scraper support for the oric platform
 * Added the pcwindows platform to the lutris system on Unix to improve scraping
 * Renamed the "Exit button combo" menu option to "Keyboard quit shortcut"
 * Changed the default quit shortcut from F4 to Alt + F4 on Windows and Unix
@@ -44,6 +46,7 @@ v1.2 maintenance release.
 * When entering the text edit field for the virtual keyboard, a navigation key repeat would sometimes continue to run
 * The menu scroll indicators and title sometimes overlapped (e.g. seen in the Alternative emulators interface)
 * There was a small rounding error that caused a minimal distortion when rendering menu titles
+
 
 ## Version 1.2.4
 
@@ -695,7 +698,9 @@ Many bugs have been fixed, and numerous features that were only partially implem
 
 ## Known issues
 
-**The issues below are relevant for ES-DE v1.2.4**
+**The issues below are relevant for ES-DE v1.2.5**
+
+* When using Windows on some handheld devices with AMD GPUs, ES-DE will only display a black screen on startup. This can be seen on for instance the Steam Deck, AYA NEO and ONEXPLAYER 8.4. The issue seems to be caused by buggy GPU drivers, and can be worked around by specifying a window size for ES-DE that is a single pixel wider than the actual screen resolution. So for example for a 1280x800 display, the resolution can be set to 1281x800 and then rendering should work correctly. This is applied using the --resolution command line option, for instance `EmulationStation.exe --resolution 1281 800`
 
 * On Windows when using high DPI displays, if not running ES-DE on the primary monitor and the display where it runs does not have the same scaling percentage as the primary monitor, then the ES-DE resolution will not be properly set. The application will still work and if running in fullscreen mode it may not even be noticeable. This issue is probably caused by a bug in SDL where the primary display scaling is always used for calculating the display bounds. If using the same scaling percentage across all monitors, or if not using high DPI monitors at all, then this issue is not relevant.
 
@@ -706,8 +711,6 @@ Many bugs have been fixed, and numerous features that were only partially implem
 * On Raspberry Pi OS 10, Sony DualShock 4 controllers have problems with some button presses that don't register correctly. The issue appears resolved in Raspberry Pi OS 11.
 
 * On Raspberry Pi OS 11 there are various graphics issues and sometimes the application or emulator completely freezes which requires a power cycle of the machine. This is seemingly due to GPU driver bugs and we can only wait for OS updates to address these problems. These issues have not been encountered on Raspberry Pi OS 10.
-
-* On Fedora 35 a problem has been observed where the screen turns completely black or flickers intensely when starting ES-DE for the first time. A workaround for this is to simply exit the application with F4 or Alt+F4 and starting it again. Everything should then render correctly, and any subsequent startups will work fine including after suspending/resuming the computer. It's currently unclear if this is limited to only Intel GPU drivers or if it's a general issue under Fedora and/or Wayland. At least Wayland on Ubuntu 21.10 does not trigger the same issue.
 
 * There is some screen tearing present on Unix/Linux which is especially visible during horizontal slide transitions. The problem exists on both x86 and ARM as well as on Intel, AMD and Nvidia GPUs and on the Broadcom VideoCore. The problem seems to be Xorg-related as tearing has not been observed when using Wayland, and it's not present on macOS or Windows either.
 
