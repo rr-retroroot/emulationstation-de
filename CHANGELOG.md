@@ -24,8 +24,11 @@ v1.2 maintenance release.
 * Added configuration for the Tangerine Computer Systems Oric (oric) system on Unix and Windows
 * Added configuration for the Texas Instruments TI-99 (ti99) system on Unix and Windows
 * Added configuration for the Google Android (android) system on Windows
+* Changed the emulator directory for Model 2 Emulator from Model2 to m2emulator
+* Changed the emulator find rule name for the Model 2 Emulator from MODEL2 to M2EMULATOR
 * Added support for asterisks/wildcards for emulator name matching, usable both in es_find_rules.xml and es_systems.xml
 * (Linux) Changed to find rule wildcard matching for the AppImages for Dolphin, mGBA, Play!, RPCS3, Xemu and Yuzu
+* (Windows) Changed to find rule wildcard matching for the PCSX2-QT and PCSX2-WXWIDGETS entries to support the AVX2 release of PCSX2
 * Added a ScreenScraper option to fallback to additional regions to allow scraping of country-specific games and unofficial releases
 * Changed the sorting in the Alternative emulators interface to use short system names instead of full system names
 * Added scraper support for the ti99 platform
@@ -41,6 +44,9 @@ v1.2 maintenance release.
 * Added size restrictions to the "size" and "maxSize" theme properties for the image and video elements
 * Changed to a new API key for TheGamesDB
 * (Linux) Changed the manually downloaded Redream emulator location from ~/Applications/redream to ~/Applications/redream/redream
+* (rbsimple-DE) Added console and controller graphics for the wiiu system
+* (rbsimple-DE) Added controller graphics for the saturn, saturnjp and xbox systems
+* (modern-DE) Replaced the carousel image for the desktop system
 
 ### Bug fixes
 
