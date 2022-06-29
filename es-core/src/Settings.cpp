@@ -288,6 +288,8 @@ void Settings::setDefaults()
     mBoolMap["DebugSkipInputLogging"] = {false, false};
     mStringMap["ROMDirectory"] = {"", ""};
     mStringMap["UIMode_passkey"] = {"uuddlrlrba", "uuddlrlrba"};
+    mIntMap["ScraperConnectionTimeout"] = {60, 60};
+    mIntMap["ScraperTransferTimeout"] = {120, 120};
 
     //
     // Hardcoded or program-internal settings.
