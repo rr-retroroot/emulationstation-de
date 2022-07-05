@@ -1,0 +1,30 @@
+<theme>
+    <formatVersion>7</formatVersion>
+
+    <view name="system">
+        <text name="info1" extra="true">
+            <text>Developers:  Elecbyte</text>
+        </text>
+        <text name="info2" extra="true">
+            <text>Initial release:  1999</text>
+        </text>
+        <text name="info3" extra="true">
+            <text>Website (defunct):  http://elecbyte.com/</text>
+        </text>
+        <text name="info4" extra="true">
+            <text>Written in:  C</text>
+        </text>
+        <text name="info5" extra="true">
+            <text>M.U.G.E.N is a closed-source 2D fighting game engine</text>
+        </text>
+        <text name="info6" extra="true">
+            <text>with a large library of community-created content.</text>
+        </text>
+        <text name="info7" extra="true">
+            <text>It's no longer in active development with the latest</text>
+        </text>
+        <text name="info8" extra="true">
+            <text>available release made in 2013.</text>
+        </text>
+    </view>
+</theme>
