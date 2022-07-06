@@ -1,0 +1,30 @@
+<theme>
+    <formatVersion>7</formatVersion>
+
+    <view name="system">
+        <text name="info1" extra="true">
+            <text>Manufacturer:  Fujitsu</text>
+        </text>
+        <text name="info2" extra="true">
+            <text>Released:  1989</text>
+        </text>
+        <text name="info3" extra="true">
+            <text>The Fujitsu FM Towns series of computers were produced</text>
+        </text>
+        <text name="info4" extra="true">
+            <text>between 1989 and 1997. They started as a proprietary PC</text>
+        </text>
+        <text name="info5" extra="true">
+            <text>variant intended for multimedia applications and games</text>
+        </text>
+        <text name="info6" extra="true">
+            <text>but later became more compatible with IBM PCs. In 1993</text>
+        </text>
+        <text name="info7" extra="true">
+            <text>the FM Towns Marty was released, a game console</text>
+        </text>
+        <text name="info8" extra="true">
+            <text>compatible with existing FM Towns games.</text>
+        </text>
+    </view>
+</theme>
