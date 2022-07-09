@@ -1,0 +1,18 @@
+<theme>
+    <formatVersion>7</formatVersion>
+
+    <view name="system">
+        <text name="info1" extra="true">
+            <text>Adobe Flash was a proprietary multimedia software platform</text>
+        </text>
+        <text name="info2" extra="true">
+            <text>used for production of animations, applications and games.</text>
+        </text>
+        <text name="info3" extra="true">
+            <text>It was introduced in the mid 1990s and reached end-of-life</text>
+        </text>
+        <text name="info4" extra="true">
+            <text>in 2020 when it was replaced with open HTML5 technologies.</text>
+        </text>
+    </view>
+</theme>
