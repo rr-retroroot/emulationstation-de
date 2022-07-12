@@ -1191,6 +1191,9 @@ void FileData::launchGame(Window* window)
             startDirectory = Utils::String::replace(
                 startDirectory, "%GAMEDIR%",
                 Utils::FileSystem::getParent(Utils::String::replace(romPath, "\"", "")));
+
+            startDirectory = Utils::String::replace(startDirectory, "%GAMEENTRYDIR%",
+                                                    Utils::String::replace(romPath, "\"", ""));
 #else
             startDirectory = Utils::String::replace(
                 startDirectory, "%EMUDIR%",
@@ -1199,14 +1202,17 @@ void FileData::launchGame(Window* window)
             startDirectory = Utils::String::replace(
                 startDirectory, "%GAMEDIR%",
                 Utils::FileSystem::getParent(Utils::String::replace(romPath, "\\", "")));
+
+            startDirectory = Utils::String::replace(startDirectory, "%GAMEENTRYDIR%",
+                                                    Utils::String::replace(romPath, "\\", ""));
 #endif
             if (!Utils::FileSystem::isDirectory(startDirectory)) {
                 Utils::FileSystem::createDirectory(startDirectory);
 
                 if (!Utils::FileSystem::isDirectory(startDirectory)) {
-                    LOG(LogError)
-                        << "Couldn't launch game, directory defined by %STARTDIR% could not be "
-                           "created, permission problems?";
+                    LOG(LogError) << "Couldn't launch game, directory \"" << startDirectory
+                                  << "\" defined by %STARTDIR% could not be created, "
+                                     "permission problems?";
                     LOG(LogError) << "Raw emulator launch command:";
                     LOG(LogError) << commandRaw;
 
