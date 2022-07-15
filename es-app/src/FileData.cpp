@@ -835,6 +835,7 @@ void FileData::launchGame(Window* window)
         }
     }
 
+    const std::string fileName{baseName + Utils::FileSystem::getExtension(romPath)};
     const std::string romRaw = Utils::FileSystem::getPreferredPath(getPath());
     const std::string esPath = Utils::FileSystem::getExePath();
     bool runInBackground = false;
@@ -1407,6 +1408,7 @@ void FileData::launchGame(Window* window)
     // Replace the remaining variables with their actual values.
     command = Utils::String::replace(command, "%ROM%", romPath);
     command = Utils::String::replace(command, "%BASENAME%", baseName);
+    command = Utils::String::replace(command, "%FILENAME%", fileName);
     command = Utils::String::replace(command, "%ROMRAW%", romRaw);
     command = Utils::String::replace(command, "%ROMPATH%",
                                      Utils::FileSystem::getEscapedPath(getROMDirectory()));
