@@ -15,7 +15,7 @@
 #define PROGRAM_VERSION_MINOR        2
 #define PROGRAM_VERSION_MAINTENANCE  6
 // clang-format on
-#define PROGRAM_VERSION_STRING "1.2.6-beta1"
+#define PROGRAM_VERSION_STRING "1.2.6"
 
 #define PROGRAM_BUILT_STRING __DATE__ " - " __TIME__
 
