@@ -19,7 +19,7 @@ If you just want to get started as quickly as possible, simply follow these step
 5) Start RetroArch and install the required emulator cores
 6) Start ES-DE, scrape game media for your collection and play some games!
 
-You can always close the application immediately by using the keyboard, by default the exit key is mapped to F4 but this can be changed to Alt + F4, Alt + Q or Command Q (on macOS) using the _Exit button combo_ menu option.
+You can always close the application immediately using the keyboard, by default the quit shortcut is Alt + F4 on Windows and Linux and Command + Q on macOS. This shortcut can also be changed to Ctrl + Q, Alt + Q or F4 using the _Keyboard quit shortcut_ menu option.
 
 For additional details, read on below.
 
@@ -38,7 +38,7 @@ The following operating systems have been tested (all for the x86 architecture u
 * Ubuntu 20.04 to 22.04
 * Linux Mint 20
 * Manjaro 21
-* Fedora 35 Workstation
+* Fedora 36 Workstation
 * SteamOS 3.0
 * elementary OS 6
 * Raspberry Pi OS 10 and 11 (armv7l and aarch64)
@@ -88,6 +88,13 @@ chmod +x EmulationStation-DE-x64.AppImage
  But in some desktop environments this is not required and you can simply launch the file by double-clicking on it using your file manager. The first time you do this you will be required to confirm that you actually want to execute the file. Running the AppImage works exactly as if you would launch ES-DE if installed as a .deb or .rpm package. It's also possible to run it from a terminal window, in which case all command line options work the same way as if installed as an ordinary package.
 
 For a better desktop integration it's recommended to install [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) which will add an ES-DE entry to the application menu and move the AppImage file to the `~/Applications` directory (which is the recommended location for all AppImages).
+
+To run AppImage files you need libfuse2 installed, but some newer distributions like Ubuntu 22.04 LTS no longer ship with this library preinstalled. You can however easily install it like this:
+```
+sudo apt install libfuse2
+```
+
+Of course, if you're not using a Debian-based distribution, you may need to use another package manager than apt to install the library.
 
 **Installing on macOS and Windows**
 
@@ -204,11 +211,18 @@ mklink /D snes "C:\My Games\Super Nintendo\"
 
 ## Disabling game systems
 
-The way ES-DE works is that it will always try to load any system for which there are game files available, so to disable a system it needs to be hidden from ES-DE. This is easily accomplished by renaming the game directory to something that is not recognized, for example changing `~/ROMs/c64` to `~/ROMs/c64_DISABLED`. Another approach is to create a subdirectory named DISABLED (or whatever name you prefer that is not matching a supported system) in the ROMs directory and move the game folder there, such as `~/ROMs/DISABLED/c64`. This makes it easy to disable and re-enable game systems in ES-DE. Note that the gamelist and any game media files are retained while the system is disabled so this is an entirely safe thing to do.
+The way ES-DE works is that it will always try to load any system for which there are game files available, so to disable a system it needs to be hidden from ES-DE. This is easily accomplished by renaming the system directory to something that is not recognized, for example changing `~/ROMs/c64` to `~/ROMs/c64_DISABLED`. Another approach is to create a subdirectory named DISABLED (or whatever name you prefer that is not matching a supported system) in the ROMs directory and move the system folder there, such as `~/ROMs/DISABLED/c64`. This makes it easy to disable and re-enable systems in ES-DE. Note that the gamelist.xml file and any game media files are retained while the system is disabled so this is an entirely safe thing to do.
+
+For very specific situations such as when the ROM directory tree is shared with another frontend, you may want to exclude some systems from loading even though their directories exist. In this case simply create an empty file named `noload.txt` in the root of the directory and the system will not get populated when ES-DE is started. For example:
+```
+~/ROMs/nes/noload.txt
+```
+
+Note that if the setting _Only show ROMs from gamelist.xml files_ has been enabled then the noload.txt logic is completely bypassed as this option will make ES-DE load anything present in the gamelist.xml files, regardless of whether the files and directories actually exist. But this option (or the equivalent --gamelist-only command line option) is only intended for troubleshooting and debugging purposes and should not be enabled during normal application usage.
 
 ## Placing games and other resources on network shares
 
-Although ES-DE does support placing game ROMs, the `.emulationstation` home directory and the `downloaded_media` directory on network shares, this can lead to serious performance problems in some instances. Especially problematic is the Microsoft SMB protocol as it offers abysmal performance for some disk operations on which ES-DE relies heavily. For small game libraries this can still be acceptable, but for libraries with hundreds or thousands of games the application startup time and overall usage will be very painful or even unusable.
+Although ES-DE does support placing game ROMs, the `.emulationstation` home directory and the `downloaded_media` directory on network shares, this can lead to serious performance problems in some instances. Especially problematic is the Microsoft SMB protocol as it offers abysmal performance for some disk operations on which ES-DE relies heavily. For small game libraries this can still be acceptable, but for libraries with hundreds or thousands of games the application startup time and overall usage will be very painful or even unusable. Similar issues could occur when using file hosting services like Google Drive.
 
 A general recommendation is to place all game files and other data on drives connected directly to the machine where ES-DE is running. Even using low speed technology like USB thumb drives, SD cards etc. is generally fine and leads to acceptable performance in most instances.
 
@@ -242,9 +256,18 @@ Note that the above are only examples to illustrate the general approach, you ma
 
 In general it should be straightforward to run ES-DE on Windows. Almost all emulators are available on this operating system and driver quality and controller support is normally very good.
 
-Just make sure to not place games or other resources on network shares using the Microsoft SMB protocol as that will lead to unacceptable performance degradations and extremely long startup times if you have a large collection. See the point above on how to setup an NFS share if you insist on placing files or other resources on network drives.
+Just make sure to never place games or other resources on network shares using the Microsoft SMB protocol as that will lead to unacceptable performance degradations and extremely long startup times if you have a large collection. See the point above on how to setup an NFS share if you insist on placing files or other resources on network drives.
 
-In order for ES-DE to run, graphics drivers with OpenGL support have to be installed. If not, the application simply won't start. For really old graphics cards the available drivers may not provide an OpenGL version that is modern enough for ES-DE to work, and in this case a last resort solution would be to install the _Mesa3D for Windows_ library which provides software-based OpenGL rendering. The library can be downloaded from [https://fdossena.com/?p=mesa/index.frag](https://fdossena.com/?p=mesa/index.frag) and you simply extract the opengl32.dll file into the ES-DE installation directory. Just be aware that the performance may be quite bad.
+In order for ES-DE to run, graphics drivers with OpenGL support have to be installed. If not, the application simply won't start. For really old graphics cards the available drivers may not provide an OpenGL version that is modern enough for ES-DE to work, and in this case a last resort solution would be to install the _Mesa3D for Windows_ library which provides software-based OpenGL rendering. The 64-bit version of this library can be downloaded from [https://fdossena.com/?p=mesa/index.frag](https://fdossena.com/?p=mesa/index.frag) and you simply extract the opengl32.dll file into the ES-DE installation directory. Just be aware that the performance may be quite bad.
+
+On some handheld devices with AMD GPUs, ES-DE may only display a black screen on startup. This can be seen on for instance the Steam Deck (although not if using SteamOS), AYA NEO and ONEXPLAYER 8.4. The issue seems to be caused by buggy GPU drivers, and can be worked around by specifying a window size for ES-DE that is a single pixel wider than the actual screen resolution. So for example for a 1280x800 display, the resolution can be set to 1281x800 and then rendering should work correctly. This is applied using the --resolution command line option, for example:
+```
+EmulationStation.exe --resolution 1281 800
+```
+
+Some older games (and possibly emulators too) may not work correctly or even start at all if ES-DE is set to run in the background while a game is launched. So if you experience strange issues with some games, make sure that the setting _Run in background (while game is launched)_ is disabled. If launching any of these problematic games from the _desktop_ system, also make sure to use the default emulator entry _Suspend ES-DE_ and not the alternative emulator _Keep ES-DE running_.
+
+In a similar fashion, some older games may require the compatibility mode to be set to an older Windows release. This is done by right clicking on the .exe file or .lnk shortcut for the game or emulator, selecting _Properties_ and then the _Compatibility_ tab, then checking the box named _Run this program in compatibility mode for:_ and finally selecting an appropriate Windows release. Some experimentation with different Windows versions may be required. Don't attempt to change the compatibility mode for ES-DE itself though as that may cause any types of unforeseen issues.
 
 Installing DS4Windows will break controller input in ES-DE for unknown reasons. Uninstalling this software should resolve the issue. On Windows 11 both DualShock 4 (PS4) and DualSense (PS5) controllers have been tested wired and via Bluetooth and both work fine in both ES-DE and RetroArch without any special drivers or configuration.
 
@@ -264,7 +287,9 @@ Lack of controller support is a bit of a problem on macOS, and in some instances
 
 ES-DE is available both as an Intel/x86 build and as a native M1/ARM build. If running on an M1 Mac it's possible to launch either M1 or Intel emulators from ES-DE and it's sometimes recommended to go for the Intel versions. The reason is that some emulators are not yet working properly on the M1 architecture, and for RetroArch some cores are only available for the x86 platform. So investigate what makes most sense for your setup. Over time this situation should improve as M1 support matures.
 
-One macOS-specific requirement is that the RetroArch setting _Start in Fullscreen mode_ is enabled or ES-DE will not be able to switch to the emulator window when launching games. As a workaround you can switch to the window manually using Command + Tab but it probably doesn't make sense to run emulators in windowed mode anyway. It's unclear if only RetroArch is affected by this issue, at least it has not been observed for any other emulators so far. The standalone PlayStation 2 emulator PCSX2 has a similar issue but that seems to be GPU driver related and is problematic also on other operating systems. If using this emulator you need to manually switch to the PCSX2 window using Command + Tab after launching a game. If using an M1 Mac then the AetherSX2 emulator is recommended instead of PCSX2.
+One macOS-specific requirement is that the RetroArch setting _Start in Fullscreen mode_ is enabled or ES-DE will not be able to switch to the emulator window when launching games. As a workaround you can switch to the window manually using Command + Tab but it probably doesn't make sense to run emulators in windowed mode anyway. This issue has not been observed with any other emulators.
+
+At the time of writing there is an additional issue with the M1 release of RetroArch where ES-DE will not be able to consistently switch to its window on game launch if the setting _Close windows when closing an app_ under the General entry in the macOS System Preferences has been set to disabled. This error does not occur for the Intel/x86 release of RetroArch or with any other standalone emulators (including those built specifically for the M1 architecture).
 
 The first time you launch a RetroArch-emulated game from within ES-DE the operating system will present you with a security option with the following description:
 
@@ -282,11 +307,17 @@ Another problem on macOS 11 Big Sur (and possibly older OS versions) is that whe
 
 ## Specific notes for Steam Deck
 
-As the Steam Deck is essentially a Linux desktop computer with a custom user interface, there is really not much specifically to consider when running ES-DE compared to any other Linux-based operating system. There is a specific AppImage available for the Steam Deck though that is recommended to use, as a number of settings will be tuned for the best possible experience on this device.
+As the Steam Deck is essentially a Linux desktop computer with a custom user interface, there is really not much to consider when running ES-DE on this device, except that SteamOS uses an immutable filesystem which adds some restrictions not present in most other Linux distributions. There is a specific AppImage available for the Steam Deck though that is recommended to use, as some settings have been tuned for the best possible experience on this device.
 
-Another approach is to install ES-DE using [EmuDeck](https://www.emudeck.com) which will automatically download the latest Steam Deck release.
+It is possible to install ES-DE using [EmuDeck](https://www.emudeck.com) which will automatically download the latest Steam Deck-specific release. Just be aware that if using EmuDeck you will have a non-standard ES-DE installation as this installation script makes some customizations to paths and other settings. This guide only covers default installations so in case you see something mentioned that doesn't match your setup, then make sure to contact the EmuDeck support. Also be aware that re-running the EmuDeck script could potentially be a destructive operation as some files and settings may be overwritten.
 
 For Flatpak releases of some emulators you may need to give extra permissions to be able to launch games placed on external devices such as a memory card. This is the case for instance for melonDS and RPCS3. The easiest way to do this is by using [Flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal). The option you need to enable is _All system files_ in the _Filesystem_ section.
+
+If you are unfamiliar with Unix operating systems, make sure to at least read up on the concepts of _dotfiles_ (hidden files and directories), _home directories_ (including use of the tilde ~ character) and _symbolic links_ (symlinks):
+
+[https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory#Unix_and_Unix-like_environments](https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory#Unix_and_Unix-like_environments) \
+[https://en.wikipedia.org/wiki/Home_directory#Unix](https://en.wikipedia.org/wiki/Home_directory#Unix) \
+[https://en.wikipedia.org/wiki/Symbolic_link](https://en.wikipedia.org/wiki/Symbolic_link)
 
 ## Specific notes for Raspberry Pi
 
@@ -339,6 +370,8 @@ The game systems configuration file `es_systems.xml` is located in the ES-DE res
 
 On Unix this means /home/\<username\>/.emulationstation/custom_systems/es_systems.xml, on macOS /Users/\<username\>/.emulationstation/custom_systems/es_systems.xml and on Windows C:\Users\\<username\>\\.emulationstation\custom_systems\es_systems.xml
 
+If you're using the AppImage release of ES-DE then the bundled es_systems.xml file is embedded in the AppImage together with the rest of the resources. You can extract it if you need it as a reference when creating your customized entries, or you can find it [here](https://gitlab.com/es-de/emulationstation-de/-/tree/stable-1.2/resources/systems/unix).
+
 Although it's possible to make a copy of the bundled configuration file, to modify it and then place it in this directory, that is not how the system customization is designed to be done. Instead the intention is that the file in `custom_systems` complements the bundled configuration, meaning only systems that are to be customized should be included.
 
 For example you may want to replace the emulator launch command, modify the full name or change the supported file extensions for a single system. In this case it wouldn't make sense to copy the complete bundled file and just apply these minor modifications, instead an es_systems.xml file only containing the configuration for that single system should be placed in the custom_systems directory.
@@ -364,7 +397,7 @@ It's however recommended to move all such files to the ~/.emulationstation/gamel
 
 It's also strongly adviced to not rename an old es_settings.cfg file to es_settings.xml for use in ES-DE. Although this has been tested to some extent, it may cause undefined behavior.
 
-If migrating from Batocera or Recalbox, be aware that ES-DE follows the RetroPie naming conventions for game systems. This means that your game files may not be found unless the folders are renamed accordingly. Such an example is the Sega SG-1000 system which in Batocera and Recalbox has the _sg1000_ system name, but is _sg-1000_ in RetroPie and ES-DE. See the [Supported game systems](USERGUIDE.md#supported-game-systems) table at the bottom of this guide for the correct system names in ES-DE. This issue also means that theme sets that were written or adapted specifically for Batocera or Recalbox may display unthemed systems in ES-DE. All RetroPie theme sets should however work fine (of course assuming that all your systems are actually supported by the theme set).
+If migrating from Batocera or Recalbox, be aware that ES-DE follows the RetroPie naming conventions for most game systems. This means that your game files may not be found unless the folders are renamed accordingly. Such an example is the Sega SG-1000 system which in Batocera and Recalbox has the _sg1000_ system name, but is _sg-1000_ in RetroPie and ES-DE. See the [Supported game systems](USERGUIDE.md#supported-game-systems) table at the bottom of this guide for the correct system names in ES-DE. This issue also means that theme sets that were written or adapted specifically for Batocera or Recalbox may display unthemed systems in ES-DE. All RetroPie theme sets should however work fine (of course assuming that all your systems are actually supported by the theme set).
 
 ## Running on high resolution displays
 
@@ -501,9 +534,9 @@ _(Insert on Unix and Windows, F13 on macOS)_
 
 Marks games as favorites in the gamelist view (if the _Enable toggle favorites button_ option has been enabled). Used by some other minor functions as explained by the help system and/or this guide.
 
-**F4 (keyboard only)** _Could alternatively be Alt + F4, Alt + Q or Command + Q_
+**Alt + F4 (Windows and Linux) or Command + Q (macOS) (keyboard only)**
 
-Quits the application. This key combination can be changed using the _Exit button combo_ menu option described later in this document.
+Quits the application. This key combination can be changed to Ctrl + Q, Alt + Q or F4 using the _Keyboard quit shortcut_ menu option described later in this document.
 
 ## RetroArch setup
 
@@ -526,23 +559,43 @@ If ES-DE is unable to find an emulator when a game is launched, a notification p
 
 ## Using the Steam release of RetroArch
 
-On Windows it's no problem to use the Steam release of RetroArch although you may have to add the installation location manually to your Path environment variable. By default the following locations will be searched:
+As this release of RetroArch is executed via the Steam application it's behaving a bit glitchy and strange with ES-DE (which is due to the nature of Steam). In addition to this there seem to be some bugs in either Steam or RetroArch, or both. The following issues have been observed:
+
+* ES-DE will continue to run in the background due to the way that Steam works
+* Game launching is not seamless and there will be some flickering
+* If the Steam GUI is visible, focus may not return to ES-DE when exiting a game. Minimizing Steam increases the chances of this working properly but it's not guaranteed to completely fix the problem
+* Filenames containing apostrophes do not work, you need to rename these game files to be able to launch them
+* Core searches will not work, if an emulator core is missing there will be no error notification inside ES-DE and game launching will just silently fail
+* Logging output from emulators is not possible due to ES-DE running in the background
+
+As well, adding support for the Steam release of RetroArch for all systems that ES-DE supports requires hundreds of additional alternative emulator entries. For all these reasons there will be no official support for this release of RetroArch. If you insist on still using it, it's however quite easy to make [custom system configuration](USERGUIDE.md#game-system-customizations) entries as the setup has been partly prepared in the bundled configuration.
+
+Simply add alternative emulator entries such as the following example (which enables support for the Nestopia UE core for the nes system):
 ```
-C:\Program Files (x86)\Steam\steamapps\common\RetroArch\retroarch.exe
-D:\Program Files (x86)\Steam\steamapps\common\RetroArch\retroarch.exe
-C:\Program Files\Steam\steamapps\common\RetroArch\retroarch.exe
-D:\Program Files\Steam\steamapps\common\RetroArch\retroarch.exe
+<command label="Nestopia UE (Steam)">%RUNINBACKGROUND% %EMULATOR_STEAM% -applaunch 1118310 -L nestopia_libretro %ROM%</command>
 ```
 
-If you have installed RetroArch at another location, simply start the Settings application, search for _path_ in the _Find a setting_ field and choose _Edit environment variables for your account_. Edit the _Path_ variable and add the directory where RetroArch is installed. This is required as there is no apparent way for ES-DE to find where RetroArch has been installed by the Steam application.
+This will work on both Linux and Windows.
 
-Unfortunately on Linux it's at the moment not possible to run the Steam release of RetroArch due to technical reasons. This RetroArch release runs as a type of container which can't be executed from ES-DE while correctly passing the necessary core and game options. Similarly it's not possible to launch RetroArch via the Steam application either as there seems to be a bug in Steam or RetroArch that prevents blankspaces from being present in game ROM files when passed as arguments (this works fine on Windows so it's definitely a Linux-specific issue and as well the same problem occurs if attempting to manually enter the launch command from a terminal window).
+A complete entry for the nes system could look like the following:
+```
+<system>
+    <name>nes</name>
+    <fullname>Nintendo Entertainment System</fullname>
+    <path>%ROMPATH%/nes</path>
+    <extension>.nes .NES .unf .UNF .unif .UNIF .7z .7Z .zip .ZIP</extension>
+    <command label="Nestopia UE (Steam)">%RUNINBACKGROUND% %EMULATOR_STEAM% -applaunch 1118310 -L nestopia_libretro %ROM%</command>
+    <command label="FCEUmm (Steam)">%RUNINBACKGROUND% %EMULATOR_STEAM% -applaunch 1118310 -L fceumm_libretro %ROM%</command>
+    <platform>nes</platform>
+    <theme>nes</theme>
+</system>
+```
 
 ## Using emulators in AppImage format on Linux
 
-AppImages are a great way to package emulators on Linux as they work across many different distributions, and launching and running them introduces virtually no overhead. There is one problem though in that there is no standardized directory for storing these files, meaning ES-DE could have issues locating them.
+AppImages is a great way to package emulators on Linux as they work across many different distributions, and launching and running them introduces virtually no overhead. There is one small problem though in that there is no standardized directory for storing these files, meaning ES-DE could have issues locating them.
 
-As such all bundled emulator configuration entries that support AppImages will look for these files in the following directories:
+Therefore all bundled emulator configuration entries that support AppImages will look for these files in the following directories:
 
 ```
 ~/Applications/
@@ -552,54 +605,39 @@ As such all bundled emulator configuration entries that support AppImages will l
 
 It's generally recommended to go for the ~/Applications/ directory, but depending on your Linux distribution this may or may not exist by default. If the directory doesn't exist, then just go ahead and create it. Keep in mind that Linux is case-sensitive so make sure to spell it with a capital A.
 
-But even if the directory is known, another issue is that many AppImages contain version information in the filename, such as:
-```
-rpcs3-v0.0.19-13103-cc21d1b3_linux64.AppImage
-```
-
-ES-DE needs to have a specific filename to be able to find the emulator, so the easiest solution is to create a symlink to the AppImage file, such as the following:
-```
-cd ~/Applications
-ln -s rpcs3-v0.0.19-13103-cc21d1b3_linux64.AppImage rpcs3.AppImage
-```
+As AppImages often embed version information into the actual filename, the bundled configuration uses wildcards to locate the files, such as `rpcs3*.AppImage` which would match the filename `rpcs3-v0.0.19-13103-cc21d1b3_linux64.AppImage` for instance. Note that if multiple files match the wildcard pattern, the first file returned by the operating system will be selected.
 
 This approach also works when using [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) which is recommended as it properly integrates AppImages into the application menu and such. When first launching an AppImage with AppImageLauncher installed a question will be asked whether to integrate the application. If accepting this, the AppImage will be moved to the `~/Applications` directory and a hash will be added to the filename, like in this example:
 ```
 rpcs3-v0.0.19-13103-cc21d1b3_linux64_54579676ed3fa60dafec7188286495e4.AppImage
 ```
+Again, the wildcard matching means this filename should be found by ES-DE when launching a game so no additional setup should be required.
 
-After taking this step, a symlink can be created:
+If not using AppImageLauncher, then make sure to set the AppImages as executable or ES-DE will not be able to launch them. For example:
 ```
 cd ~/Applications
-ln -s rpcs3-v0.0.19-13103-cc21d1b3_linux64_54579676ed3fa60dafec7188286495e4.AppImage rpcs3.AppImage
+chmod +x ./rpcs3-v0.0.19-13103-cc21d1b3_linux64.AppImage
 ```
 
-As the hashed filename created by AppImageLauncher will be retained also after upgrading AppImages to newer versions, ES-DE will still be able to find the emulator.
-
-At the moment the following emulators are supported in AppImage format:
+The following emulators are supported in AppImage format when using the bundled configuration:
 
 | System name  | Emulator    | Filename configuration          |
 | :----------- | :---------- | :------------------------------ |
 | _Multiple_   | RetroArch   | RetroArch-Linux-x86_64.AppImage |
-| gba          | mGBA        | mGBA.AppImage                   |
-| gc           | Dolphin     | Dolphin_Emulator.AppImage       |
-| ps2          | Play!       | Play!.AppImage                  |
-| ps3          | RPCS3       | rpcs3.AppImage                  |
+| gba          | mGBA        | mGBA*.AppImage                  |
+| gc           | Dolphin     | Dolphin_Emulator*.AppImage      |
+| macintosh    | Basilisk II | BasiliskII-x86_64.AppImage      |
+| macintosh    | SheepShaver | SheepShaver-x86_64.AppImage     |
+| ps2          | PCSX2       | pcsx2*-Qt.AppImage              |
+| ps2          | Play!       | Play!*.AppImage                 |
+| ps3          | RPCS3       | rpcs3*.AppImage                 |
 | psx          | DuckStation | duckstation-nogui-x64.AppImage  |
 | psx          | DuckStation | duckstation-qt-x64.AppImage     |
-| switch       | Yuzu        | yuzu.AppImage                   |
-| xbox         | xemu        | Xemu.AppImage                   |
-| wii          | Dolphin     | Dolphin_Emulator.AppImage       |
+| switch       | Yuzu        | yuzu*.AppImage                  |
+| xbox         | xemu        | Xemu*.AppImage                  |
+| wii          | Dolphin     | Dolphin_Emulator*.AppImage      |
 
-Symlinking RetroArch is only required if using AppImageLauncher as the filename is otherwise not containing any version information, instead simply being named `RetroArch-Linux-x86_64.AppImage`. The same is true for DuckStation.
-
-Note that the names are case sensitive, so for instance _rpcs3.appimage_ will not be found by ES-DE.
-
-Also make sure to set the AppImage as executable or ES-DE will not be able to launch it. You do this on the actual file, not on the symlink. For example:
-```
-cd ~/Applications
-chmod +x ./rpcs3-v0.0.19-13103-cc21d1b3_linux64_54579676ed3fa60dafec7188286495e4.AppImage
-```
+RetroArch does not embed any version information into the filename so no wildcard is required.
 
 ## Using manually downloaded emulators on Linux
 
@@ -618,10 +656,22 @@ So placing a manually downloaded emulator binary in either of these directories 
 
 The following manually downloaded emulators are supported when using the bundled configuration:
 
-| System name  | Emulator    | Filename configuration          |
-| :----------- | :---------- | :------------------------------ |
-| dreamcast    | Redream     | redream                         |
-| switch       | Ryujinx     | publish/Ryujinx                 |
+| System name              | Emulator      | Filename configuration          |
+| :----------------------- | :------------ | :------------------------------ |
+| apple2                   | LinApple      | linapple/linapple               |
+| coco/dragon32/tanodragon | XRoar         | xroar/xroar                     |
+| daphne                   | Hypseus Singe | hypseus-singe/hypseus.bin       |
+| dreamcast                | Redream       | redream/redream                 |
+| easyrpg                  | EasyRPG       | easyrpg/easyrpg-player          |
+| flash                    | Lightspark    | lightspark/lightspark           |
+| flash                    | Ruffle        | ruffle/ruffle                   |
+| fmtowns                  | Tsugaru       | tsugaru/Tsugaru_CUI             |
+| oric                     | Oricutron     | oricutron/Oricutron             |
+| pico8                    | PICO-8        | pico-8/pico8                    |
+| psvita                   | Vita3K        | Vita3K/Vita3K                   |
+| samcoupe                 | SimCoupé      | simcoupe/simcoupe               |
+| switch                   | Ryujinx       | publish/Ryujinx                 |
+| trs-80                   | sdl2trs       | sdl2trs/sdl2trs                 |
 
 Note that the Ryujinx binary is not set as executable after unpacking the archive, so you need to do that once before ES-DE can run it:
 ```
@@ -629,9 +679,15 @@ cd ~/Applications/publish
 chmod +x ./Ryujinx
 ```
 
+The same is true for Vita3K:
+```
+cd ~/Applications/Vita3K
+chmod +x ./Vita3K
+```
+
 ## Running emulators in fullscreen mode
 
-In general ES-DE does not pass command line parameters to emulators to start them in fullscreen mode. This is so as for most (if not all) emulators, command line arguments overrides the settings the user has defined. This means that windowed mode would have become impossible to achieve without creating custom systems configuration entries if ES-DE enforced fullscreen mode. There are only a very few exceptions for emulators where there is no other way to enter fullscreen mode than by passing such options during game launch.
+In general ES-DE does not pass command line parameters to emulators to start them in fullscreen mode. This is so as for most (if not all) emulators, command line arguments overrides the settings the user has defined. This means that windowed mode would become impossible to achieve without creating custom systems configuration entries if ES-DE enforced fullscreen mode. There are only a very few exceptions for emulators where there is no other way to enter fullscreen mode than by passing such options during game launch.
 
 So if an emulator starts in windowed mode and you prefer to have it running in fullscreen mode instead, make sure to enable that option in the emulator settings or configuration file (which should be a one-time job).
 
@@ -826,20 +882,17 @@ For instance `topgunnr.7z` will be expanded to `Top Gunner`.
 
 This is required by the TheGamesDB scraper where the expanded filenames are used for game searches. (Screenscraper natively supports searches using the MAME names). It's also quite nice to have the gamelist populated with the expanded game names even before any scraping has taken place.
 
-If emulating Sega Model 2 games using _Model 2 Emulator_, then you need to change the ROM directory path in the EMULATOR.INI file to point to your Model 2 ROMs. This file is found in the emulator installation directory.
+By default ES-DE will filter out BIOSes and devices that can't be launched directly, meaning these will never show up in the gamelist. But this only applies to files that are listed in the regular MAME driver file and BIOSes and devices for systems like MESS and Model 2 will not be filtered out. You'll instead need to manually hide these files using the _Hidden_ option in the metadata editor.
 
-#### Vintage systems emulated using MAME
-
-**Bally Astrocade:**
-
-Place the ROMs in the astrocde directory, the files must have the short MAME names such as _astrobat.zip_ and _conan.zip_. If using MAME standalone then no further setup is required and the games should just launch. But if using the _MAME - Current_ RetroArch core, then a hash file must be added inside the RetroArch system directory at this location:
-
+If emulating Sega Model 2 games using _Model 2 Emulator_, then you need to change the ROM directory path in the EMULATOR.INI file to point to your Model 2 ROMs. If you're using a portable ES-DE installation, then you can set the ROM directory path to be relative, for example:
 ```
-mame/hash/astrocde.xml
+[RomDirs]
+Dir1=..\..\ROMs\arcade\Sega Model 2
 ```
 
-The hash file is available from the MAME GitHub repository: \
-https://raw.githubusercontent.com/mamedev/mame/master/hash/astrocde.xml
+The EMULATOR.INI file is found in the _Model 2 Emulator_ installation directory.
+
+Also note that Model 2 Emulator is a bit broken and on most GPU drivers it will only work correctly if ES-DE keeps running in the background while the game is launched. However, for some GPU drivers the opposite is true and the emulator will only work if ES-DE is suspended. To use the latter setup, switch to the alternative emulator entry _Model 2 Emulator [Suspend ES-DE] (Standalone)_.
 
 #### Nintendo Switch
 
@@ -891,66 +944,147 @@ C:\Users\myusername\ROMs\wiiu\Super Mario 3D World\meta
 
 Starting ES-DE should now show the _Super Mario 3D World_ entry for the Wii U system. The actual game file with the extension .rpx is stored inside the _code_ directory, and does not normally match the name of the game. For this example it's named `RedCarpet.rpx`. When scraping the .rpx file you therefore need to refine the search and manually enter the game name. ES-DE fully supports scraping of directories, so you can scrape the _Super Mario 3D World_ folder as well.
 
+#### Nintendo 64DD
+
+The Japan-only 64DD floppy disk addon for the Nintendo 64 is of limited use since there were almost no games released for it, but ES-DE still supports it.
+
+The setup is quite particular and works differently between the two supported emulators ParaLLEl N64 and Mupen64Plus-Next.
+
+For ParaLLEl N64, place a file named `64DD_IPL.bin` in the root of the RetroArch system directory. Refer to the RetroArch documentation if you're uncertain where this directory is located.
+
+This file which is commonly referred to as _Nintendo 64DD IPL v1.2_ or similar has to have an MD5 hash value of 8d3d9f294b6e174bc7b1d2fd1c727530 or it will not work.
+
+The final step is to enable the option _64DD Hardware_ in the ParaLLEl N64 core options inside RetroArch. Following this you should be able to launch games with the .ndd file extension, or such files compressed into .zip or .7z archives.
+
+For Mupen64Plus-Next you should use the exact same IPL file as for ParaLLEl N64 but it has to be placed inside the Mupen64plus subdirectory in the RetroArch system directory. The file also has to be named `IPL.n64` instead of 64DD_IPL.bin.
+
+For this emulator you can't launch .ndd files directly, instead you have to place the non-disk version of the game next to the disk version and launch the non-disk version.
+
+This is such an example setup for Super Mario 64:
+```
+~/ROMs/n64dd/Super Mario 64.v64
+~/ROMs/n64dd/Super Mario 64.v64.ndd
+```
+
+So to clarify it's `Super Mario 64.v64` that has to be launched. Compressing this file into a .zip or .7z file will not work, the game has to be uncompresssed. If using Mupen64Plus-Next it's probably also a good idea to hide the .ndd files from the gamelist (using the _Hidden_ option in the metadata editor) for a more tidy setup.
+
 #### Sony PlayStation 3
 
-The RPCS3 emulator requires a bit of special setup.
+There are two ways to add PS3 games to ES-DE; by using shortcuts or by adding game directories directly to the ~/ROMs/ps3 folder and interpreting these as files. Shortcuts is generally the way to go as it's easier to setup and for HDD/pkg games it's the only way to make it work unless you manually create symlinks to the internal RPCS3 directory structure. So another benefit with shortcuts is consistency as both HDD/pkg games and disc-based games will be setup in the same manner. This also means that the same RPCS3 emulator entry can be used to launch every game. The drawback to using shortcuts is that they're not portable, if you change the location of RPCS3 or your games, you need to manually update the shortcuts as well.
 
-On Windows RPCS3 does not ship with an installer but rather as a zip file that contains all application files. You will need to unzip the content and manually add that directory to your environment Path variable so that ES-DE will be able to find the emulator binary rpcs3.exe, or you can optionally place the RPCS3 directory inside the ES-DE installation directory in which case it will be found when launching a game. Both these options are described in more detail [here](USERGUIDE.md#specific-notes-for-windows)
+Be aware that if you still want to have games installed using the directory method, then you will need to change to the alternative emulator _RPCS3 Directory (Standalone)_ or you won't be able to launch these games. As is the case for all alternative emulator entries, this can be configured system-wide or on a per-game basis.
 
-The macOS release ships as a regular DMG file that is installed as usual.
+If using the Flatpak release of RPCS3 on Linux and your games are stored on an external device (such as a memory card), then you need to give RPCS3 the necessary permissions. The easiest way to do this is by using [Flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal). The option you need to enable is _All system files_ in the _Filesystem_ section.
 
-On Linux RPCS3 is shipped as a Snap package, Flatpak package or AppImage. If installed as a Snap or Flatpak or if built from source code, ES-DE should be able to easily locate the emulator binary.
+Apart from this you need to install the PS3 system firmware to use the emulator, but that is described in the RPCS3 documentation.
 
-But if using the AppImage release it's a bit more complicated. See [here](USERGUIDE.md#using-emulators-in-appimage-format-on-linux) for more information on how to get it to work.
+**Method 1, shortcuts**
 
-If using the Flatpak release and your games are stored on an external device (such as a memory card if using a Steam Deck), you need to give RPCS3 the necessary permissions. The easiest way to do this is by using [Flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal). The option you need to enable is _All system files_ in the _Filesystem_ section.
+First install your games inside RPCS3, then right click on each entry and select _Create Shortcut_ followed by _Create Desktop Shortcut_. On Windows this will create shortcuts with the .lnk extension, on macOS they will have the .app extension and on Unix/Linux they will have the .desktop extension.
 
-As for the game installation on both Windows and Linux as well as on macOS, you need to retain the directory structure of the Blu-ray disc or the directory created by installing the .pkg file. Each directory needs to be renamed by adding the .ps3 extension, which will make ES-DE interpret the directory as if it were a file and pass that directory to the emulator when launching a game.
+Then simply move these files from your desktop to your ~/ROMs/ps3 directory and you're done. Here's an example of what this could look like on Linux:
+```
+~/ROMs/ps3/Bejeweled 2.desktop
+~/ROMs/ps3/Gran Turismo 5.desktop
+```
 
-Here's an example of what a Blu-ray disc directory could look like:
+Note that if using the Flatpak release of RPCS3 on Linux there is currently a bug where the .desktop files will include the wrong path to the emulator binary. The Exec key will look something like this:
+```
+Exec="/app/bin/rpcs3" --no-gui "/home/myusername/.var/app/net.rpcs3.RPCS3/config/rpcs3/dev_hdd0/game/NPUA30002"
+```
+
+You need to change this to the full path of the emulator binary, such as:
+```
+Exec="/var/lib/flatpak/exports/bin/net.rpcs3.RPCS3" --no-gui "/home/myusername/.var/app/net.rpcs3.RPCS3/config/rpcs3/dev_hdd0/game/NPUA30002"
+```
+
+If using the AppImage release of RPCS3 on Linux then another issue may be that the path to the emulator could change when upgrading to a newer release, which may or may not require manual updates to the desktop files.
+
+Regardless of how you've installed RPCS3, make sure to always test the shortcuts outside ES-DE first, because if they don't work from the desktop, then they will not work from inside ES-DE either.
+
+**Method 2, directories**
+
+This approach is only intended for disc-based games as for HDD/pkg games you should use shortcuts instead. When using this method you need to retain the directory structure of the Blu-ray disc, and each directory needs to be renamed by adding the .ps3 extension. This will make ES-DE interpret the directory as if it were a file and pass that directory to the emulator when launching a game.
+
+Here's an example of what a game entry could look like:
 ```
 ~/ROMs/ps3/Gran Turismo 5.ps3
 ```
 
-It's possible to create a symlink instead, and in this case only the symlink needs to have the .ps3 extension.
+It's possible to create a symlink instead, and in this case only the symlink needs to have the .ps3 extension. But if you want to locate your games outside the ~/ROMs/ps3 directory anyway, then it's probably easier to just use shortcuts.
 
-Here's how to do it on Linux and macOS:
-```
-cd ~/ROMs
-ln -s ~/games/PS3/Gran\ Turismo\ 5 Gran\ Turismo\ 5.ps3
-```
+When using this setup method you need to set the alternative emulator to _RPCS3 Directory (Standalone)_ or game launching will not work.
 
-And here's how to do it on Windows (you need to run this as Administrator):
-```
-cd C:\Users\Myusername\ROMs\ps3
-mklink /D "Gran Turismo 5.ps3" "C:\Games\PS3\Gran Turismo 5"
-```
+#### Sony PlayStation Vita
 
-If you've installed a .pkg using RPCS3 you can either symlink to the installation directory or move the directory to the ROMs folder. Also in this case the directory (or symlink) needs to be named with the .ps3 extension.
+Support for the PS Vita is currently experimental due to the early stages of development for the Vita3K emulator. While there's a growing list of games that are playable, integration with ES-DE is a bit rough at the moment. Hopefully this will improve as Vita3K evolves.
 
-An example on Linux:
+On Windows the Vita3K installation is straightforward, but on Linux you may need to place the emulator in a location recognized by ES-DE. See the [Using manually downloaded emulators on Linux](USERGUIDE.md#using-manually-downloaded-emulators-on-linux) section of this guide for more details. If using a Linux distribution that provides Vita3K via the repository (such as the AUR on Arch/Manjaro) then you can skip this step and install the emulator using your OS package manager.
+
+Although a macOS release of Vita3K seems to be in the works this does not seem to be readily available for download so there is currently no macOS support for this system in ES-DE.
+
+After you've installed Vita3K, add your games via the GUI and make sure that they work correctly when launched from inside the emulator.
+
+To add an installed game to ES-DE, create an empty file in `~/ROMs/psvita` and name it as the game name followed by the .psvita file extension, such as the following:
 ```
-cd ~/ROMs
-ln -s ~/.config/rpcs3/dev_hdd0/game/NPUA30002 Bejeweled2.ps3
+~/ROMs/psvita/WipEout 2048.psvita
 ```
 
-This example is for the AppImage version of RPCS3, for the Snap or Flatpak versions, the installed games will be located in a different directory.
+Then add the game Title ID to this file. This ID can be found inside the Vita3K GUI, in the _Title ID_ column. For example the game _WipEout 2048_ has an ID that is PCSF00007. So simply add the string PCSF00007 to the `WipEout 2048.psvita` file and the setup for this game is complete.
 
-Here's how to achieve the same on Windows:
+Game launching and scraping should now work fine in ES-DE.
+
+#### Fujitsu FM Towns
+
+The Tsugaru emulator is still somehow experimental and although there are builds available for Windows, macOS and Linux on the Tsugaru [GitHub](https://github.com/captainys/TOWNSEMU) page, only the Windows release seems to be functioning entirely correctly. The Linux build has controller/input issues as described later below. It's also made specifically for Ubuntu and there is no AppImage release available, so if you run some other Linux distribution then it may not run at all. Extracting the binary from the Debian package has however been reported to work on SteamOS at least. The macOS release does not seem to include the command line binary for the emulator which makes it unusable with ES-DE.
+
+For both the Windows and Linux release you need to create a `roms` subdirectory inside the emulator directory where the system BIOS/ROM files need to be located. These are the required files, and they have to be named in uppercase:
+
 ```
-cd C:\Users\Myusername\ROMs\ps3
-mklink /D "Bejeweled2.ps3" "C:\Emulators\RPCS3\dev_hdd0\game\NPUA30002"
+FMT_DIC.ROM
+FMT_DOS.ROM
+FMT_F20.ROM
+FMT_FNT.ROM
+FMT_SYS.ROM
 ```
 
-Of course you can name the symlink anything you want as long as it has the .ps3 extension.
+The directory structure should look like the following on Windows:
+```
+tsugaru\roms\
+tsugaru\Tsugaru_CUI.exe
+tsugaru\Tsugaru_GUI.exe
+```
 
-Apparently some specific games have issues launching when using symlinks so you need to test and experiment with what works for your collection.
+And on Linux it's basically identical:
+```
+tsugaru/roms/
+tsugaru/Tsugaru_CUI
+tsugaru/Tsugaru_GUI
+```
 
-Apart from this you need to install the PS3 system firmware to use the emulator, but that is described in the RPCS3 documentation.
+See the [Using manually downloaded emulators on Linux](USERGUIDE.md#using-manually-downloaded-emulators-on-linux) section of this guide for more details on where to locate the emulator directory.
+
+Only CD-ROM games in .iso and .cue format are supported, and you simply place these inside the `~/ROMs/fmtowns` directory.
+
+Optionally you can provide custom emulator command line flags on a per-game basis. This can be used to set things like the CPU frequency of the emulated machine, controller/input settings and more. Refer to the Tsugaru emulator documentation for more details about available options.
+
+On Linux controller input seems to be broken for the time being, so you will likely need to map this input to the keyboard instead. Mouse input is also very laggy and it's unclear whether this can be improved via some emulator setting.
+
+To create a game-specific configuration entry, simply add a file with the same filename as the gamefile but with the .cfg file extension, for example:
+```
+~/ROMs/fmtowns/Shadow of the Beast (1994)(Psygnosis)(Jp-En).bin
+~/ROMs/fmtowns/Shadow of the Beast (1994)(Psygnosis)(Jp-En).cfg
+~/ROMs/fmtowns/Shadow of the Beast (1994)(Psygnosis)(Jp-En).cue
+```
+
+To map the controller to the keyboard and to set a 33 MHz CPU speed, the file content of the .cfg file would look like the following:
+```
+-FREQ 33 -GAMEPORT0 KEY
+```
 
 #### Commodore Amiga
 
-There are multiple ways to run Amiga games, but the recommended approach is to use WHDLoad. The best way is to use hard disk images in `.hdf` or `.hdz` format, meaning there will be a single file per game. This makes it just as easy to play Amiga games as any console with game ROMs.
+There are multiple ways to run Amiga games, but the recommended approach is to use WHDLoad. The best way is to use hard disk images in `.hdf`, `.hdz` or `.lha` format, meaning there will be a single file per game. This makes it just as easy to play Amiga games as any console with game ROMs.
 
 An alternative would be to use `.adf` images as not all games may be available with WHDLoad support. For this, you can either put single-disc images in the root folder or in a dedicated adf directory, or multiple-disk games in separate folders. It's highly recommended to create `.m3u` playlist files for multi-disc images as described earlier.
 
@@ -1035,130 +1169,574 @@ In this case the two entries _sky_ and _queen_ will show up inside ES-DE and the
 
 The only drawback of this approach is that when scraping using TheGamesDB you will get very inaccurate results as this scraper service does not support ScummVM short names. It can however be worked around by refining the searches. ScreenScraper does natively support ScummVM short names and you should get very accurate results with this scraper service.
 
-#### Ports
+#### Ports and desktop applications
 
-Ports are not really executed using emulators, but are rather applications running natively on the operating system. The easiest way to handle these is to add a simple shell script or batch file where you can customize the exact launch parameters for the game.
+As ports and desktop applications are handled in almost exactly the same way in ES-DE both of these are described in this section. For these systems it's generally native applications rather that emulated games that are executed. There are two main approaches to setting up such entries and these are _shortcuts_ and _scripts_. Note that these can be mixed in the same system, you can have some entries that are shortcuts and some that are scripts and they will still all work.
 
-It's possible to add these files directly to the root folder, but normally it's recommended to setup a separate directory per game as there may be more than a single file required. For instance you often want to have easy access to the game setup utility which may have to be executed separately from the actual game.
+For the _desktop_ system specifically, you can choose to suspend ES-DE while an application or game is launched, or you can choose to keep ES-DE running in the background. This is controlled by the selection of either the default emulator _Suspend ES-DE_ or the alternative emulator _Keep ES-DE running_. As is the case for all alternative emulator entries, this can be configured system-wide or on a per-game basis.
 
-Here's an example for setting up Chocolate-Doom, GZDoom and DarkPlaces on Unix:
+**Method 1, shortcuts**
 
+Shortcuts are very easy to setup, on Windows you can simply copy any .lnk file from the Start Menu into the `ports` or `desktop` ROMs folders and then you can launch them directly from inside ES-DE. You can also create shortcuts manually to any file by right clicking on it in Explorer and selecting _Create shortcut_.
+
+Likewise on Unix you can copy any .desktop shortcut into the ROMs directories and they can then be launched by ES-DE.
+
+Here's an example on Windows:
 ```
-~/ROMs/ports/Chocolate-Doom/chocolate-doom.sh
-~/ROMs/ports/Chocolate-Doom/chocolate-doom-setup.sh
+~\ROMs\ports\ecwolf.lnk
+~\ROMs\ports\openxcom.lnk
+```
+
+And here's an example on Unix:
+```
+~/ROMs/desktop/org.libretro.RetroArch.desktop
+~/ROMs/desktop/spotify.desktop
+```
+
+On macOS there are two ways to create shortcuts to applications, the first option is .app folders which can be directly executed by ES-DE and the second option is aliases. The easiest way to create an alias is to open two Finder windows, one for your Applications folder and one for your ~/ROMs/desktop folder. Then you can simply drag an application over to the desktop folder which will automatically create an alias file. Alternatively you can right click on an application and select _Make Alias_ and then copy the file over. As a final step you need to add the .app extension to the alias file so that ES-DE can find it on startup. Note that this extension will not be visible in Finder, but if you right click on the file and select _Get Info_ you will see the .app extension in the info window.
+
+Here's an example using alias files on macOS:
+```
+~/ROMs/desktop/RetroArch.app
+~/ROMs/desktop/System Preferences.app
+```
+
+**Method 2, scripts**
+
+For more advanced setups you may want to use scripts. While it's possible to add these files directly to the root of the ROMs directories it's instead generally recommended to setup a separate directory per game as there may be more than a single file required. For instance you may have multiple game variants or mods or you may want to keep game data files within the ROMs directory tree. Only examples for Unix are provided here, but it's the same process for Windows and macOS except that in Windows .bat batch files are used instead of shell scripts.
+
+Here's a setup of GZDoom and vkQuake:
+```
 ~/ROMs/ports/GZDoom/gzdoom.sh
-~/ROMs/ports/DarkPlaces/darkplaces.sh
-```
-
-chocolate-doom.sh:
-
-```
-#!/bin/bash
-chocolate-doom
-```
-
-chocolate-doom-setup.sh:
-
-```
-#!/bin/bash
-chocolate-doom-setup
+~/ROMs/ports/vkQuake/vkquake.sh
+~/ROMs/ports/vkQuake/vkquake_arcane_dimensions.sh
 ```
 
 gzdoom.sh:
-
 ```
 #!/bin/bash
-GZ_dir=/home/myusername/Games/Ports/GZDoom
+GZ_dir=~/ROMs/ports/GZDoom
 
-gzdoom -iwad /home/myusername/Games/Ports/GameData/Doom/doom.wad -config $GZ_dir/gzdoom.ini -savedir $GZ_dir/Savegames \
+gzdoom -iwad $GZ_dir/GameData/Doom/doom.wad -config $GZ_dir/gzdoom.ini -savedir $GZ_dir/Savegames \
 -file $GZ_dir/Mods/DoomMetalVol4_44100.wad \
 -file $GZ_dir/Mods/brutalv21.pk3 \
 -file $GZ_dir/Mods/DHTP-2019_11_17.pk3
 ```
 
-darkplaces.sh:
-
+vkquake.sh:
 ```
 #!/bin/bash
-darkplaces -basedir ~/Games/Ports/GameData/Quake
+~/Applications/vkquake/vkquake.AppImage -basedir ~/ROMs/ports/vkQuake/GameData/Quake
+```
+
+vkquake_arcane_dimensions.sh:
+```
+#!/bin/bash
+~/Applications/vkquake/vkquake.AppImage -basedir ~/ROMs/ports/vkQuake/GameData/Quake -game ad
 ```
 
 You don't need to set execution permissions for these scripts, ES-DE will run them anyway.
 
 #### Lutris
 
-Lutris runs only on Unix so it's only present as a placeholder in the es_systems.xml files for macOS and Windows.
+Adding these games is most easily accomplished by using .desktop files that can be created from inside the Lutris application. Right click on each game you would like to add to ES-DE and select _Create desktop shortcut_, then simply move these shortcuts from your desktop to the `lutris` ROMs directory. You may also want to rename some of the files as their names may be a bit cryptic which could confuse the scraper. Remember that it's the physical filenames that will show up inside ES-DE.
 
-These games are executed via the Lutris binary (well it's actually a Python script) and you simply create a shell script per game inside the lutris system directory.
-
-Add the game information to each shell script using the syntax `lutris lutris:rungame/<game name>`
-
-You can see the list of installed games by running this command:
-```
-lutris --list-games
-```
-
-Here's an example for adding Diablo and Fallout:
+After doing this you should end up with something like the following:
 
 ```
-~/ROMs/lutris/Diablo.sh
-~/ROMs/lutris/Fallout.sh
+~/ROMs/lutris/Diablo.desktop
+~/ROMs/lutris/Fallout.desktop
 ```
-
-Diablo.sh:
-
-```
-lutris lutris:rungame/diablo
-```
-
-Fallout.sh:
-
-```
-lutris lutris:rungame/fallout
-```
-
-You don't need to set execution permissions for these scripts, ES-DE will run them anyway.
-
-As an alternative, you can add the Lutris games to the Ports game system, if you prefer to not separate them. The instructions above are identical in this case except that the shell scripts should be located inside the `ports` directory rather than inside the `lutris` directory.
+As an alternative you can add Lutris games to the Ports system using the procedure described above.
 
 #### Steam
 
-**Note:** Launching Steam games currently has some limitations such as missing error messages when a game fails to start as well as missing game output logging. ES-DE also needs to keep running in the background for technical reasons, which has some minor side effects.
+These games can easily be added to ES-DE using shortcuts, just be aware that this requires that the games have been installed locally.
 
-On Windows it's straightforward to add Steam games to ES-DE, simply copy the Start Menu entries for your Steam games into the ~\ROMs\steam directory. These files have the .url extension and can be launched directly from within ES-DE.
+Make sure to have the Steam application minimized when launching games from ES-DE or otherwise Steam may try to steal focus and you would need to manually switch to the ES-DE window after quitting a game. Unfortunately this does not seem to work on macOS as Steam insists on stealing focus on this operating system.
 
-For Linux and macOS it's a bit more complicated. For these platforms it's recommended to place shell scripts directly in the steam system directory, with filenames corresponding to the game names.
+**Windows**
 
-Add the game information to each shell script using the syntax `<steam binary> steam://rungameid/<game ID>`
-
-Here's an example for the game Broforce, first on Unix with the filename `Broforce.sh`:
+Simply copy the Start Menu entries for your Steam games into the ~\ROMs\steam directory. These files have the .url extension and can be launched directly from within ES-DE. For example you may end up with something like the following:
 
 ```
-steam steam://rungameid/274190
+~\ROMs\steam\Axiom Verge.url
+~\ROMs\steam\Undertale.url
 ```
 
-And on macOS with the filename `Broforce.sh`:
-```
-/Applications/Steam.app/Contents/MacOS/steam_osx steam://rungameid/274190
-```
+**Unix/Linux**
 
-The game ID can be found by going to [https://store.steampowered.com](https://store.steampowered.com) and searching for a game. The Broforce example would have an URL such as this:
-
-https://store.steampowered.com/app/274190/Broforce
-
-On Linux it's very easy to find all your game ID's by looking in the desktop entries.
+Copy the .desktop shortcuts for your games into the ~/ROMs/steam directory. If your desktop environment does not allow you to copy them directly from the application menu then you may need to navigate to `~/.local/share/applications` using your file manager and copy the .desktop files from there. Alternatively you can also create shortcuts from inside Steam by right clicking on a game, selecting _Manage_ and then _Add desktop shortcut_. These file can then be moved from your desktop to your ~/ROMs/steam directory. This is an example of what you could end up with:
 
 ```
-grep steam ~/.local/share/applications/*desktop | grep rungameid
-/home/myusername/.local/share/applications/Broforce.desktop:Exec=steam steam://rungameid/274190
-/home/myusername/.local/share/applications/FEZ.desktop:Exec=steam steam://rungameid/224760
-/home/myusername/.local/share/applications/INSIDE.desktop:Exec=steam steam://rungameid/304430
-/home/myusername/.local/share/applications/Subnautica.desktop:Exec=steam steam://rungameid/264710
+~/ROMs/steam/Axiom Verge.desktop
+~/ROMs/steam/Undertale.desktop
 ```
 
-This of course assumes that you have menu entries setup for your Steam games.
+**macOS**
 
-To greatly simplify this setup, automatic Steam library import is planned for a future ES-DE release.
+On macOS the shortcuts come with the .app extension and are actually directories rather than files. They work exactly as regular shortcuts though. Unless you already have shortcuts available for your games, then go into Steam, right click on a game and select _Manage_ followed by _Add desktop shortcut_. Then move these .app directories to the ~/ROMs/steam directory. You should have something like the following after making these steps:
+
+```
+~/ROMs/steam/Axiom Verge.app/
+~/ROMs/steam/Undertale.app/
+```
+
+#### Hypseus Singe (Daphne)
+
+Hypseus Singe is a fork of the Daphne arcade LaserDisc emulator that is still maintained. The setup is quite particular so make sure to read this section thoroughly to get it to work.
+
+The first step is to install the emulator. On Windows it's straightforward, download the win64 release from [https://github.com/DirtBagXon/hypseus-singe](https://github.com/DirtBagXon/hypseus-singe) and unpack it and you're good to go.
+
+Similarly on Linux, download the  [hypseus-singe_2.8.2a_ES-DE.tar.gz](https://gitlab.com/es-de/emulationstation-de/-/package_files/41533436/download) release that contains an AppImage of the emulator as well as some additional required files. It should be unpacked into the ~/Applications directory, such as:
+```
+/home/myusername/Applications/hypseus-singe/
+```
+
+If the Applications directory doesn't exist yet, then just go ahead and create it and then unpack the emulator inside it. Just be aware that the name has to start with a capital A.
+
+Although there is an official Hypseus Singe release available for macOS M1 this appears somehow broken so you may need to compile it yourself. This is a bit involved so it's beyond the scope of this document to describe it. For this reason macOS is not listed as supported but the configuration is still bundled so if you're persistent and manage to get the emulator to work, it will hopefully work from within ES-DE as well.
+
+After the emulator has been installed, copy the required BIOS ROMs into `Hypseus Singe\roms\` on Windows or `~/Applications/hypseus-singe/roms/` on Linux.
+
+Controller configuration using the `hypinput.ini` file is described in the official Hypseus Singe documentation, but the following example is usable with Xbox 360-compatible controllers:
+
+```
+[KEYBOARD]
+KEY_UP = SDLK_UP SDLK_r 5 -002
+KEY_DOWN = SDLK_DOWN SDLK_f 7 +002
+KEY_LEFT = SDLK_LEFT SDLK_d 8 -001
+KEY_RIGHT = SDLK_RIGHT SDLK_g 6 +001
+KEY_COIN1 = SDLK_5 0 1
+KEY_COIN2 = SDLK_6 0 0
+KEY_START1 = SDLK_1 0 4
+KEY_START2 = SDLK_2 0 0
+KEY_BUTTON1 = SDLK_LCTRL SDLK_a 14
+KEY_BUTTON2 = SDLK_LALT SDLK_s 15
+KEY_BUTTON3 = SDLK_SPACE SDLK_d 16
+KEY_SKILL1 = SDLK_LSHIFT SDLK_w 0
+KEY_SKILL2 = SDLK_z SDLK_i 0
+KEY_SKILL3 = SDLK_x SDLK_k 0
+KEY_SERVICE = SDLK_9 0 0
+KEY_TEST = SDLK_F2 0 0
+KEY_RESET = SDLK_0 0 0
+KEY_SCREENSHOT = SDLK_F12 0 0
+KEY_QUIT = SDLK_ESCAPE SDLK_q 17
+KEY_PAUSE = SDLK_p 0 0
+KEY_CONSOLE = SDLK_BACKSLASH 0 0
+KEY_TILT = SDLK_t 0 0
+END
+```
+
+With this configuration, pressing the _A_ and _Y_ buttons at the same time exits the emulator.
+
+Here's an alternative configuration as described in the following YouTube video: \
+https://www.youtube.com/watch?v=mO2UiI6byJo
+
+```
+[KEYBOARD]
+KEY_UP = SDLK_UP SDLK_r 0 -002
+KEY_DOWN = SDLK_DOWN SDLK_f 0 +002
+KEY_LEFT = SDLK_LEFT SDLK_d 0 -001
+KEY_RIGHT = SDLK_RIGHT SDLK_g 0 +001
+KEY_COIN1 = SDLK_5 0 7
+KEY_COIN2 = SDLK_6 0 0
+KEY_START1 = SDLK_1 0 8
+KEY_START2 = SDLK_2 0 0
+KEY_BUTTON1 = SDLK_LCTRL SDLK_a 1
+KEY_BUTTON2 = SDLK_LALT SDLK_s 0
+KEY_BUTTON3 = SDLK_SPACE SDLK_d 11
+KEY_SKILL1 = SDLK_LSHIFT SDLK_w 3
+KEY_SKILL2 = SDLK_z SDLK_i 4
+KEY_SKILL3 = SDLK_x SDLK_k 2
+KEY_SERVICE = SDLK_9 0 0
+KEY_TEST = SDLK_F2 0 0
+KEY_RESET = SDLK_0 0 0
+KEY_SCREENSHOT = SDLK_F12 0 0
+KEY_QUIT = SDLK_ESCAPE SDLK_q 17
+KEY_PAUSE = SDLK_p 0 0
+KEY_CONSOLE = SDLK_BACKSLASH 0 0
+KEY_TILT = SDLK_t 0 0
+END
+```
+
+There are two types of games supported by Hypseus and these are _Daphne_ and _Singe_. It's beyond the scope of this document to describe these game formats in detail but there are many resources available online for this. The setup differs a bit between these two types however, and you need to use an alternative emulator entry in ES-DE to launch Singe games.
+
+**Daphne games**
+
+For Daphne games the structure will look something like the following, which is for the game _Dragon's Lair_:
+
+```
+~/ROMs/daphne/lair.daphne/
+~/ROMs/daphne/lair.daphne/lair.dat
+~/ROMs/daphne/lair.daphne/lair.m2v
+~/ROMs/daphne/lair.daphne/lair.m2v.bf
+~/ROMs/daphne/lair.daphne/lair.ogg
+~/ROMs/daphne/lair.daphne/lair.ogg.bf
+~/ROMs/daphne/lair.daphne/lair.txt
+```
+
+The directory name has to keep this naming convention with the name consisting of the Daphne game type (_lair_ for this example) followed by the .daphne extension. This name logic with a short name per game is similar to how it works in MAME and ScummVM. A list of available games can be found here: \
+[http://www.daphne-emu.com/mediawiki/index.php/CmdLine](http://www.daphne-emu.com/mediawiki/index.php/CmdLine)
+
+In order to get the games to work, simply create an empty file named _\<game\>.daphne_ inside the game directory, for example `lair.daphne` in this case. The _Directories interpreted as files_ functionality will then allow the game to be launched even though it shows up as a single entry inside ES-DE.
+
+There is also the option to add command line parameters for each game which is somehow important as different games may require different DIP switches to be set and you may also want to apply general options like fullscreen mode.
+
+To accomplish this, create a file named _\<game\>.commands_ such as `lair.commands` for this example. The content of this file could look something like the following:
+```
+-fastboot -fullscreen
+```
+
+The -fastboot option is recommended in particular since it leads to a much shorter startup time for those games that support it. All command line options are described at the daphne-emu.com URL posted above.
+
+With these files in place, the game directory should look something like this:
+
+```
+~/ROMs/daphne/lair.daphne/
+~/ROMs/daphne/lair.daphne/lair.commands
+~/ROMs/daphne/lair.daphne/lair.daphne
+~/ROMs/daphne/lair.daphne/lair.dat
+~/ROMs/daphne/lair.daphne/lair.m2v
+~/ROMs/daphne/lair.daphne/lair.m2v.bf
+~/ROMs/daphne/lair.daphne/lair.ogg
+~/ROMs/daphne/lair.daphne/lair.ogg.bf
+~/ROMs/daphne/lair.daphne/lair.txt
+```
+
+**Singe games**
+
+Singe games work a bit differently compared to Daphne games. They come packaged with a lot of files and the game directories normally just consist of the game names, such as:
+```
+~/ROMs/daphne/fireandice/
+~/ROMs/daphne/mononoke/
+```
+
+To make these games work, rename the directories by appending the .singe extension, such as:
+```
+~/ROMs/daphne/fireandice.singe/
+~/ROMs/daphne/mononoke.singe/
+```
+
+You could optionally create a .commands file as well to specify some additional command line parameters, as described above in the Daphne section.
+
+The next step is to modify the _\<game\>.singe_ file to point to the exact game directory.
+
+So for example on Unix, modify the file `~/ROMs/daphne/mononoke.singe/mononoke.singe` by changing the following line:
+```
+MYDIR = "singe/mononoke/"
+```
+To this:
+```
+MYDIR = "/home/myusername/ROMs/daphne/mononoke.singe/"
+```
+
+Note that the tilde ~ character can not be used inside this file to point to your home directory, you have to set the absolute path. And you should of course replace _myusername_ with your own username. The forward slash at the end of the path is also required.
+
+If on Windows, it could look like the following instead:
+```
+MYDIR = "C:\\Users\\myusername\\ROMs\\daphne\\mononoke.singe\\"
+```
+
+You have to put double backslash characters as shown above (including at the end of the path), otherwise the game won't start.
+
+The last step to get Singe games to work is to assign the alternative emulator _Hypseus [Singe] (Standalone)_ to these games. This is done via the _Alternative emulator_ entry in the metadata editor. Attempting to launch a Singe game using the default emulator will not work.
+
+#### OpenBOR
+
+The Open Beats of Rage (OpenBOR) game engine is available on Windows and Linux. Unfortunately the macOS ports seems to have been abandoned.
+
+These games are often but not always distributed together with the game engine as specific engine versions may be required for some games. The setup is slightly different between Windows and Linux so they are described separately here.
+
+**Windows:**
+
+There are two different OpenBOR setup methods supported on Windows, either to place the game directories directly inside the ROMs\openbor directory or to place the games somewhere else on the filesystems and create .lnk shortcuts and place these inside the ROMs\openbor directory.
+
+Let's use the game _Knights & Dragons The Endless Quest_ as an example. When the game archive has been uncompressed it looks like the following:
+
+```
+~\ROMs\openbor\D&D - K&D - The Endless Quest LNS\
+~\ROMs\openbor\D&D - K&D - The Endless Quest LNS\Logs\
+~\ROMs\openbor\D&D - K&D - The Endless Quest LNS\Paks\
+~\ROMs\openbor\D&D - K&D - The Endless Quest LNS\Saves\
+~\ROMs\openbor\D&D - K&D - The Endless Quest LNS\ScreenShots\
+~\ROMs\openbor\D&D - K&D - The Endless Quest LNS\OpenBOR.exe
+```
+
+Starting ES-DE with this setup actually works fine, you can enter the game folder and launch the OpenBOR.exe file which will run the game. But to make it a bit tidier you can rename the OpenBOR.exe file to the name of the game, such as:
+```
+~\ROMs\openbor\D&D - K&D - The Endless Quest LNS\The Endless Quest.exe
+```
+
+This will make the game show up with that name inside ES-DE and it will also make it easy to scrape. A further improvement is to use the _directories interpreted as files_ functionality to display the game as a single entry instead of a directory. To accomplish this, simply rename the game directory to the same name as the .exe file, for example:
+
+```
+~\ROMs\openbor\The Endless Quest.exe\The Endless Quest.exe
+```
+
+Doing this will make the game show up as if it was a single file inside ES-DE and it can be included in automatic collections, custom collections and so on.
+
+The second option on Windows is to unpack the game somewhere outside the ROMs directory tree and make a shortcut to the OpenBOR.exe binary. Just right click on this file in Explorer and select _Create shortcut_. You can then rename this .lnk file to the name of the game and move it to the ROMs\openbor directory, for example:
+
+```
+~\ROMs\openbor\The Endless Quest.lnk
+```
+
+The drawback to using shortcuts is that they're not portable, if you change the location of your games, you will need to manually update the shortcuts as well.
+
+**Linux:**
+
+On Linux you need to supply your own game engine binary as few (if any) games are distributed with the Linux release of OpenBOR. Download the .7z archive from the [https://github.com/DCurrent/openbor](https://github.com/DCurrent/openbor) repository. The file you want is _OpenBOR_3.0_6391.AppImage_ which is located inside the LINUX/OpenBOR folder. If you need an older engine for some specific game, then you may need to download an earlier release instead.
+
+Copy this file to the game directory and make it executable using the command `chmod +x OpenBOR_3.0_6391.AppImage`
+
+Using the same game example as for the Windows instructions above, the directory structure should look like the following:
+
+```
+~/ROMs/openbor/D&D - K&D - The Endless Quest LNS/
+~/ROMs/openbor/D&D - K&D - The Endless Quest LNS/Logs/
+~/ROMs/openbor/D&D - K&D - The Endless Quest LNS/Paks/
+~/ROMs/openbor/D&D - K&D - The Endless Quest LNS/Saves/
+~/ROMs/openbor/D&D - K&D - The Endless Quest LNS/ScreenShots/
+~/ROMs/openbor/D&D - K&D - The Endless Quest LNS/OpenBOR_3.0_6391.AppImage
+~/ROMs/openbor/D&D - K&D - The Endless Quest LNS/OpenBOR.exe
+```
+
+You can delete the OpenBOR.exe file since you don't need it, and it's recommended to rename the OpenBOR_3.0_6391.AppImage file to the name of the game, such as:
+
+```
+~/ROMs/openbor/D&D - K&D - The Endless Quest LNS/The Endless Quest.AppImage
+```
+
+Starting ES-DE and launching the game should now work fine, but a further improvement is to use the _directories interpreted as files_ functionality to display the game as a single entry instead of a directory. To accomplish this, simply rename the game directory to the same name as the .AppImage file, such as:
+
+```
+~/ROMs/openbor/The Endless Quest.AppImage/The Endless Quest.AppImage
+```
+
+Doing this will make the game show up as if it was a single file inside ES-DE and it can be included in automatic collections, custom collections and so on.
+
+#### M.U.G.E.N Game Engine
+
+This system is only available on Windows and these games are commonly shipped as self-contained units with both the game engine and game data. To add a M.U.G.E.N game to ES-DE, right click on the game's .exe file, select Create Shortcut_ followed by _Create Desktop Shortcut_. This will create a file with the .lnk extension which you should then move to the `~\ROMs\mugen` directory. Note that this setup is not portable, if you move your game files somewhere else you will need to manually update your shortcuts as these contain absolute paths.
+
+Neither ScreenScraper nor TheGamesDB support scraping of M.U.G.E.N games so you will need to manually enter metadata and add game media.
+
+#### EasyRPG Game Engine
+
+Both the EasyRPG RetroArch core, which is named _RPG Maker 2000/2003 (EasyRPG)_ in the RetroArch GUI, and the standalone EasyRPG Player are supported.
+
+Some Linux distributions ship with the standalone EasyRPG Player in the repository and on Ubuntu-based systems it's available as a Snap. But for some distributions it may need to be built from source code or manually downloaded. For these scenarios see the [Using manually downloaded emulators on Linux](USERGUIDE.md#using-manually-downloaded-emulators-on-linux) section of this guide.
+
+If using the RetroArch core you can either launch games compressed as .zip archives, or you can uncompress and rename them by adding .easyrpg to the directory name. The latter alternative is recommended.
+
+Using either approach, the games should go into the `~/ROMs/easyrpg` directory. This is all the setup required, and here's an example of what it could look like:
+
+```
+~/ROMs/easyrpg/Dreamscape.easyrpg/
+~/ROMs/easyrpg/The Chimera Report.zip
+```
+
+Setup for the standalone EasyRPG Player is identical with the exception that running games compressed as .zip files is not supported. So in this case the setup should look like the following:
+
+```
+~/ROMs/easyrpg/Dreamscape.easyrpg/
+~/ROMs/easyrpg/The Chimera Report.easyrpg/
+```
+
+#### PICO-8
+
+PICO-8 Fantasy Console is a game engine developed by [Lexaloffle Games](https://www.lexaloffle.com/pico-8.php) that you need to buy a license to use. Doing so will provide you with download links to releases for Linux, macOS and Windows. Make sure to use the 64-bit release as the 32-bit release reportedly has some technical issues. On macOS and Windows the installation is straightforward, but on Linux you need to place PICO-8 in a location recognized by ES-DE. See the [Using manually downloaded emulators on Linux](USERGUIDE.md#using-manually-downloaded-emulators-on-linux) section of this guide for more details.
+
+After the emulator has been installed you are ready to add some games. There are two ways to play games using PICO-8, either to add them to ES-DE as for any other system, or using the built-in Splore tool to explore and run games all through the PICO-8 user interface.
+
+For the first approach you can download games from the [PICO-8 forum](https://www.lexaloffle.com/bbs/?cat=7) and these are quite uniquely distributed as .png images. You just download these and place them inside the ~/ROMs/pico8 directory, for example:
+```
+~/ROMs/pico8/c_e_l_e_s_t_e-0.p8.png
+~/ROMs/pico8/xzero-3.p8.png
+```
+
+After this you just launch them like any regular game. You can also scrape many of these games using ScreenScraper, but you will need to refine the game names in most instances since most have filenames that the scraper service won't recognize. It's therefore recommended to run the scraper in interactive mode for these games or to scrape them one by one from the metadata editor.
+
+The second alternative for playing PICO-8 games is to run Splore to browse and launch games from inside the game engine user interface. To do this, first add a dummy game file to the `ROMs/pico8` directory. It can be named anything but `splore.png` is recommended. The file content doesn't matter, it can even be an empty file. Following this, change to the alternative emulator _PICO-8 Splore (Standalone)_ for this specific entry using the metadata editor. If you now launch the file, you will be brought straight to the Splore browser inside PICO-8.
+
+This is what the complete setup could look like:
+```
+~/ROMs/pico8/c_e_l_e_s_t_e-0.p8.png
+~/ROMs/pico8/splore.png
+~/ROMs/pico8/xzero-3.p8.png
+```
+
+#### Apple II
+
+On Unix/Linux the default emulator for the apple2 system is [LinApple](http://linapple.sourceforge.net) and on Windows it's [AppleWin](https://github.com/AppleWin/AppleWin). Additionally the alternative emulators [Mednafen](https://mednafen.github.io) and [MAME](https://www.mamedev.org) standalone are supported. On macOS there is a port of AppleWin available named [Mariani](https://github.com/sh95014/AppleWin) but it appears broken at the moment as it does not accept any command line parameters. So instead only Mednafen and MAME are supported on macOS.
+
+Depending on which Unix/Linux operating system you're using, LinApple may not be readily available and you may have to build it from source code or obtain a binary from somewhere on the Internet. See the [Using manually downloaded emulators on Linux](USERGUIDE.md#using-manually-downloaded-emulators-on-linux) section of this guide for more details on where it needs to be installed. If you're using an OS with access to the AUR, such as Arch or Manjaro, then LinApple is available there. Note that you need to use the _linapple-git_ package as the regular _linapple_ package does not work correctly.
+
+Once the LinApple or AppleWin emulator is installed no additional configuration is required, just drop your games into the ~/ROMs/apple2 folder and launch them from inside ES-DE.
+
+If using Mednafen you need to place some Apple II ROM files in the emulator firmware directory, refer to the Mednafen documentation for details about this.
+
+If you want to use MAME standalone then you need to place the following ROM files in the ~/ROMs/apple2 directory:
+```
+a2diskiing.zip
+apple2e.zip
+d2fdc.zip
+votrax.zip
+```
+
+Note that you may also need to reconfigure your exit key in MAME as the default _escape_ key is masked as it's used by the emulated Apple II computer.
+
+#### Apple IIGS
+
+The Apple IIGS computer is emulated using MAME. There is a dedicated emulator available for this system named [GSplus](https://apple2.gs/plus) but it appears to not be able to parse command line parameters correctly so disk images can't be supplied to it. As such it's currently unsupported.
+
+In order to run Apple IIGS games in MAME, you need to place the following ROM file in the ~/ROMs/apple2gs directory:
+```
+apple2gs.zip
+```
+
+Note that you may also need to reconfigure your exit key in MAME as the default _escape_ key is masked as it's used by the emulated Apple IIGS computer.
+
+#### Apple Macintosh
+
+The macintosh system uses the Basilisk II emulator for older Macintosh II and Quadra computers and SheepShaver for more modern PowerPC-based models.
+
+Emulation for this system works quite differently than other platforms as it's not possible to launch games individually from ES-DE. Instead ES-DE only acts as a game browser which simply launches the emulator. The game then needs to be manually started from inside Mac OS.
+
+As for how to setup the Basilisk II emulator the following YouTube video is a good resource:
+
+https://www.youtube.com/watch?v=QSWWZ4hkvVk
+
+Once the emulator is up and running and you can boot into Mac OS 7 or 8 you need to install your games. These are commonly distributed with the .sit file extension which are compressed archives in the proprietary StuffIt Expander format. You should uncompress these files inside the emulator or otherwise you will very likely run into problems with running your games. This is also covered in the YouTube video.
+
+As for game locations it's possible to uncompress the games inside the ~/ROMs/macintosh folder and mount this inside the emulator, but this is not recommended. It's instead better to create a _Games_ folder or similar inside Mac OS and place your installed games there.
+
+The setup of SheepShaver is essentially identical to that of Basilisk II as these two emulators are developed by the same team and are therefore very similar.
+
+On macOS you need to download the separate Basilisk II GUI application to configure the emulator and with SheepShaver you need to start the emulator using a command line option to point to a valid ROM file. Only then can you reach the Preferences from the menu (this is however only needed the first time you setup SheepShaver). Quite a strange and unusual approach.
+
+To add a game entry in ES-DE just create an empty file with the .game extension, for example `Marathon.game`. This entry can then be scraped and edited in the same way as any regular system. But as mentioned above, ES-DE will only act as a browser and individual games cannot be started directly. So when you launch a game, the emulator will boot into the Mac OS desktop and you will have to manually navigate to your game folder to run the game.
+
+To launch a game entry using SheepShaver instead of Basilisk II you just need to select the alternative emulator _SheepShaver (Standalone)_.
+
+This is an example of what the game setup could look like:
+```
+~/ROMs/macintosh/Marathon.game
+~/ROMs/macintosh/Marathon 2.game
+~/ROMs/macintosh/Prince of Persia.game
+```
+
+Note that scraper support is currently very poor for this system, so you may need to manually add images and information for your games. It's encouraged to support ScreenScraper and TheGamesDB by contributing game media and metadata so this situation improves over time.
+
+#### Tandy TRS-80
+
+Tandy Corporation made the somewhat dumb decision of naming several unrelated computers as TRS-80 which has caused decades of confusion. The _Tandy TRS-80_ system in ES-DE emulates the original black-and-white TRS-80 Model I. If you want to emulate the TRS-80 Color Computer then you'll want to use the _Tandy Color Computer_ system instead.
+
+The TRS-80 is emulated using [sdl2trs](https://gitlab.com/jengun/sdltrs) which is available for Unix/Linux and Windows, seemingly there is no macOS port. If you use a Debian-based Linux distribution there is a .deb package made by the developers and if you're using an Arch-based distribution you can install it using the AUR. For other distributions you may have to build from source code or download a pre-built binary from some other location.  See the [Using manually downloaded emulators on Linux](USERGUIDE.md#using-manually-downloaded-emulators-on-linux) section of this guide for more details on where sdl2trs will need to be installed in that case.
+
+On Windows only the 64-bit release of the emulator is supported, with the filename `sdl2trs64.exe`.
+
+The setup requires the files `level2.rom` and `boot.dsk` to be placed in the root of the `~/ROMs/trs-80` directory. Note that both filenames are case sensitive. The boot.dsk file has to be a copy of one of the supported DOS operating systems for the TRS-80, but _NewDos/80 v2.0_ is recommended.
+
+The setup in ES-DE supports three types of game files:
+* Diskette images (.dsk extension) that have to be accessed via DOS
+* Diskette images (.dsk extension) that can be booted directly
+* Direct launch of program files (.cmd extension)
+
+These modes are executed using three separate emulator entries, so you will need to change to either of the alternative emulator entries if you want to use option two or three above.
+
+Most games and software needs to be executed via the DOS operating system so in most instances you should leave the emulator set to _sdl2trs DOS Diskette (Standalone)_. In this case the DOS operating system on the boot.dsk diskette image will be inserted into the first virtual floppy drive and automatically loaded. The launched .dsk image will be in the second drive. No automatic startup of the content of this diskette will take place, instead you need to run the game file manually. You can use the DIR command to see a listing of files on the diskette, and you simply run any CMD file by typing its name, for instance ZORK2. Running BASIC games require additional commands but that is beyond the scope of this document, there are many resources available online on how to use the TRS-80 computer.
+
+To instead run a bootable floppy image you need to change to the alternative emulator entry _sdl2trs Bootable Diskette (Standalone)_. Launching such a diskette image will insert it into the first virtual floppy drive and automatically load the game.
+
+The third option requires the _sdl2trs CMD File (Standalone)_ emulator entry. In the same manner as a bootable diskette image, the game file with the .cmd extension will be automatically loaded when launched.
+
+There is no scraper support specifically for the TRS-80, instead these games will be scraped as TRS-80 Color Computer (also known as Tandy Color Computer) which is likely highly inaccurate.
+
+Here's what a complete setup could look like:
+```
+~/ROMs/trs-80/boot.dsk
+~/ROMs/trs-80/level2.rom
+~/ROMs/trs-80/palace.cmd
+~/ROMs/trs-80/zaxxon.dsk
+~/ROMs/trs-80/zork1.dsk
+~/ROMs/trs-80/zork2.dsk
+```
+
+#### Tandy Color Computer
+
+This computer (which is confusingly also known as _TRS-80 Color Computer_ even though it's a completely different machine than the _TRS-80_) is emulated using the [XRoar](http://www.6809.org.uk/xroar) emulator.
+
+This emulator is available for Unix/Linux, macOS and Windows, although on Linux you may need to build it from source code depending on which distribution you're using. Refer to the XRoar website for more information. If you manually download or build the emulator yourself then see the [Using manually downloaded emulators on Linux](USERGUIDE.md#using-manually-downloaded-emulators-on-linux) section of this guide for more details on where you need to install it.
+
+In order for XRoar to work correctly you need the ROM files `bas13.rom`, `disk11.rom` and `extbas11.rom`. Even without these files the emulator will probably start, but you will likely see random character on screen and few if any games will run correctly. On Unix/Linux these files need to be placed into the `~/.xroar/roms` directory and on macOS you need to place them in `~/Library/XRoar/roms`. Note that neither of these directories are automatically created by the emulator so you need to create them yourself. On Windows you simply place the ROM files into the emulator installation directory next to the xroar.exe binary.
+
+Following this setup there is not much to it, launching a cartridge or cassette image file will automatically run the game. If launching a diskette image you will probably need to manually run the game file from inside the emulated operating system. Such commands are beyond the scope of this document, but the following [quick reference PDF](https://colorcomputerarchive.com/repo/Documents/Manuals/Hardware/Color%20Computer%20Disk%20System%20-%20Quick%20Reference%20Guide%20(Tandy).pdf) provides a good command overview.
+
+There is also excellent emulator documentation available at the [XRoar website](http://www.6809.org.uk/xroar/doc/xroar.shtml).
+
+Two emulator entries are available for this system, _XRoar CoCo 2 NTSC (Standalone)_ and _XRoar CoCo 2 PAL (Standalone)_ which should hopefully be self-explanatory.
+
+#### Dragon 32 and Tano Dragon
+
+These computers as well as the Dragon 64 are slight varations of the Tandy Color Computer and as these machines are largely compatible with each other they're all emulated using the [XRoar](http://www.6809.org.uk/xroar) emulator.
+
+This emulator is available for Unix/Linux, macOS and Windows, although on Linux you may need to build it from source code depending on which distribution you're using. Refer to the XRoar website for more information. If you manually download or build the emulator yourself then see the [Using manually downloaded emulators on Linux](USERGUIDE.md#using-manually-downloaded-emulators-on-linux) section of this guide for more details on where you need to install it.
+
+In order to emulate the Dragon 32 you need the ROM file `d32.rom` and to emulate the Dragon 64 or Tano Dragon you need the `d64rom1.rom` and `d64rom2.rom` files. It's unclear whether `ddos10.rom` will also be needed for some games and applications. Even without these files the emulator will probably start, but you will likely see random character on screen and few if any games will run correctly. On Unix/Linux these files need to be placed into the `~/.xroar/roms` directory and on macOS you need to place them in `~/Library/XRoar/roms`. Note that neither of these directories are automatically created by the emulator so you need to create them yourself. On Windows you simply place the ROM files into the emulator installation directory next to the xroar.exe binary.
+
+Following this setup there is not much to it, launching a cartridge or cassette image file will automatically run the game.
+
+For the dragon32 system you can switch to emulating the Dragon 64 model by selecting the alternative emulator _XRoar Dragon 64 (Standalone)_.
+
+#### Tangerine Computer Systems Oric
+
+These games are executed using the Oricutron emulator which is readily available on Windows but quite problematic to get hold on for Unix and macOS.
+
+Although there is a macOS build available at the Oricutron [download page](http://www.petergordon.org.uk/oricutron/) this seems to not work properly, or it's unclear how it should be used. As such this system is unsupported on macOS, but the configuration entries still exist in the bundled es_find_rules.xml and es_systems.xml files so if you manage to get the emulator to run, ES-DE should work with these games.
+
+Likewise on Unix there seems to be no binaries available for download so you need to build the emulator yourself. As multiple files like images and roms are needed to run this emulator, it's easiest to download and extract the Windows version which contains all this data and then build from source code and simply copy over the `Oricutron` binary (example below using Ubuntu):
+
+```
+mkdir -p ~/Applications/oricutron
+cp Oricutron_win32_v12.zip ~/Applications/oricutron
+cd ~/Applications/oricutron
+unzip Oricutron_win32_v12.zip
+sudo apt install libgtk-3-dev libsdl1.2-dev
+git clone https://github.com/pete-gordon/oricutron.git
+cd oricutron
+cmake .
+make -j
+cp Oricutron ..
+```
+
+Once the emulator is up and running there is not really much else to consider, simply drop the games into the ~/ROMs/oric directory and launch them.
+
+#### Bally Astrocade
+
+Place the ROMs in the `~/ROMs/astrocde` directory, the files must have the short MAME names such as _astrobat.zip_ and _conan.zip_. If using MAME standalone then no further setup is required and the games should just launch.
+
+If instead using the _MAME - Current_ RetroArch core, then a hash file must be added inside the RetroArch system directory at this location:
+
+```
+mame/hash/astrocde.xml
+```
+
+The hash file is available from the MAME GitHub repository: \
+https://raw.githubusercontent.com/mamedev/mame/master/hash/astrocde.xml
+
+#### Texas Instruments TI-99
+
+The TI-99 is emulated via MAME, and only the standalone release of this emulator is supported. Unfortunately it seems as if the Homebrew build on macOS is broken as no TI-99 games can be launched. As such this system is unsupported on macOS, but the configuration entries still exist in the bundled es_find_rules.xml and es_systems.xml files so if you manage to get the emulator to run, ES-DE should work with these games.
+
+Emulating the TI-99 can be quite confusing as games are available in various incompatible formats, and most emulators are particular when it comes to what file types they support. In ES-DE only cartridge-based games are supported, so you can't for instance play games distributed as floppy disk images. And only games packaged for MAME using the MAME short name standard can be used. This includes .7z and .zip files as well as .rpk cartridge images. It's strongly recommended to go for the MAME TI-99 ROM set that consists only of .zip files as these have the highest chance of working correctly.
+
+In addition to the game files you need the `ti99_4a.zip` archive which contains the TI-99 system ROMs. This file has to be placed in the root of the `~/ROMs/ti99` directory.
+
+Note that you may also need to reconfigure your exit key in MAME as the default _escape_ key is masked as it's used by the emulated TI-99 computer.
+
+Scraping can also be a bit challenging as MAME short names are used and neither ScreenScraper nor TheGamesDB can parse these names. So it's recommended to run the scraper in interactive mode and refine the searches for all games that are not properly identified.
 
 ## Scraping
 
@@ -1226,24 +1804,24 @@ Apart from this, hopefully the scraping process should be self-explanatory.
 
 If you already have a library of game media (images and videos) you can manually copy these files into ES-DE.
 
-The default media directory is `~/.emulationstation/downloaded_media/<game system>/<media type>`
+The default media directory is `~/.emulationstation/downloaded_media/<system name>/<media type>`
 
-For example on Unix:
+This directory can however be changed using the _Game media directory_ setting in the _Other settings_ menu so make sure to check this setting before attempting to follow the instructions below. If the setting is blank, then the default directory is in use.
+
+See the [Supported game systems](USERGUIDE.md#supported-game-systems) table at the bottom of this guide for a list of all system names.
+
+An example on Unix:
 ```
 /home/myusername/.emulationstation/downloaded_media/c64/screenshots/
 ```
 
-For example on macOS:
+An example on macOS:
 
 ```
 /Users/myusername/.emulationstation/downloaded_media/c64/screenshots/
 ```
 
-For example on Windows:
-
-```
-C:\Users\Myusername\.emulationstation\downloaded_media\c64\screenshots\
-```
+An example on Windows:
 
 The media directories per game system are:
 
@@ -1294,7 +1872,7 @@ It's possible to change the game media directory location from within ES-DE, for
 
 ## Main menu
 
-This menu can be accessed from both the system view and gamelist view. It contains the scraper, application settings and various tools such as the input configurator and the miximage generator. Settings are saved when navigating back from any menu screen, assuming at least one setting was changed. Pressing the application exit key (F4 by default) will also save any pending changes.
+This menu can be accessed from both the system view and gamelist view. It contains the scraper, application settings and various tools such as the input configurator and the miximage generator. Settings are saved when navigating back from any menu screen, assuming at least one setting was changed. Using the keyboard quit shortcut (Alt + F4 / Command + Q by default) will also save any pending changes.
 
 ![alt text](images/es-de_main_menu.png "ES-DE Main Menu")
 _The main menu with its multiple submenus._
@@ -1495,6 +2073,10 @@ Enabling this option causes folders themselves to be included by the scraper. Th
 **Convert underscores to spaces when searching**
 
 With this option enabled underscores _ in game names are converted to spaces when performing scraper searches. This affects both the single-game scraper and the multi-scraper and it will also be applied automatically to the _Refine search_ dialog.
+
+**Enable fallback to additional regions** _(ScreenScraper only)_
+
+When a certain game media file does not exist for the selected region, ES-DE automatically performs a fallback to the regions _world_, _USA_, _Japan_, _EU_, and _custom_ in this specific order. If this setting is enabled then an additional fallback is performed to all other country-specific regions. This makes it possible to scrape media for some games only released in specific countries like Brazil or South Korea. It may also make it possible to scrape some game media that have been uploaded to ScreenScraper using the wrong region. The special _ss/ScreenScraper_ region is also enabled via this option, and among other things it contains media for games that never had official releases. This is relevant for instance for OpenBOR and PICO-8 games where 3D boxes and other images may become available. The drawback of this setting is that you may get inaccurate data such as box art in the wrong language or unofficial box art for arcade games, so you may want to experiment with this option on a per-system basis.
 
 **Auto-retry on peer verification errors** _(ScreenScraper only)_
 
@@ -1747,7 +2329,7 @@ This setting gives the ability to choose between the controller types _Xbox, Xbo
 
 **Only accept input from first controller**
 
-If enabling this option, only the first controller detected during startup will send its input to ES-DE (the keyboard input is unaffected by this setting and will be enabled regardless). This is a good way to limit potential chaos with multiple persons fighting over which games to start. Disconnecting and reconnecting controllers while ES-DE is running may change what is considered the first controller. This setting does not affect the emulators in any way, it's only applied to ES-DE.
+If enabling this option, only the first controller detected during startup will send its input to ES-DE (the keyboard input is unaffected by this setting and will be enabled regardless). This is a good way to limit potential chaos with multiple persons fighting over which games to play. Note that disconnecting and reconnecting controllers while ES-DE is running may change what is considered the first controller. This setting does not affect the emulators in any way, it's only applied to ES-DE. Another issue is that some wireless controllers have buggy drivers and will register as two devices, meaning all button presses will be registered twice inside ES-DE. Using this option is one solution to the problem, although it's also possible to blacklist the extra controller entry, as described [here](INSTALL.md#adding-custom-controller-profiles).
 
 **Configure keyboard and controllers**
 
@@ -1820,9 +2402,9 @@ The amount of video RAM to use for the application. Defaults to 256 MiB (184 MiB
 
 This option sets the display to use for ES-DE for multi-monitor setups. The possible values are the monitor index numbers 1, 2, 3 or 4. If a value is set here for a display that does not actually exist, then ES-DE will set it to 1 upon startup. Index 1 is the primary display for the computer. It's also possible to override the setting by passing the --display command line argument. Doing so will also overwrite the display index setting in es_settings.xml. The Display/monitor index option only changes the display used by ES-DE; the emulators need to be configured separately (which can easily be done globally if using RetroArch).
 
-**Exit button combo**
+**Keyboard quit shortcut**
 
-This gives the choice of which key combination to use to close the application. The default value is F4, but this can be changed to Alt + F4 on all operating systems. Additionally on macOS the Command + Q combination is selectable and on all other operating systems Alt + Q is selectable instead. Note that on Windows and most window managers on Unix/Linux, Alt + F4 will close the application regardless of the selected option as that key combination is a default which can't be restricted by ES-DE. Similarly on macOS, Command + Q always closes the application, so selecting this combination simply disables the previously selected exit button.
+This gives the choice of which key combination to use to quit the application. The default value is Alt + F4 on Windows and Linux and Command + Q on macOS. Other possible values are Ctrl + Q, Alt + Q and F4 but selecting either of these alternatives will not disable the default quit shortcut as that's implemented globally by the operating system.
 
 **When to save game metadata**
 
@@ -1864,9 +2446,9 @@ It's possible to trigger custom scripts for a number of actions in ES-DE, as is 
 
 If enabled, only ROMs that have metadata saved to the gamelist.xml files will be shown in ES-DE. This option is intended primarily for testing and debugging purposes so it should normally not be enabled.
 
-**Disable desktop composition (requires restart)** _(Unix only)_
+**Disable desktop composition (requires restart)** _(Unix and X11/Xorg only)_
 
-The window manager desktop composition can adversely affect the framerate of ES-DE, especially on weaker graphics cards and when running at higher resolution. As such the desktop compositor is disabled by default, although the window manager has to be configured to allow applications to do this for the option to have any effect. Note that this setting can cause problems with some graphics drivers (notably the Nvidia proprietary drivers) so if you see strange flickering and similar after quitting ES-DE, then disable the setting. In case of such issues, make sure that the emulator is also not blocking the composition (e.g. RetroArch has a corresponding option).
+The window manager desktop composition can adversely affect the framerate of ES-DE, especially on weaker graphics cards and when running at higher resolution. As such the desktop compositor is disabled by default, although the window manager has to be configured to allow applications to do this for the option to have any effect. Note that this setting can cause problems with some graphics drivers (notably the Nvidia proprietary drivers) so if you see strange flickering and similar after quitting ES-DE, then disable the setting. In case of such issues, make sure that the emulator is also not blocking the composition (e.g. RetroArch has a corresponding option). This setting has no effect if using Wayland, it only applies to X11/Xorg.
 
 **Display GPU statistics overlay**
 
@@ -2005,7 +2587,7 @@ This is the name that will be shown when browsing the gamelist. If no sortname h
 
 **Sortname** _(files only)_
 
-This entry makes it possible to change the sorting of a game without having to change its name. For instance it can be used to sort _Mille Miglia_ as _1000 Miglia_ or _The Punisher_ as _Punisher, The_. Note that the _Jump to..._ quick selector on the game options menu will base its index on the first character of the sortname if it exists for a game, which could be slightly confusing in some instances when quick jumping in the gamelist.
+This entry makes it possible to change the sorting of a game without having to change its name. For instance it can be used to sort _Mille Miglia_ as _1000 Miglia_ or _The Punisher_ as _Punisher, The_. Note that the _Jump to..._ quick selector on the game options menu will base its index on the first character of the sortname if it exists for a game, which could be slightly confusing in some instances when quick jumping in the gamelist. Also note that this entry only applies if the sort order has been set to _Filename, Ascending_ or _Filename, Descending_.
 
 **Description**
 
@@ -2199,7 +2781,7 @@ If you're migrating from a previous version of EmulationStation that has absolut
 
 ## Themes
 
-ES-DE is fully themeable, and although the application ships with the comprehensive rbsimple-DE and modern-DE theme sets, you can use any RetroPie-compatible EmulationStation themes as well. Just be aware that ES-DE has added additional theme functionality compared to the RetroPie fork and more still will be added in future versions. This means that you may not get the full benefits of the application if you're using a theme set which has not been updated specifically for ES-DE. Some themes may also look slightly different as bugs that were present in the RetroPie fork have been fixed. Also note that most Batocera and Recalbox themes are not compatible as these forks are quite different.
+ES-DE is fully themeable, and although the application ships with the comprehensive rbsimple-DE and modern-DE theme sets, you can use most RetroPie-compatible EmulationStation themes as well. Just be aware that ES-DE has added additional theme functionality compared to the RetroPie fork and more still will be added in future versions. This means that you may not get the full benefits of the application if you're using a theme set which has not been updated specifically for ES-DE. Some themes may also look slightly different as bugs that were present in the RetroPie fork have been fixed. Also note that most Batocera and Recalbox themes are not compatible as these forks are quite different.
 
 As a side comment, the terms _theme_ and _theme set_ are both used when talking about theming. The technically correct term for what you apply to the application to achieve a different look is a _theme set_ as it's a collection of a number of themes for a number of game systems. But in practice it doesn't matter as both terms refer to the same thing and the terms are used interchangeably in this guide.
 
@@ -2242,7 +2824,7 @@ See the [INSTALL.md](INSTALL.md#command-line-options) document for a list of the
 
 Note as well that the list and corresponding es_systems.xml templates may not reflect what is readily available for all supported operating system. This is especially true on Unix/Linux if installing RetroArch via the OS repository instead of using the Snap or Flatpak distributions (or compiling from source code) as the repository versions are normally quite crippled.
 
-The column **System name** corresponds to the directory where you should put your game files, e.g. `~/ROMs/c64` or `~/ROMs/megadrive`. This follows the RetroPie naming convention, with some additions for systems that are not supported on RetroPie. So if migrating from Batocera or Recalbox, check this carefully and rename your system folders as required or ES-DE will not be able to find your games.
+The column **System name** corresponds to the directory where you should put your game files, e.g. `~/ROMs/c64` or `~/ROMs/megadrive`. This mostly follows the RetroPie naming convention so if migrating from Batocera or Recalbox then check this carefully and rename your system folders as required or ES-DE will not be able to find your games.
 
 Regional differences are handled by simply using the game system name corresponding to your region. For example for Sega Mega Drive, _megadrive_ would be used by most people in the world, although persons from North America would use _genesis_ instead. The same is true for _pcengine_ vs _tg16_ etc. This only affects the theme selection and the corresponding theme graphics, the same emulator and scraper settings are still used for the regional variants although that can of course be customized in the es_systems.xml file if you wish.
 
@@ -2268,8 +2850,6 @@ There are also other MAME forks and derivates available such as MAME4ALL, Advanc
 
 In general .zip or .7z files are recommended for smaller-sized games like those from older systems (assuming the emulator supports it). But for CD-based systems it's not a good approach as uncompressing the larger CD images takes quite some time, leading to slow game launches. As explained above, converting CD images to CHD files is a better solution for achieving file compression while still enjoying fast game launches.
 
-Consider the table below a work in progress as it's obvioulsy not fully populated yet!
-
 Default emulator/Alternative emulators columns: \
 **[U]**: Unix, **[M]**: macOS, **[W]**: Windows, **[W\*]**: Windows, needs to have a Path environment variable entry (not applicable if using the portable ES-DE release)
 
@@ -2280,25 +2860,24 @@ The **@** symbol indicates that the emulator is _deprecated_ and will be removed
 | System name           | Full name                                      | Default emulator                  | Alternative emulators             | Needs BIOS   | Recommended game setup               |
 | :-------------------- | :--------------------------------------------- | :-------------------------------- | :-------------------------------- | :----------- | :----------------------------------- |
 | 3do                   | 3DO                                            | Opera                             |                                   | Yes          |                                      |
-| 64dd                  | Nintendo 64DD                                  | Mupen64Plus-Next [UW],<br>ParaLLEl N64 [M] | ParaLLEl N64 [UW],<br>Mupen64Plus **(Standalone)** [UMW*],<br>sixtyforce **(Standalone)** [M] |              |                                      |
-| ags                   | Adventure Game Studio Game Engine              | _Placeholder_                     |                                   |              |                                      |
-| amiga                 | Commodore Amiga                                | PUAE                              | PUAE 2021                         | Yes          | WHDLoad hard disk image in .hdf or .hdz format in root folder, or diskette image in .adf format in root folder if single-disc, or in separate folder with .m3u playlist if multi-disc |
-| amiga600              | Commodore Amiga 600                            | PUAE                              | PUAE 2021                         | Yes          | WHDLoad hard disk image in .hdf or .hdz format in root folder, or diskette image in .adf format in root folder if single-disc, or in separate folder with .m3u playlist if multi-disc |
-| amiga1200             | Commodore Amiga 1200                           | PUAE                              | PUAE 2021                         | Yes          | WHDLoad hard disk image in .hdf or .hdz format in root folder, or diskette image in .adf format in root folder if single-disc, or in separate folder with .m3u playlist if multi-disc |
+| ags                   | Adventure Game Studio Game Engine              | _Native game binaries_            |                                   | No           | Shortcut (.desktop/.app/.lnk) file in root folder  |
+| amiga                 | Commodore Amiga                                | PUAE                              | PUAE 2021                         | Yes          | See the specific _Commodore Amiga_ section elsewhere in this guide |
+| amiga1200             | Commodore Amiga 1200                           | PUAE                              | PUAE 2021                         | Yes          | See the specific _Commodore Amiga_ section elsewhere in this guide |
+| amiga600              | Commodore Amiga 600                            | PUAE                              | PUAE 2021                         | Yes          | See the specific _Commodore Amiga_ section elsewhere in this guide |
 | amigacd32             | Commodore Amiga CD32                           | PUAE                              | PUAE 2021                         | Yes          |                                      |
-| amstradcpc            | Amstrad CPC                                    | Caprice32                         | CrocoDS                           |              |                                      |
-| android               | Google Android                                 | _Placeholder_                     |                                   |              |                                      |
-| apple2                | Apple II                                       | _Placeholder_                     |                                   |              |                                      |
-| apple2gs              | Apple IIGS                                     | _Placeholder_                     |                                   |              |                                      |
-| arcade                | Arcade                                         | MAME - Current                    | MAME 2010,<br>MAME 2003-Plus,<br>MAME 2000,<br>MAME **(Standalone)** [UMW*],<br>FinalBurn Neo,<br>FB Alpha 2012,<br>Flycast,<br>Flycast **(Standalone)** [UMW*],<br>Model 2 Emulator **(Standalone)** [W*],<br>Supermodel **(Standalone)** [W*] | Depends      | Single archive file following MAME name standard in root folder |
-| astrocde              | Bally Astrocade                                | MAME - Current                    | MAME **(Standalone)** [UMW*]      |              | Single archive in root folder        |
+| amstradcpc            | Amstrad CPC                                    | Caprice32                         | CrocoDS                           | No           |                                      |
+| android               | Google Android                                 | BlueStacks **(Standalone)** [W]   |                                   | No           | Shortcut (.lnk) file in root folder  |
+| apple2                | Apple II                                       | LinApple **(Standalone)** [U],<br>Mednafen **(Standalone)** [M],<br>AppleWin **(Standalone)** [W*] | Mednafen **(Standalone)** [UW*],<br>MAME **(Standalone)** [UMW*] | Yes for Mednafen and MAME | See the specific _Apple II_ section elsewhere in this guide |
+| apple2gs              | Apple IIGS                                     | MAME **(Standalone)** [UMW*]      |                                   | Yes          | See the specific _Apple IIGS_ section elsewhere in this guide |
+| arcade                | Arcade                                         | MAME - Current                    | MAME 2010,<br>MAME 2003-Plus,<br>MAME 2000,<br>MAME **(Standalone)** [UMW*],<br>FinalBurn Neo,<br>FB Alpha 2012,<br>Flycast,<br>Flycast **(Standalone)** [UMW*],<br>Kronos [UW],<br>Model 2 Emulator **(Standalone)** [W*],<br>Model 2 Emulator [Suspend ES-DE] **(Standalone)** [W*],<br>Supermodel **(Standalone)** [W*] | Depends      | See the specific _Arcade and Neo Geo_ section elsewhere in this guide |
+| astrocde              | Bally Astrocade                                | MAME - Current                    | MAME **(Standalone)** [UMW*]      |              | See the specific _Bally Astrocade_ section elsewhere in this guide |
 | atari2600             | Atari 2600                                     | Stella                            | Stella 2014                       | No           | Single archive or ROM file in root folder |
-| atari5200             | Atari 5200                                     | a5200                             | Atari800                          | Yes          |                                      |
+| atari5200             | Atari 5200                                     | a5200                             | Atari800,<br>Atari800 **(Standalone)** [UMW*] | Yes          |                                      |
 | atari7800             | Atari 7800 ProSystem                           | ProSystem                         |                                   | Yes          |                                      |
 | atari800              | Atari 800                                      | Atari800                          | Atari800 **(Standalone)** [UMW*]  | No           |                                      |
 | atarijaguar           | Atari Jaguar                                   | Virtual Jaguar                    |                                   | No           |                                      |
 | atarijaguarcd         | Atari Jaguar CD                                | Virtual Jaguar                    |                                   |              |                                      |
-| atarilynx             | Atari Lynx                                     | Handy                             | Beetle Lynx                       |              |                                      |
+| atarilynx             | Atari Lynx                                     | Handy                             | Beetle Lynx,<br>Mednafen **(Standalone)** [UMW*] |              |                                      |
 | atarist               | Atari ST [also STE and Falcon]                 | Hatari                            |                                   |              |                                      |
 | atarixe               | Atari XE                                       | Atari800                          | Atari800 **(Standalone)** [UMW*]  | No           |                                      |
 | atomiswave            | Atomiswave                                     | Flycast                           | Flycast **(Standalone)** [UMW*]   |              |                                      |
@@ -2309,117 +2888,129 @@ The **@** symbol indicates that the emulator is _deprecated_ and will be removed
 | cdtv                  | Commodore CDTV                                 | PUAE                              | PUAE 2021                         | Yes          |                                      |
 | chailove              | ChaiLove Game Engine                           | ChaiLove                          |                                   |              |                                      |
 | channelf              | Fairchild Channel F                            | FreeChaF                          |                                   |              |                                      |
-| coco                  | Tandy Color Computer                           | _Placeholder_                     |                                   |              |                                      |
+| coco                  | Tandy Color Computer                           | XRoar CoCo 2 NTSC **(Standalone)** [UMW*] | XRoar CoCo 2 PAL **(Standalone)** [UMW*] | Yes           | See the specific _Tandy Color Computer_ section elsewhere in this guide |
 | colecovision          | ColecoVision                                   | blueMSX                           | Gearcoleco                        |              |                                      |
+| cps                   | Capcom Play System                             | MAME - Current                    | MAME 2010,<br>MAME 2003-Plus,<br>MAME 2000,<br>MAME **(Standalone)** [UMW*],<br>FinalBurn Neo,<br>FB Alpha 2012,<br>FB Alpha 2012 CPS-1,<br>FB Alpha 2012 CPS-2,<br>FB Alpha 2012 CPS-3 | Depends      | See the specific _Arcade and Neo Geo_ section elsewhere in this guide |
 | daphne                | Daphne Arcade LaserDisc Emulator               | Hypseus [Daphne] **(Standalone)** [UW*] | Hypseus [Singe] **(Standalone)** [UW*] | Yes (Daphne games) | See the specific _Hypseus Singe (Daphne)_ section elsewhere in this guide |
-| desktop               | Desktop Applications                           | N/A                               |                                   | No           |                                      |
-| doom                  | Doom                                           | PrBoom                            |                                   |              |                                      |
-| dos                   | DOS (PC)                                       | DOSBox-Pure                       | DOSBox-Core,<br>DOSBox-SVN,<br>DOSBox-X **(Standalone)**,<br>DOSBox Staging **(Standalone)** [UMW*] | No           | In separate folder (one folder per game with complete file structure retained) |
-| dragon32              | Dragon 32                                      | _Placeholder_                     |                                   |              |                                      |
+| desktop               | Desktop Applications                           | _Suspend ES-DE_                   | _Keep ES-DE running_              |              | See the specific _Ports and desktop applications_ section elsewhere in this guide |
+| doom                  | Doom                                           | PrBoom                            | Boom 3 [UW],<br>Boom 3 xp [UW],<br>_Shortcut or script_ | No           |                                      |
+| dos                   | DOS (PC)                                       | DOSBox-Pure                       | DOSBox-Core,<br>DOSBox-SVN,<br>DOSBox-X **(Standalone)**,<br>DOSBox Staging **(Standalone)** [UMW*] | No           | See the specific _DOS / PC_ section elsewhere in this guide |
+| dragon32              | Dragon 32                                      | XRoar Dragon 32 **(Standalone)**  | XRoar Dragon 64 **(Standalone)**  | Yes          | See the specific _Dragon 32 and Tano Dragon_ section elsewhere in this guide |
 | dreamcast             | Sega Dreamcast                                 | Flycast                           | Flycast **(Standalone)** [UMW*],<br>Redream **(Standalone)** [UMW*]   | No           | In separate folder                   |
-| epic                  | Epic Games Store                               | Epic Games Store application **(Standalone)** |                       | No           | Shell script/batch file in root folder |
-| famicom               | Nintendo Family Computer                       | Mesen                             | Nestopia UE,<br>Nestopia UE **(Standalone)** [U],<br>FCEUmm,<br>QuickNES | No           | Single archive or ROM file in root folder |
+| easyrpg               | EasyRPG Game Engine                            | EasyRPG                           | EasyRPG Player **(Standalone)** [UMW*] | No           | See the specific _EasyRPG Game Engine_ section elsewhere in this guide |
+| epic                  | Epic Games Store                               | Epic Games Store application **(Standalone)** |                       | No           | Shortcut in root folder |
+| famicom               | Nintendo Family Computer                       | Mesen                             | Nestopia UE,<br>Nestopia UE **(Standalone)** [U],<br>FCEUmm,<br>QuickNES,<br>Mednafen **(Standalone)** [UMW*] | No           | Single archive or ROM file in root folder |
 | fba                   | FinalBurn Alpha                                | FB Alpha 2012                     | FB Alpha 2012 Neo Geo,<br>FB Alpha 2012 CPS-1,<br>FB Alpha 2012 CPS-2,<br>FB Alpha 2012 CPS-3 | Yes          | Single archive file following MAME name standard in root folder |
 | fbneo                 | FinalBurn Neo                                  | FinalBurn Neo                     |                                   | Yes          | Single archive file following MAME name standard in root folder |
-| fds                   | Nintendo Famicom Disk System                   | Mesen                             | Nestopia UE,<br>Nestopia UE **(Standalone)** [U],<br>FCEUmm | Yes          | Single archive or ROM file in root folder |
+| fds                   | Nintendo Famicom Disk System                   | Mesen                             | Nestopia UE,<br>Nestopia UE **(Standalone)** [U],<br>FCEUmm,<br>Mednafen **(Standalone)** [UMW*] | Yes          | Single archive or ROM file in root folder |
+| flash                 | Adobe Flash                                    | Ruffle **(Standalone)** [UMW*]    | Lightspark **(Standalone)** [U],<br>ArcadeFlashWeb **(Standalone)** [W*] | No        | Single .swf file in root folder      |
+| fmtowns               | Fujitsu FM Towns                               | Tsugaru **(Standalone)** [UW*]    |                                   | Yes          | See the specific _Fujitsu FM Towns_ section elsewhere in this guide |
 | gameandwatch          | Nintendo Game and Watch                        | GW                                |                                   |              |                                      |
-| gamegear              | Sega Game Gear                                 | Genesis Plus GX                   | Genesis Plus GX Wide,<br>Gearsystem,<br>SMS Plus GX |              |                                      |
+| gamegear              | Sega Game Gear                                 | Genesis Plus GX                   | Genesis Plus GX Wide,<br>Gearsystem,<br>SMS Plus GX,<br>Mednafen **(Standalone)** [UMW*] |              |                                      |
 | gb                    | Nintendo Game Boy                              | Gambatte                          | SameBoy,<br>Gearboy,<br>TGB Dual,<br>Mesen-S,<br>bsnes,<br>mGBA,<br>mGBA **(Standalone)**,<br>VBA-M,<br>VBA-M **(Standalone)** | No           | Single archive or ROM file in root folder |
 | gba                   | Nintendo Game Boy Advance                      | mGBA                              | mGBA **(Standalone)**,<br>VBA-M,<br>VBA-M **(Standalone)** [UMW*],<br>VBA Next,<br>gpSP       | No           | Single archive or ROM file in root folder |
 | gbc                   | Nintendo Game Boy Color                        | Gambatte                          | SameBoy,<br>Gearboy,<br>TGB Dual,<br>Mesen-S,<br>bsnes,<br>mGBA,<br>mGBA **(Standalone)**,<br>VBA-M,<br>VBA-M **(Standalone)** | No           | Single archive or ROM file in root folder |
 | gc                    | Nintendo GameCube                              | Dolphin                           | Dolphin **(Standalone)** [UMW*], PrimeHack **(Standalone)** [U] | No           | Single .iso file in root folder       |
-| genesis               | Sega Genesis                                   | Genesis Plus GX                   | Genesis Plus GX Wide,<br>PicoDrive,<br>BlastEm,<br>BlastEm **(Standalone)** [U] | No           | Single archive or ROM file in root folder |
-| gx4000                | Amstrad GX4000                                 | _Placeholder_                     |                                   |              |                                      |
+| genesis               | Sega Genesis                                   | Genesis Plus GX                   | Genesis Plus GX Wide,<br>PicoDrive,<br>BlastEm,<br>BlastEm **(Standalone)** [U],<br>Mednafen **(Standalone)** [UMW*] | No           | Single archive or ROM file in root folder |
+| gx4000                | Amstrad GX4000                                 | Caprice32                         | CrocoDS                           | No           |                                      |
 | intellivision         | Mattel Electronics Intellivision               | FreeIntv                          |                                   |              |                                      |
-| j2me                  | Java 2 Micro Edition (J2ME)                    | SquirrelJME                       |                                   | Yes          | Single .jar file in root folder       |
-| kodi                  | Kodi Home Theatre Software                     | N/A                               |                                   | No           |                                      |
-| lutris                | Lutris Open Gaming Platform                    | Lutris application **(Standalone)** [U] |                             | No           | Shell script in root folder          |
+| j2me                  | Java 2 Micro Edition (J2ME)                    | SquirrelJME                       | KEmulator **(Standalone)** [W*]   | No           | Single .jar file in root folder       |
+| kodi                  | Kodi Home Theatre Software                     | N/A                               |                                   | No           | Shortcut in root folder               |
+| lutris                | Lutris Open Gaming Platform                    | Lutris application **(Standalone)** [U] |                             | No           | See the specific _Lutris_ section elsewhere in this guide |
 | lutro                 | Lutro Game Engine                              | Lutro                             |                                   |              |                                      |
-| macintosh             | Apple Macintosh                                | _Placeholder_                     |                                   |              |                                      |
-| mame                  | Multiple Arcade Machine Emulator               | MAME - Current                    | MAME 2010,<br>MAME 2003-Plus,<br>MAME 2000,<br>MAME **(Standalone)** [UMW*],<br>FinalBurn Neo,<br>FB Alpha 2012,<br>Flycast,<br>Flycast **(Standalone)** [UMW*],<br>Model 2 Emulator **(Standalone)** [W*],<br>Supermodel **(Standalone)** [W*] | Depends      | Single archive file following MAME name standard in root folder |
-| mame-advmame          | AdvanceMAME                                    | _Placeholder_                     |                                   | Depends      | Single archive file following MAME name standard in root folder |
-| mame-mame4all         | MAME4ALL                                       | _Placeholder_                     |                                   | Depends      | Single archive file following MAME name standard in root folder |
-| mastersystem          | Sega Master System                             | Genesis Plus GX                   | Genesis Plus GX Wide,<br>SMS Plus GX,<br>Gearsystem,<br>PicoDrive | No           | Single archive or ROM file in root folder |
+| macintosh             | Apple Macintosh                                | Basilisk II **(Standalone)** [UMW*] | SheepShaver **(Standalone)** [UMW*] | Yes          | See the specific _Apple Macintosh_ section elsewhere in this guide |
+| mame                  | Multiple Arcade Machine Emulator               | MAME - Current                    | MAME 2010,<br>MAME 2003-Plus,<br>MAME 2000,<br>MAME **(Standalone)** [UMW*],<br>FinalBurn Neo,<br>FB Alpha 2012,<br>Flycast,<br>Flycast **(Standalone)** [UMW*],<br>Kronos [UW],<br>Model 2 Emulator **(Standalone)** [W*],<br>Model 2 Emulator [Suspend ES-DE] **(Standalone)** [W*],<br>Supermodel **(Standalone)** [W*] | Depends      | See the specific _Arcade and Neo Geo_ section elsewhere in this guide |
+| mame-advmame          | AdvanceMAME                                    | _Placeholder_                     |                                   | Depends      |                                      |
+| mame-mame4all         | MAME4ALL                                       | _Placeholder_                     |                                   | Depends      |                                      |
+| mastersystem          | Sega Master System                             | Genesis Plus GX                   | Genesis Plus GX Wide,<br>SMS Plus GX,<br>Gearsystem,<br>PicoDrive,<br>Mednafen **(Standalone)** [UMW*] | No           | Single archive or ROM file in root folder |
 | megacd                | Sega Mega-CD                                   | Genesis Plus GX                   | Genesis Plus GX Wide,<br>PicoDrive |              |                                      |
 | megacdjp              | Sega Mega-CD [Japan]                           | Genesis Plus GX                   | Genesis Plus GX Wide,<br>PicoDrive |              |                                      |
-| megadrive             | Sega Mega Drive                                | Genesis Plus GX                   | Genesis Plus GX Wide,<br>PicoDrive,<br>BlastEm,<br>BlastEm **(Standalone)** [U] | No           | Single archive or ROM file in root folder |
+| megadrive             | Sega Mega Drive                                | Genesis Plus GX                   | Genesis Plus GX Wide,<br>PicoDrive,<br>BlastEm,<br>BlastEm **(Standalone)** [U],<br>Mednafen **(Standalone)** [UMW*] | No           | Single archive or ROM file in root folder |
+| megaduck              | Creatronic Mega Duck                           | SameDuck                          |                                   | No           | Single archive or ROM file in root folder |
 | mess                  | Multi Emulator Super System                    | MESS 2015                         |                                   |              |                                      |
+| model2                | Sega Model 2                                   | Model 2 Emulator **(Standalone)** [W*] | Model 2 Emulator [Suspend ES-DE] **(Standalone)** [W*] |              | See the specific _Arcade and Neo Geo_ section elsewhere in this guide |
+| model3                | Sega Model 3                                   | Supermodel **(Standalone)** [W*]  |                                   |              | See the specific _Arcade and Neo Geo_ section elsewhere in this guide |
 | moonlight             | Moonlight Game Streaming                       | _Placeholder_                     |                                   |              |                                      |
 | moto                  | Thomson MO/TO Series                           | Theodore                          |                                   |              |                                      |
 | msx                   | MSX                                            | blueMSX                           | fMSX                              |              |                                      |
 | msx1                  | MSX1                                           | blueMSX                           | fMSX                              |              |                                      |
 | msx2                  | MSX2                                           | blueMSX                           | fMSX                              |              |                                      |
 | msxturbor             | MSX Turbo R                                    | blueMSX                           |                                   |              |                                      |
+| mugen                 | M.U.G.E.N Game Engine                          | M.U.G.E.N **(Standalone)** [W]    |                                   | No           | See the specific _M.U.G.E.N Game Engine_ section elsewhere in this guide |
 | multivision           | Othello Multivision                            | Gearsystem                        |                                   |              |                                      |
 | naomi                 | Sega NAOMI                                     | Flycast                           | Flycast **(Standalone)** [UMW*]   |              |                                      |
 | naomigd               | Sega NAOMI GD-ROM                              | Flycast                           | Flycast **(Standalone)** [UMW*]   |              |                                      |
 | n3ds                  | Nintendo 3DS                                   | Citra [UW],<br>Citra **(Standalone)** [M] | Citra 2018 [UW],<br>Citra **(Standalone)** [UW*] | No           | Single ROM file in root folder       |
 | n64                   | Nintendo 64                                    | Mupen64Plus-Next [UW],<br>ParaLLEl N64 [M] | ParaLLEl N64 [UW],<br>Mupen64Plus **(Standalone)** [UMW*],<br>sixtyforce **(Standalone)** [M] | No           | Single archive or ROM file in root folder |
+| n64dd                 | Nintendo 64DD                                  | ParaLLEl N64                      | Mupen64Plus-Next [UW] | Yes          | See the specific _Nintendo 64DD_ section elsewhere in this guide |
 | nds                   | Nintendo DS                                    | DeSmuME                           | DeSmuME 2015,<br>DeSmuME **(Standalone)** [U],<br>melonDS,<br>melonDS **(Standalone)** [UMW*] | No           |                                      |
-| neogeo                | SNK Neo Geo                                    | FinalBurn Neo                     |                                   | Yes          | Single archive file following MAME name standard in root folder |
+| neogeo                | SNK Neo Geo                                    | FinalBurn Neo                     |                                   | Yes          | See the specific _Arcade and Neo Geo_ section elsewhere in this guide |
 | neogeocd              | SNK Neo Geo CD                                 | NeoCD                             |                                   | Yes          | Single archive in root folder (which includes the CD image and ripped audio) |
 | neogeocdjp            | SNK Neo Geo CD [Japan]                         | NeoCD                             |                                   | Yes          | Single archive in root folder (which includes the CD image and ripped audio) |
-| nes                   | Nintendo Entertainment System                  | Mesen                             | Nestopia UE,<br>Nestopia UE **(Standalone)** [U],<br>FCEUmm,<br>QuickNES | No           | Single archive or ROM file in root folder |
-| ngp                   | SNK Neo Geo Pocket                             | Beetle NeoPop                     | RACE                              |              |                                      |
-| ngpc                  | SNK Neo Geo Pocket Color                       | Beetle NeoPop                     | RACE                              |              |                                      |
+| nes                   | Nintendo Entertainment System                  | Mesen                             | Nestopia UE,<br>Nestopia UE **(Standalone)** [U],<br>FCEUmm,<br>QuickNES,<br>Mednafen **(Standalone)** [UMW*] | No           | Single archive or ROM file in root folder |
+| ngp                   | SNK Neo Geo Pocket                             | Beetle NeoPop                     | RACE,<br>Mednafen **(Standalone)** [UMW*] |              |                                      |
+| ngpc                  | SNK Neo Geo Pocket Color                       | Beetle NeoPop                     | RACE,<br>Mednafen **(Standalone)** [UMW*] |              |                                      |
 | odyssey2              | Magnavox Odyssey2                              | O2EM                              |                                   |              |                                      |
 | openbor               | OpenBOR Game Engine                            | OpenBOR **(Standalone)** [UW]     |                                   |              | See the specific _OpenBOR_ section elsewhere in this guide |
-| oric                  | Tangerine Computer Systems Oric                | _Placeholder_                     |                                   |              |                                      |
+| oric                  | Tangerine Computer Systems Oric                | Oricutron **(Standalone)** [UW*]  |                                   |              | See the specific _Tangerine Computer Systems Oric_ section elsewhere in this guide |
 | palm                  | Palm OS                                        | Mu                                |                                   |              |                                      |
-| pc                    | IBM PC                                         | DOSBox-Pure                       | DOSBox-Core,<br>DOSBox-SVN,<br>DOSBox-X **(Standalone)**,<br>DOSBox Staging **(Standalone)** [UMW*] | No           | In separate folder (one folder per game with complete file structure retained) |
+| pc                    | IBM PC                                         | DOSBox-Pure                       | DOSBox-Core,<br>DOSBox-SVN,<br>DOSBox-X **(Standalone)**,<br>DOSBox Staging **(Standalone)** [UMW*] | No           | See the specific _DOS / PC_ section elsewhere in this guide |
 | pc88                  | NEC PC-8800 Series                             | QUASI88                           |                                   |              |                                      |
 | pc98                  | NEC PC-9800 Series                             | Neko Project II Kai               | Neko Project II                   |              |                                      |
-| pcengine              | NEC PC Engine                                  | Beetle PCE                        | Beetle PCE FAST                   | No           | Single archive or ROM file in root folder |
-| pcenginecd            | NEC PC Engine CD                               | Beetle PCE                        | Beetle PCE FAST                   | Yes          |                                      |
-| pcfx                  | NEC PC-FX                                      | Beetle PC-FX                      |                                   |              |                                      |
+| pcengine              | NEC PC Engine                                  | Beetle PCE                        | Beetle PCE FAST,<br>Mednafen **(Standalone)** [UMW*] | No           | Single archive or ROM file in root folder |
+| pcenginecd            | NEC PC Engine CD                               | Beetle PCE                        | Beetle PCE FAST,<br>Mednafen **(Standalone)** [UMW*] | Yes          |                                      |
+| pcfx                  | NEC PC-FX                                      | Beetle PC-FX                      | Mednafen **(Standalone)** [UMW*]  | Yes          |                                      |
+| pico8                 | PICO-8 Fantasy Console                         | PICO-8 **(Standalone)**           | PICO-8 Splore **(Standalone)**    | No           | See the specific _PICO-8_ section elsewhere in this guide |
 | pokemini              | Nintendo Pokémon Mini                          | PokeMini                          |                                   | No           |                                      |
-| ports                 | Ports                                          | N/A                               |                                   | No           | Shell/batch script in separate folder (possibly combined with game data) |
-| ps2                   | Sony PlayStation 2                             | PCSX2 [UW],<br>PCSX2 **(Standalone)** [M] | PCSX2 **(Standalone)** [UW],<br>PCSX2 Qt **(Standalone)** [W*],<br>PCSX2 wxWidgets **(Standalone)** [W*],<br>Play! **(Standalone)** [UMW*],<br>AetherSX2 **(Standalone)** [M] | Yes (No for Play!) |                                      |
-| ps3                   | Sony PlayStation 3                             | RPCS3 **(Standalone)** [UMW*]     |                                   | Yes          | In separate folder (one folder per game with complete file structure retained, renamed to the .ps3 extension) |
+| ports                 | Ports                                          | _Various_                         |                                   | No           | See the specific _Ports and desktop applications_ section elsewhere in this guide |
+| ps2                   | Sony PlayStation 2                             | PCSX2 [UW],<br>PCSX2 **(Standalone)** [M] | PCSX2 **(Standalone)** [UW*],<br>PCSX2 Legacy **(Standalone)**@,<br>Play! **(Standalone)** [UMW*],<br>AetherSX2 **(Standalone)** [M] | Yes (No for Play!) |                                      |
+| ps3                   | Sony PlayStation 3                             | RPCS3 Shortcut **(Standalone)** [UMW*] | RPCS3 Directory **(Standalone)** [UMW*] | Yes    | See the specific _Sony PlayStation 3_ section elsewhere in this guide |
 | ps4                   | Sony PlayStation 4                             | _Placeholder_                     |                                   |              |                                      |
 | psp                   | Sony PlayStation Portable                      | PPSSPP                            | PPSSPP **(Standalone)**           | No           | Single .iso file in root folder       |
-| psvita                | Sony PlayStation Vita                          | _Placeholder_                     |                                   |              |                                      |
-| psx                   | Sony PlayStation                               | Beetle PSX                        | Beetle PSX HW,<br>PCSX ReARMed,<br>SwanStation,<br>DuckStation **(Standalone)** [UMW*] | Yes          | .chd file in root folder for single-disc games, .m3u playlist in root folder for multi-disc games |
-| samcoupe              | SAM Coupé                                      | SimCoupe                          |                                   |              |                                      |
+| psvita                | Sony PlayStation Vita                          | Vita3K **(Standalone)** [UW*]     |                                   | Yes          | See the specific _Sony PlayStation Vita_ section elsewhere in this guide |
+| psx                   | Sony PlayStation                               | Beetle PSX                        | Beetle PSX HW,<br>PCSX ReARMed,<br>SwanStation,<br>DuckStation **(Standalone)** [UMW*],<br>Mednafen **(Standalone)** [UMW*] | Yes          | .chd file in root folder for single-disc games, .m3u playlist in root folder for multi-disc games |
+| samcoupe              | SAM Coupé                                      | SimCoupé **(Standalone)**         |                                   | No           | Single archive or ROM file in root folder |
 | satellaview           | Nintendo Satellaview                           | Snes9x - Current                  | Snes9x 2010,<br>Snes9x **(Standalone)** [UMW*],<br>bsnes,<br>bsnes-hd,<br>bsnes-mercury Accuracy,<br>bsnes **(Standalone)** [UW*],<br>Mesen-S |              |                                      |
-| saturn                | Sega Saturn                                    | Beetle Saturn                     | Kronos [UW],<br>YabaSanshiro [UW],<br>Yabause | Yes          | In separate folder interpreted as a file, with .m3u playlist if multi-disc game |
-| saturnjp              | Sega Saturn [Japan]                            | Beetle Saturn                     | Kronos [UW],<br>YabaSanshiro [UW],<br>Yabause | Yes          | In separate folder interpreted as a file, with .m3u playlist if multi-disc game |
-| scummvm               | ScummVM Game Engine                            | ScummVM                           |                                   | No           | In separate folder (one folder per game with complete file structure retained) and with a .scummvm file for launching the game |
+| saturn                | Sega Saturn                                    | Beetle Saturn                     | Kronos [UW],<br>YabaSanshiro [UW],<br>Yabause,<br>Mednafen **(Standalone)** [UMW*] | Yes          | In separate folder interpreted as a file, with .m3u playlist if multi-disc game |
+| saturnjp              | Sega Saturn [Japan]                            | Beetle Saturn                     | Kronos [UW],<br>YabaSanshiro [UW],<br>Yabause,<br>Mednafen **(Standalone)** [UMW*] | Yes          | In separate folder interpreted as a file, with .m3u playlist if multi-disc game |
+| scummvm               | ScummVM Game Engine                            | ScummVM                           | ScummVM **(Standalone)**          | No           | See the specific _ScummVM_ section elsewhere in this guide |
 | sega32x               | Sega Mega Drive 32X                            | PicoDrive                         |                                   | No           | Single archive or ROM file in root folder |
 | sega32xjp             | Sega Super 32X [Japan]                         | PicoDrive                         |                                   | No           | Single archive or ROM file in root folder |
 | sega32xna             | Sega Genesis 32X [North America]               | PicoDrive                         |                                   | No           | Single archive or ROM file in root folder |
 | segacd                | Sega CD                                        | Genesis Plus GX                   | Genesis Plus GX Wide,<br>PicoDrive |              |                                      |
 | sfc                   | Nintendo SFC (Super Famicom)                   | Snes9x - Current                  | Snes9x 2010,<br>Snes9x **(Standalone)** [UMW*],<br>bsnes,<br>bsnes-hd,<br>bsnes-mercury Accuracy,<br>bsnes **(Standalone)** [UW*],<br>Beetle Supafaust [UW],<br>Mesen-S | No           | Single archive or ROM file in root folder |
 | sg-1000               | Sega SG-1000                                   | Genesis Plus GX                   | Genesis Plus GX Wide,<br>Gearsystem,<br>blueMSX | No           |                                      |
+| sgb                   | Nintendo Super Game Boy                        | Mesen-S                           | mGBA,<br>mGBA **(Standalone)**    |              |  Single archive or ROM file in root folder |
 | snes                  | Nintendo SNES (Super Nintendo)                 | Snes9x - Current                  | Snes9x 2010,<br>Snes9x **(Standalone)** [UMW*],<br>bsnes,<br>bsnes-hd,<br>bsnes-mercury Accuracy,<br>bsnes **(Standalone)** [UW*],<br>Beetle Supafaust [UW],<br>Mesen-S | No           | Single archive or ROM file in root folder |
 | snesna                | Nintendo SNES (Super Nintendo) [North America] | Snes9x - Current                  | Snes9x 2010,<br>Snes9x **(Standalone)** [UMW*],<br>bsnes,<br>bsnes-hd,<br>bsnes-mercury Accuracy,<br>bsnes **(Standalone)** [UW*],<br>Beetle Supafaust [UW],<br>Mesen-S | No           | Single archive or ROM file in root folder |
-| solarus               | Solarus Game Engine                            | _Placeholder_                     |                                   |              |                                      |
+| solarus               | Solarus Game Engine                            | Solarus **(Standalone)** [UMW*]   |                                   | No           | Single .solarus game file in root folder |
 | spectravideo          | Spectravideo                                   | blueMSX                           |                                   |              |                                      |
-| steam                 | Valve Steam                                    | Steam application **(Standalone)** |                                  | No           | Shell script/batch file in root folder (and .url files supported on Windows) |
+| steam                 | Valve Steam                                    | Steam application **(Standalone)** |                                  | No           | See the specific _Steam_ section elsewhere in this guide |
 | stratagus             | Stratagus Game Engine                          | _Placeholder_                     |                                   |              |                                      |
 | sufami                | Bandai SuFami Turbo                            | Snes9x - Current                  | Snes9x 2010,<br>Snes9x **(Standalone)** [UMW*],<br>bsnes,<br>bsnes-hd,<br>bsnes-mercury Accuracy,<br>bsnes **(Standalone)** [UW*] |              |                                      |
 | supergrafx            | NEC SuperGrafx                                 | Beetle SuperGrafx                 | Beetle PCE                        |              |                                      |
+| supervision           | Watara Supervision                             | Potator                           |                                   | No           | Single archive or ROM file in root folder |
 | switch                | Nintendo Switch                                | Yuzu **(Standalone)** [UW]        | Ryujinx **(Standalone)** [UW*]    | Yes          |                                      |
 | symbian               | Symbian                                        | _Placeholder_                     |                                   |              |                                      |
-| tanodragon            | Tano Dragon                                    | _Placeholder_                     |                                   |              |                                      |
-| tg16                  | NEC TurboGrafx-16                              | Beetle PCE                        | Beetle PCE FAST                   | No           | Single archive or ROM file in root folder |
-| tg-cd                 | NEC TurboGrafx-CD                              | Beetle PCE                        | Beetle PCE FAST                   | Yes          |                                      |
-| ti99                  | Texas Instruments TI-99                        | _Placeholder_                     |                                   |              |                                      |
-| tic80                 | TIC-80 Game Engine                             | _Placeholder_                     |                                   |              |                                      |
+| tanodragon            | Tano Dragon                                    | XRoar **(Standalone)**            |                                   | Yes          | See the specific _Dragon 32 and Tano Dragon_ section elsewhere in this guide |
+| tg16                  | NEC TurboGrafx-16                              | Beetle PCE                        | Beetle PCE FAST,<br>Mednafen **(Standalone)** [UMW*] | No           | Single archive or ROM file in root folder |
+| tg-cd                 | NEC TurboGrafx-CD                              | Beetle PCE                        | Beetle PCE FAST,<br>Mednafen **(Standalone)** [UMW*] | Yes          |                                      |
+| ti99                  | Texas Instruments TI-99                        | MAME **(Standalone)** [UW*]       |                                   | Yes          | See the specific _Texas Instruments TI-99_ section elsewhere in this guide |
+| tic80                 | TIC-80 Game Engine                             | TIC-80                            |                                   | No           | Single .tic file in root folder      |
 | to8                   | Thomson TO8                                    | Theodore                          |                                   |              |                                      |
-| trs-80                | Tandy TRS-80                                   | _Placeholder_                     |                                   |              |                                      |
+| trs-80                | Tandy TRS-80                                   | sdl2trs DOS Diskette **(Standalone)** [UW*] | sdl2trs Bootable Diskette **(Standalone)** [UW*],<br>sdl2trs CMD File **(Standalone)** [UW*] | Yes          | See the specific _Tandy TRS-80_ section elsewhere in this guide |
 | uzebox                | Uzebox                                         | Uzem                              |                                   |              |                                      |
 | vectrex               | Vectrex                                        | vecx                              |                                   | No           |                                      |
 | vic20                 | Commodore VIC-20                               | VICE xvic                         |                                   |              | Single disk, tape or cartridge image in root folder |
 | videopac              | Philips Videopac G7000                         | O2EM                              |                                   |              |                                      |
-| virtualboy            | Nintendo Virtual Boy                           | Beetle VB                         |                                   |              |                                      |
+| virtualboy            | Nintendo Virtual Boy                           | Beetle VB                         | Mednafen **(Standalone)** [UMW*]  | No           |                                      |
 | wii                   | Nintendo Wii                                   | Dolphin                           | Dolphin **(Standalone)** [UMW*],<br>PrimeHack **(Standalone)** [U] |              |                                      |
-| wiiu                  | Nintendo Wii U                                 | Cemu **(Standalone)** [W*]        |                                   | No           | In separate folder                   |
-| wonderswan            | Bandai WonderSwan                              | Beetle Cygne                      |                                   | No           |                                      |
-| wonderswancolor       | Bandai WonderSwan Color                        | Beetle Cygne                      |                                   | No           |                                      |
+| wiiu                  | Nintendo Wii U                                 | Cemu **(Standalone)** [W*]        |                                   | No           | See the specific _Nintendo Wii U_ section elsewhere in this guide |
+| wonderswan            | Bandai WonderSwan                              | Beetle Cygne                      | Mednafen **(Standalone)** [UMW*]  | No           |                                      |
+| wonderswancolor       | Bandai WonderSwan Color                        | Beetle Cygne                      | Mednafen **(Standalone)** [UMW*]  | No           |                                      |
 | x1                    | Sharp X1                                       | x1                                |                                   |              | Single archive or ROM file in root folder |
 | x68000                | Sharp X68000                                   | PX68k                             |                                   | Yes          |                                      |
-| xbox                  | Microsoft Xbox                                 | xemu **(Standalone)** [UMW*]      |                                   | Yes          | Single .iso file in root folder      |
+| xbox                  | Microsoft Xbox                                 | xemu **(Standalone)** [UMW*]      | Cxbx-Reloaded **(Standalone)** [W*] | Yes for xemu | Single .iso file in root folder for xemu or unpacked .iso directory for Cxbx-Reloaded |
 | xbox360               | Microsoft Xbox 360                             | xenia **(Standalone)** [W*]       |                                   | No           |                                      |
 | zmachine              | Infocom Z-machine                              | _Placeholder_                     |                                   |              |                                      |
 | zx81                  | Sinclair ZX81                                  | EightyOne                         |                                   |              |                                      |

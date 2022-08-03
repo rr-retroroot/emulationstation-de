@@ -99,7 +99,7 @@ If building with the optional VLC video player, the following package is also ne
 pkg install vlc
 ```
 
-Clang/LLVM and cURL should already be included in the base OS installation.
+Clang/LLVM and curl should already be included in the base OS installation.
 
 **NetBSD**
 
@@ -127,7 +127,7 @@ If building with the optional VLC video player, the following package is also ne
 pkg_add vlc
 ```
 
-In the same manner as for FreeBSD, Clang/LLVM and cURL should already be installed by default.
+In the same manner as for FreeBSD, Clang/LLVM and curl should already be installed by default.
 
 Pugixml does exist in the package collection but somehow this version is not properly detected by CMake, so you need to compile this manually as well:
 
@@ -453,13 +453,20 @@ The process to create a Linux AppImage is completely automated. You simply run t
 tools/create_AppImage.sh
 ```
 
-This script has only been tested on Ubuntu 20.04 LTS and it's recommended to go for an older operating system when building the AppImage to achieve compatibility with a large number of distributions. This does come with some sacrifices though, such as the use of an older SDL version which may not support the latest game controllers.
+This script has only been tested on Ubuntu (20.04 LTS and 22.04 LTS) and it's recommended to go for an older operating system when building the AppImage to achieve compatibility with a large number of distributions. This does come with some sacrifices though, such as the use of an older SDL version which may not support the latest game controllers.
 
-The script will delete CMakeCache.txt and run cmake with the BUNDLED_CERTS option, as otherwise scraping wouldn't work on Fedora (and probably on openSUSE and a few other distributions as well).
-
-Both _appimagetool_ and _linuxdeploy_ are required for the build process but they will be downloaded automatically by the script if they don't exist. So to force an update to the latest build tools, delete these two AppImages prior to running create_AppImage.sh.
+The script will delete CMakeCache.txt and run cmake with the BUNDLED_CERTS option, as otherwise scraping wouldn't work on Fedora (and probably not on openSUSE and a few other distributions as well).
 
 After creating the AppImage it's recommended to delete CMakeCache.txt manually so the BUNDLED_CERTS option is not accidentally enabled when building the other packages.
+
+To build the Steam Deck-specific AppImage, run the following:
+```
+tools/create_AppImage_SteamDeck.sh
+```
+
+This is similar to the regular AppImage but does not build with the BUNDLED_CERTS option and changes some settings like the VRAM limit.
+
+Both _appimagetool_ and _linuxdeploy_ are required for the build process but they will be downloaded automatically by the script if they don't exist. So to force an update to the latest build tools, delete these two AppImages prior to running the build script.
 
 ## Building on macOS
 
@@ -802,7 +809,7 @@ FFmpeg (choose the n4.4 package with win64-gpl-shared in the filename, the snaps
 FreeImage (binary distribution) \
 [https://sourceforge.net/projects/freeimage](https://sourceforge.net/projects/freeimage)
 
-cURL (Windows 64 bit binary, select the MinGW version even if using MSVC) \
+curl (Windows 64 bit binary, select the MinGW version even if using MSVC) \
 [https://curl.haxx.se/download.html](https://curl.haxx.se/download.html)
 
 SDL2 (development libraries, MinGW or VC/MSVC) \
@@ -895,7 +902,7 @@ As there is no standardized include directory structure in Windows, you need to 
 
 Make a directory in your build environment tree, for instance under `C:\Programming\include`
 
-Copy the include files for cURL, FFmpeg, FreeImage, FreeType, GLEW, pugixml, SDL2 and optionally VLC to this directory.
+Copy the include files for curl, FFmpeg, FreeImage, FreeType, GLEW, pugixml, SDL2 and optionally VLC to this directory.
 
 You may need to create the SDL2 directory manually and copy the header files there.
 
@@ -1372,10 +1379,14 @@ For the following options, the es_settings.xml file is immediately updated/saved
 ```
 --display
 --max-vram
+--gamelist-only
 --show-hidden-files
 --show-hidden-games
 ```
 
+As well, passing the option --ignore-gamelist will disable the ParseGamelistOnly setting controlled by --gamelist-only and immediately save the es_settings.xml file. If passing both the --ignore-gamelist and --gamelist-only parameters then --ignore-gamelist will take precedence and --gamelist-only will be ignored.
+
+The --ignore-gamelist option is only active during the program session and is not saved to es_settings.xml. But --gamelist-only is however saved, so in order to return to the normal operation of parsing the gamelist.xml files after starting ES-DE with the --gamelist-only option, you will need to disable the setting _Only show ROMs from gamelist.xml files_ in the _Other settings_ menu (or manually change the ParseGamelistOnly entry in es_settings.xml).
 
 ## es_systems.xml
 
@@ -1390,6 +1401,18 @@ This custom file functionality is designed to be complementary to the bundled es
 The bundled es_systems.xml file is located in the resources directory that is part of the application installation. For example this could be `/usr/share/emulationstation/resources/systems/unix/es_systems.xml` on Unix, `/Applications/EmulationStation Desktop Edition.app/Contents/Resources/resources/systems/macos/es_systems.xml` on macOS or `C:\Program Files\EmulationStation-DE\resources\systems\windows\es_systems.xml` on Windows. The actual location may differ from these examples of course, depending on where ES-DE has been installed.
 
 It doesn't matter in which order you define the systems as they will be sorted by the `<fullname>` tag or by the optional `<systemsortname>` tag when displayed inside the application. But it's still a good idea to add the systems in alphabetical order to make the configuration file easier to maintain.
+
+Note that the `<systemsortname>` tags are sorted in [lexicographic order](https://en.wikipedia.org/wiki/Lexicographic_order) so 11 will be sorted above 2 but 002 will be sorted above 011.
+
+Wildcards are supported for emulator binaries, but not for directories:
+```xml
+<!-- This is supported, first matching file will be selected -->
+<command>~/Applications/yuzu*.AppImage %ROM%</command>
+<!-- This is also supported -->
+<command>~/Applications/yuzu*.App* %ROM%</command>
+<!-- This is NOT supported -->
+<command>~/App*/yuzu*.AppImage %ROM%</command>
+```
 
 Keep in mind that you have to set up your emulators separately from ES-DE as the es_systems.xml file assumes that your emulator environment is properly configured.
 
@@ -1413,7 +1436,7 @@ Below is an overview of the file layout with various examples. For the command t
         <!-- By default the systems are sorted by their full names, but this can be overridden by setting the optional
         <systemsortname> tag to an arbitrary value. As far as sorting is concerned, the effect will be identical to
         changing the <fullname> tag. Apart for system sorting, this tag has no effect and its actual value will not
-        be displayed anywhere within the appliction. -->
+        be displayed anywhere within the appliction. Note that the sorting is done in lexicographic order. -->
         <systemsortname>Super Nintendo</systemsortname>
 
         <!-- The path to look for ROMs in. '~' will be expanded to $HOME or %HOMEPATH%, depending on the operating system.
@@ -1449,6 +1472,10 @@ Below is an overview of the file layout with various examples. For the command t
         the find rules for the emulator cores. -->
         <command>retroarch -L %CORE_RETROARCH%/snes9x_libretro.so %ROM%</command>
 
+        <!-- This example for Unix uses a wildcard to find the first matching RPCS3 AppImage in the ~/Applications directory.
+        This is useful as AppImages often have version information embedded in the filename that may change when upgrading the package. -->
+        <command label="RPCS3 (Standalone)">~/Applications/rpcs3*.AppImage --no-gui %ROM%</command>
+
         <!-- This is an example for macOS, which is very similar to the Unix example above except using an absolute path to the emulator. -->
         <command>/Applications/RetroArch.app/Contents/MacOS/RetroArch -L %CORE_RETROARCH%/snes9x_libretro.dylib %ROM%</command>
 
@@ -1474,10 +1501,10 @@ Below is an overview of the file layout with various examples. For the command t
         <!-- The equivalent setup of standalone MAME for Unix. If not existing, the start directory will be created on game launch. -->
         <command label="MAME (Standalone)">%EMULATOR_MAME% %STARTDIR%=~/.mame -rompath %ROMPATH%/arcade %BASENAME%</command>
 
-        <!-- An example on Unix which launches a script, this is for example used by source ports, Steam games etc. The %RUNINBACKGROUND%
-        variable does exactly what it sounds like, it keeps ES-DE running in the background while a game is launched. This is required
-        for launching Steam games properly. -->
-        <command>%RUNINBACKGROUND% bash %ROM%</command>
+        <!-- An example on Unix which launches either a .desktop file or a shell script. This is for example used by the ports system.
+        The %RUNINBACKGROUND% variable does exactly what it sounds like, it keeps ES-DE running in the background while the game is
+        launched. This is required for launching Steam games properly as well as for some other systems. -->
+        <command>%RUNINBACKGROUND% %ENABLESHORTCUTS% %EMULATOR_OS-SHELL% %ROM%</command>
 
         <!-- The equivalent configuration as above, but for Windows.
         The optional %HIDEWINDOW% variable is used to hide the console window which would otherwise be visible when launching games
@@ -1511,9 +1538,11 @@ The following variables are expanded for the `command` tag:
 
 `%ROMPATH%` - Replaced with the path defined in the setting ROMDirectory in es_settings.xml. If combined with a path that contains blankspaces, then it must be surrounded by quotation marks, for example `%ROMPATH%"\Arcade Games"`. Note that the quotation mark must be located before the directory separator in this case.
 
-`%BASENAME%` - Replaced with the "base" name of the path to the selected ROM. For example, a path of `/foo/bar.rom`, this tag would be `bar`. This tag is useful for setting up AdvanceMAME.
+`%BASENAME%` - Replaced with the "base" name of the path to the selected ROM. For example the path `/foo/bar.rom` would end up as the value `bar`
 
-`%STARTDIR%` - The directory to start in when launching the emulator. Must be defined as a pair separated by an equal sign. This is normally not required, but some emulators and game engines like standalone MAME and OpenBOR will not work properly unless you're in the correct directory when launching a game. Either an absolute path can be used with this variable, such as `%STARTDIR%=C:\Games\mame` or the `%EMUDIR%` variable can be used to start in the directory where the emulator binary is located, i.e. `%STARTDIR%=%EMUDIR%` or the `%GAMEDIR%` variable can be used to start in the directory where the game file is located, i.e. `%STARTDIR%=%GAMEDIR%`. If an absolute path is set that contains blankspaces, then it must be surrounded by quotation marks, for example `%STARTDIR%="C:\Retro games\mame"`. If the directory defined by this variable does not exist, it will be created on game launch. The variable can be placed anywhere in the launch command if the %EMULATOR_ variable is used, otherwise it has to be placed after the emulator binary.
+`%FILENAME%` - Replaced with the filename of the selected ROM. For example the path `/foo/bar.rom` would end up as the value `bar.rom`
+
+`%STARTDIR%` - The directory to start in when launching the emulator. Must be defined as a pair separated by an equal sign. This is normally not required, but some emulators and game engines like standalone MAME and OpenBOR will not work properly unless you're in the correct directory when launching a game. Either an absolute path can be used, such as `%STARTDIR%=C:\Games\mame` or some variables are available that provide various functions. The `%EMUDIR%` variable can be used to start in the directory where the emulator binary is located, i.e. `%STARTDIR%=%EMUDIR%`, the `%GAMEDIR%` variable can be used to start in the directory where the game file is located, i.e. `%STARTDIR%=%GAMEDIR%` and the `%GAMEENTRYDIR%` variable can be used which works identically to `%GAMEDIR%` with the exception that it will interpret the actual game entry as the start directory. This is useful in very rare situations like for the EasyRPG Player where the game directories are interpreted as files but where the game engine must still be started from inside the game directory. If an absolute path is set that contains blankspaces, then it must be surrounded by quotation marks, for example `%STARTDIR%="C:\Retro games\mame"`. If the directory defined by this variable does not exist, it will be created on game launch. The variable can be placed anywhere in the launch command if the %EMULATOR_ variable is used, otherwise it has to be placed after the emulator binary.
 
 `%INJECT%` - This allows the injection of launch arguments stored in a text file on the filesystem. This is for example required by the Hypseus Singe (arcade LaserDisc) emulator. The variable must be defined as a pair separated by an equal sign, for example `%INJECT%=game.commands`. The `%BASENAME%` variable can also be used in conjunction with this variable, such as `%INJECT%=%BASENAME%.commands`. By default a path relative to the game file will be assumed but it's also possible to use an absolute path or the tilde ~ symbol which will expand to the home directory. If a path contains spaces it needs to be surrounded by quotation marks, such as `%INJECT%="C:\My games\ROMs\daphne\%BASENAME%.daphne\%BASENAME%.commands"` The variable can be placed anywhere in the launch command and the arguments will be injected at that position. The specified file is optional, if it does not exist or if there are insufficient permissions to read the file content, then it will simply be skipped. For safety reasons the arguments file can only have a maximum size of 4096 bytes and if it's larger than this it will be skipped.
 
@@ -1534,6 +1563,8 @@ The following variables are expanded for the `command` tag:
 `%HIDEWINDOW%` - This variable is only available on Windows and is used primarily for hiding console windows when launching scripts (used for example by Steam games and source ports). If not defining this, the console window will be visible when launching games. The variable can be placed anywhere in the launch command.
 
 `%ESCAPESPECIALS%` - This variable is only available on Windows and is used to escape the characters &()^=;, for the %ROM% variable, which would otherwise make binaries like cmd.exe fail when launching scripts or links. The variable can be placed anywhere in the launch command.
+
+`%ENABLESHORTCUTS%` - This variable is only available on Unix and macOS and is used to enable shortcuts to games and applications. On Unix these come in the form of .desktop files and ES-DE has a simple parser which essentially extracts the command defined in the Exec key and then executes it. Although some basic file structure checks are performed, the actual command listed with the Exec key is blindly executed. In addition to this the variables %F, %f, %U and %u are removed from the Exec key entry. On macOS shortcuts in the form of .app directories and alias files are executed using the `open -W -a` command. This makes it possible to launch shortcuts to emulators and applications like Steam as well as aliases for any application. However the latter need to be renamed to the .app file extension or it won't work. When a file is matching the .desktop or .app extension respectively, the emulator command defined using the %EMULATOR% variable will be stripped. An %EMULATOR% entry is however still required for the %ENABLESHORTCUTS% variable to work as the intention is to combine shortcuts with the ability to launch shell scripts without having to setup alternative emulators. The %ROM% variable is expanded to the command to execute when using %ENABLESHORTCUTS%, which also means that this variable has to be used, and for example %ROMRAW% will not work.
 
 Here are some additional real world examples of system entries, the first one for Unix:
 
@@ -1710,9 +1741,9 @@ Here's an example es_find_rules.xml file for Unix (this is not the complete file
         </rule>
         <rule type="staticpath">
             <entry>/var/lib/flatpak/exports/bin/org.yuzu_emu.yuzu</entry>
-            <entry>~/Applications/yuzu.AppImage</entry>
-            <entry>~/.local/bin/yuzu.AppImage</entry>
-            <entry>~/bin/yuzu.AppImage</entry>
+            <entry>~/Applications/yuzu*.AppImage</entry>
+            <entry>~/.local/bin/yuzu*.AppImage</entry>
+            <entry>~/bin/yuzu*.AppImage</entry>
         </rule>
     </emulator>
 </ruleList>
@@ -1736,7 +1767,18 @@ The `winregistrypath` rule searches the Windows Registry "App Paths" keys for th
 
 The `winregistryvalue` rule will search for the specific registry value, and if it exists, it will use that value as the path to the emulator binary. HKEY_CURRENT_USER will be tried first, followed by HKEY_LOCAL_MACHINE. In the same manner as `winregistrypath`, ES-DE will check that the binary defined in the registry value actually exists. If not, it will proceed with the next rule. For example, if setting the `<entry>` tag for this rule to `SOFTWARE\Valve\Steam\SteamExe`, the emulator binary would be set to `c:\program files (x86)\steam\steam.exe`, assuming that's where Steam has been installed. As this rule can be used to query any value in the Registry, it's a quite powerful tool to locate various emulators and applications. In addition to this it's posssible to append an arbitrary string to the key value if it's found and use that as the emulator binary path. This is accomplished by using the pipe sign, so for example the entry `SOFTWARE\PCSX2\Install_Dir|\pcsx2.exe` will look for the key `SOFTWARE\PCSX2\Install_Dir` and if it's found it will take the value of that key and append the string `\pcsx2.exe` to it. This could for example result in `C:\Program Files (x86)\PCSX2\pcsx2.exe`. Also for this setup, ES-DE will check that the emulator binary actually exists, or it will proceed to the next rule.
 
-The other rules are probably self-explanatory with `systempath` searching the PATH environment variable for the binary names defined by the `<entry>` tags and `staticpath` defines absolute paths to the emulators. For staticpath, the actual emulator binary must be included in the entry tag.
+The other rules are probably self-explanatory with `systempath` searching the PATH environment variable for the binary names defined by the `<entry>` tags and `staticpath` defines absolute paths to the emulators. For staticpath, the actual emulator binary must be included in the entry tag. Wildcards (*) are supported for the emulator binary, but not for directories. Wildcards are very useful for AppImages which often embed version information into the filenames. Note that if multiple files match a wildcard pattern, the first file returned by the operating system will be selected.
+
+```xml
+<rule type="staticpath">
+    <!-- This is supported, first matching file will be selected -->
+    <entry>~/Applications/yuzu*.AppImage</entry>
+    <!-- This is also supported -->
+    <entry>~/Applications/yuzu*.App*</entry>
+    <!-- This is NOT supported -->
+    <entry>~/App*/yuzu*.AppImage</entry>
+</rule>
+```
 
 The winregistrypath rules are always processed first, followed by winregistryvalue, then systempath and finally staticpath. This is done regardless of which order they are defined in the es_find_rules.xml file.
 
@@ -1769,11 +1811,11 @@ For reference, here are also example es_find_rules.xml files for macOS and Windo
             <entry>/Applications/RetroArch.app/Contents/Resources/cores</entry>
         </rule>
     </core>
-    <emulator name="DOSBOX_STAGING">
+    <emulator name="DOSBOX-STAGING">
         <!-- DOS emulator DOSBox Staging -->
         <rule type="staticpath">
             <entry>/Applications/dosbox-staging.app/Contents/MacOS/dosbox</entry>
-            <!-- Homebrew version -->
+            <entry>/opt/homebrew/bin/dosbox-staging</entry>
             <entry>/usr/local/bin/dosbox-staging</entry>
         </rule>
     </emulator>
@@ -1781,7 +1823,6 @@ For reference, here are also example es_find_rules.xml files for macOS and Windo
         <!-- Nintendo 64 emulator Mupen64Plus -->
         <rule type="staticpath">
             <entry>/Applications/mupen64plus.app/Contents/MacOS/mupen64plus</entry>
-            <!-- Homebrew version -->
             <entry>/usr/local/bin/mupen64plus</entry>
         </rule>
     </emulator>
@@ -1822,6 +1863,8 @@ For reference, here are also example es_find_rules.xml files for macOS and Windo
             <entry>C:\Program Files\Steam\steamapps\common\RetroArch\retroarch.exe</entry>
             <entry>D:\Program Files\Steam\steamapps\common\RetroArch\retroarch.exe</entry>
             <!-- Portable installation -->
+            <entry>%ESPATH%\Emulators\RetroArch-Win64\retroarch.exe</entry>
+            <entry>%ESPATH%\Emulators\RetroArch\retroarch.exe</entry>
             <entry>%ESPATH%\RetroArch-Win64\retroarch.exe</entry>
             <entry>%ESPATH%\RetroArch\retroarch.exe</entry>
             <entry>%ESPATH%\..\RetroArch-Win64\retroarch.exe</entry>
@@ -1844,7 +1887,7 @@ For reference, here are also example es_find_rules.xml files for macOS and Windo
         <rule type="staticpath">
             <entry>C:\Program Files (x86)\PCSX2\pcsx2.exe</entry>
             <entry>D:\Program Files (x86)\PCSX2\pcsx2.exe</entry>
-            <!-- Portable installation -->
+            <entry>%ESPATH%\Emulators\PCSX2\pcsx2.exe</entry>
             <entry>%ESPATH%\PCSX2\pcsx2.exe</entry>
             <entry>%ESPATH%\..\PCSX2\pcsx2.exe</entry>
         </rule>
@@ -1856,14 +1899,13 @@ For reference, here are also example es_find_rules.xml files for macOS and Windo
         </rule>
         <rule type="staticpath">
             <entry>~\AppData\Local\yuzu\yuzu-windows-msvc\yuzu.exe</entry>
-            <!-- Portable installation -->
+            <entry>%ESPATH%\Emulators\yuzu\yuzu-windows-msvc\yuzu.exe</entry>
             <entry>%ESPATH%\yuzu\yuzu-windows-msvc\yuzu.exe</entry>
             <entry>%ESPATH%\..\yuzu\yuzu-windows-msvc\yuzu.exe</entry>
         </rule>
     </emulator>
 </ruleList>
 ```
-
 
 ## gamelist.xml
 
@@ -2040,6 +2082,8 @@ It's the GUID that is the key, and it's the lines matching these IDs that you wa
 
 Even if pasting the entire content of gamecontrollerdb.txt into the es_controller_mappings.cfg file did not enable your controller, all hope is not lost. You may still be able to create your own custom controller entry, but doing that is beyond the scope of this document and you would have to look into the instructions at the SDL_GameControllerDB URL mentioned above.
 
+As a final note, this configuration file can also be used for the opposite purpose, i.e. to blacklist devices so that they will not work inside ES-DE. Some wireless controllers with buggy drivers will register as two devices meaning every button press will be registered twice. In this situation, blacklisting one of these entries will make the controller behave correctly. Although it's possible to enable the _Only accept input from first controller_ menu option as a workaround, this will completely ignore all other controllers which may not be what you want. To blacklist a controller, follow the same procedure described above but leave the button configuration blank for the GUID entry.
+
 ## Portable installation on Windows
 
 _As there is a preconfigured portable release available for Windows, this section is mostly relevant for understanding how the setup works, as well as to provide information on how to make customizations._
@@ -2111,7 +2155,7 @@ The approach is quite straightforward, ES-DE will look for any files inside a sc
 | game-start               | ROM path, game name, system name, system full name | On game launch                                                              |
 | game-end                 | ROM path, game name, system name, system full name | On game end (or on application wakeup if running in the background)         |
 | screensaver-start        | _timer_ or _manual_                                | Screensaver started via timer or manually                                   |
-| screensaver-end          | _cancel_ or _game-jump_ or _game-start_            | Screensaver ends via cancellation, jump to game or start/launch of game     |
+| screensaver-end          | _cancel_ or _game-jump_ or _game-start_            | Screensaver ended via cancellation, jump to game or start/launch of game    |
 
 ***)** Parameters in _italics_ are literal strings.
 
