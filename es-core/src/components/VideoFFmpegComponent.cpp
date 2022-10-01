@@ -18,6 +18,13 @@
 #include <algorithm>
 #include <iomanip>
 
+#if LIBAVUTIL_VERSION_MAJOR >= 57 && LIBAVUTIL_VERSION_MINOR >= 28
+// FFmpeg 5.1 and above.
+#define CHANNELS ch_layout.nb_channels
+#else
+#define CHANNELS channels
+#endif
+
 enum AVHWDeviceType VideoFFmpegComponent::sDeviceType = AV_HWDEVICE_TYPE_NONE;
 enum AVPixelFormat VideoFFmpegComponent::sPixelFormat = AV_PIX_FMT_NONE;
 std::vector<std::string> VideoFFmpegComponent::sHWDecodedVideos;
@@ -463,9 +470,18 @@ bool VideoFFmpegComponent::setupAudioFilters()
         return false;
     }
 
-    char channelLayout[512];
-    av_get_channel_layout_string(channelLayout, sizeof(channelLayout), mAudioCodecContext->channels,
-                                 mAudioCodecContext->channel_layout);
+    std::string channelLayout(128, '\0');
+
+#if LIBAVUTIL_VERSION_MAJOR >= 57 && LIBAVUTIL_VERSION_MINOR >= 28
+    // FFmpeg 5.1 and above.
+    AVChannelLayout chLayout{};
+    av_channel_layout_from_mask(&chLayout, mAudioCodecContext->ch_layout.u.mask);
+    av_channel_layout_describe(&chLayout, &channelLayout[0], sizeof(channelLayout));
+    av_channel_layout_uninit(&chLayout);
+#else
+    av_get_channel_layout_string(&channelLayout[0], sizeof(channelLayout),
+                                 mAudioCodecContext->CHANNELS, mAudioCodecContext->channel_layout);
+#endif
 
     std::string filterArguments =
         "time_base=" + std::to_string(mAudioStream->time_base.num) + "/" +
@@ -676,10 +692,16 @@ void VideoFFmpegComponent::getProcessedFrames()
     // Video frames.
     while (av_buffersink_get_frame(mVBufferSinkContext, mVideoFrameResampled) >= 0) {
 
-        // Save the frame into the queue for later processing.
+        // Save frame into the queue for later processing.
         VideoFrame currFrame;
 
-        currFrame.width = mVideoFrameResampled->width;
+        // This is likely unnecessary as AV_PIX_FMT_RGBA always uses 4 bytes per pixel.
+        // const int bytesPerPixel {
+        //    av_get_padded_bits_per_pixel(av_pix_fmt_desc_get(AV_PIX_FMT_RGBA)) / 8};
+        const int bytesPerPixel{4};
+        const int width{mVideoFrameResampled->linesize[0] / bytesPerPixel};
+
+        currFrame.width = width;
         currFrame.height = mVideoFrameResampled->height;
 
         mVideoFrameResampled->best_effort_timestamp = mVideoFrameResampled->pkt_dts;
@@ -698,7 +720,7 @@ void VideoFFmpegComponent::getProcessedFrames()
         currFrame.pts = pts;
         currFrame.frameDuration = frameDuration;
 
-        int bufferSize = mVideoFrameResampled->width * mVideoFrameResampled->height * 4;
+        const int bufferSize{width * mVideoFrameResampled->height * 4};
 
         currFrame.frameRGBA.insert(
             currFrame.frameRGBA.begin(), std::make_move_iterator(&mVideoFrameResampled->data[0][0]),
@@ -725,8 +747,8 @@ void VideoFFmpegComponent::getProcessedFrames()
         double pts = mAudioFrameResampled->pts * av_q2d(timeBase);
         currFrame.pts = pts;
 
-        int bufferSize = mAudioFrameResampled->nb_samples * mAudioFrameResampled->channels *
-                         av_get_bytes_per_sample(AV_SAMPLE_FMT_FLT);
+        int bufferSize{mAudioFrameResampled->nb_samples * mAudioFrameResampled->CHANNELS *
+                       av_get_bytes_per_sample(AV_SAMPLE_FMT_FLT)};
 
         currFrame.resampledData.insert(currFrame.resampledData.begin(),
                                        &mAudioFrameResampled->data[0][0],
@@ -1372,7 +1394,7 @@ void VideoFFmpegComponent::startVideo()
         // Set some reasonable target queue sizes (buffers).
         mVideoTargetQueueSize = static_cast<int>(av_q2d(mVideoStream->avg_frame_rate) / 2.0l);
         if (mAudioStreamIndex >= 0)
-            mAudioTargetQueueSize = mAudioStream->codecpar->channels * 15;
+            mAudioTargetQueueSize = mAudioStream->codecpar->CHANNELS * 15;
         else
             mAudioTargetQueueSize = 30;
 
