@@ -222,6 +222,12 @@
             <entry>/Applications/Ryujinx.app/Contents/MacOS/Ryujinx</entry>
         </rule>
     </emulator>
+    <emulator name="SAMEBOY">
+        <!-- Nintendo Game Boy and Game Boy Color emulator SameBoy -->
+        <rule type="staticpath">
+            <entry>/Applications/SameBoy.app/Contents/MacOS/SameBoy</entry>
+        </rule>
+    </emulator>
     <emulator name="SIMCOUPE">
         <!-- SAM Coupé emulator SimCoupé -->
         <rule type="staticpath">
@@ -237,7 +243,7 @@
         </rule>
     </emulator>
     <emulator name="SHEEPSHAVER">
-        <!-- Macintosh PowerPC emulator SheepShaver -->
+        <!-- Apple Macintosh PowerPC emulator SheepShaver -->
         <rule type="staticpath">
             <entry>/Applications/SheepShaver.app/Contents/MacOS/SheepShaver</entry>
         </rule>

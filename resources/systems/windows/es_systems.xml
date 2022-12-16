@@ -434,6 +434,7 @@
         <command label="Nestopia UE">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\nestopia_libretro.dll %ROM%</command>
         <command label="FCEUmm">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\fceumm_libretro.dll %ROM%</command>
         <command label="QuickNES">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\quicknes_libretro.dll %ROM%</command>
+        <command label="puNES (Standalone)">%EMULATOR_PUNES% -u yes %ROM%</command>
         <command label="Mednafen (Standalone)">%EMULATOR_MEDNAFEN% -force_module nes %ROM%</command>
         <command label="ares (Standalone)">%EMULATOR_ARES% --fullscreen --system "Famicom" %ROM%</command>
         <command label="ares FDS (Standalone)">%EMULATOR_ARES% --fullscreen --system "Famicom Disk System" %ROM%</command>
@@ -526,7 +527,9 @@
         <extension>.bs .BS .cgb .CGB .dmg .DMG .gb .GB .gbc .GBC .sgb .SGB .sfc .SFC .smc .SMC .7z .7Z .zip .ZIP</extension>
         <command label="Gambatte">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\gambatte_libretro.dll %ROM%</command>
         <command label="SameBoy">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\sameboy_libretro.dll %ROM%</command>
+        <command label="SameBoy (Standalone)">%EMULATOR_SAMEBOY% -f %ROM%</command>
         <command label="Gearboy">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\gearboy_libretro.dll %ROM%</command>
+        <command label="Gearboy (Standalone)">%EMULATOR_GEARBOY% %ROM%</command>
         <command label="TGB Dual">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\tgbdual_libretro.dll %ROM%</command>
         <command label="Mesen-S">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mesen-s_libretro.dll %ROM%</command>
         <command label="bsnes">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_libretro.dll %ROM%</command>
@@ -558,7 +561,9 @@
         <extension>.bs .BS .cgb .CGB .dmg .DMG .gb .GB .gbc .GBC .sgb .SGB .sfc .SFC .smc .SMC .7z .7Z .zip .ZIP</extension>
         <command label="Gambatte">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\gambatte_libretro.dll %ROM%</command>
         <command label="SameBoy">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\sameboy_libretro.dll %ROM%</command>
+        <command label="SameBoy (Standalone)">%EMULATOR_SAMEBOY% -f %ROM%</command>
         <command label="Gearboy">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\gearboy_libretro.dll %ROM%</command>
+        <command label="Gearboy (Standalone)">%EMULATOR_GEARBOY% %ROM%</command>
         <command label="TGB Dual">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\tgbdual_libretro.dll %ROM%</command>
         <command label="Mesen-S">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\mesen-s_libretro.dll %ROM%</command>
         <command label="bsnes">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\bsnes_libretro.dll %ROM%</command>
@@ -991,6 +996,7 @@
         <command label="Nestopia UE">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\nestopia_libretro.dll %ROM%</command>
         <command label="FCEUmm">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\fceumm_libretro.dll %ROM%</command>
         <command label="QuickNES">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\quicknes_libretro.dll %ROM%</command>
+        <command label="puNES (Standalone)">%EMULATOR_PUNES% -u yes %ROM%</command>
         <command label="Mednafen (Standalone)">%EMULATOR_MEDNAFEN% -force_module nes %ROM%</command>
         <command label="ares (Standalone)">%EMULATOR_ARES% --fullscreen --system "Famicom" %ROM%</command>
         <command label="ares FDS (Standalone)">%EMULATOR_ARES% --fullscreen --system "Famicom Disk System" %ROM%</command>

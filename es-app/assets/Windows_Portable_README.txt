@@ -45,6 +45,7 @@ Emulators\EasyRPG\Player.exe
 Emulators\fbneo\fbneo64.exe
 Emulators\fbneo\fbneo.exe
 Emulators\flycast\flycast.exe
+Emulators\Gearboy\Gearboy.exe
 Emulators\Hypseus Singe\hypseus.exe
 Emulators\KEmulator\KEmulator.exe
 Emulators\m2emulator\EMULATOR.EXE
@@ -63,11 +64,13 @@ Emulators\Play\Play.exe
 Emulators\PPSSPP\PPSSPPWindows64.exe
 Emulators\PrimeHack\Dolphin.exe
 Emulators\Project64\Project64.exe
+Emulators\punes\punes64.exe
 Emulators\redream\redream.exe
 Emulators\RMG\RMG.exe
 Emulators\RPCS3\rpcs3.exe
 Emulators\ruffle\ruffle.exe
 Emulators\ryujinx\Ryujinx.exe
+Emulators\sameboy\sameboy.exe
 Emulators\scummvm\scummvm.exe
 Emulators\sdl2trs\sdl2trs64.exe
 Emulators\SheepShaver\SheepShaver.exe

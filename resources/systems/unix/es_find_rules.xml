@@ -245,6 +245,17 @@
             <entry>~/.local/share/flatpak/exports/bin/net.fsuae.FS-UAE</entry>
         </rule>
     </emulator>
+    <emulator name="GEARBOY">
+        <!-- Nintendo Game Boy and Game Boy Color emulator Gearboy -->
+        <rule type="systempath">
+            <entry>gearboy</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>~/Applications/gearboy/gearboy</entry>
+            <entry>~/.local/bin/gearboy/gearboy</entry>
+            <entry>~/bin/gearboy/gearboy</entry>
+        </rule>
+    </emulator>
     <emulator name="HYPSEUS-SINGE">
         <!-- Hypseus Singe, fork of arcade LaserDisc emulator Daphne -->
         <rule type="systempath">
@@ -338,7 +349,7 @@
         </rule>
     </emulator>
     <emulator name="NESTOPIA-UE">
-        <!-- NES/Famicom emulator Nestopia UE -->
+        <!-- Nintendo NES and Famicom emulator Nestopia UE -->
         <rule type="systempath">
             <entry>nestopia</entry>
         </rule>
@@ -436,6 +447,17 @@
             <entry>~/.local/share/flatpak/exports/bin/io.github.shiiion.primehack</entry>
         </rule>
     </emulator>
+    <emulator name="PUNES">
+        <!-- Nintendo NES and Famicom emulator puNES -->
+        <rule type="systempath">
+            <entry>punes</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>~/Applications/punes/punes</entry>
+            <entry>~/.local/bin/punes/punes</entry>
+            <entry>~/bin/punes/punes</entry>
+        </rule>
+    </emulator>
     <emulator name="REDREAM">
         <!-- Sega Dreamcast emulator Redream -->
         <rule type="systempath">
@@ -498,6 +520,17 @@
             <entry>~/bin/publish/Ryujinx</entry>
         </rule>
     </emulator>
+    <emulator name="SAMEBOY">
+        <!-- Nintendo Game Boy and Game Boy Color emulator SameBoy -->
+        <rule type="systempath">
+            <entry>sameboy</entry>
+            <entry>io.github.sameboy.SameBoy</entry>
+        </rule>
+        <rule type="staticpath">
+            <entry>/var/lib/flatpak/exports/bin/io.github.sameboy.SameBoy</entry>
+            <entry>~/.local/share/flatpak/exports/bin/io.github.sameboy.SameBoy</entry>
+        </rule>
+    </emulator>
     <emulator name="SCUMMVM">
         <!-- ScummVM game engine -->
         <rule type="systempath">
@@ -521,7 +554,7 @@
         </rule>
     </emulator>
     <emulator name="SHEEPSHAVER">
-        <!-- Macintosh PowerPC emulator SheepShaver -->
+        <!-- Apple Macintosh PowerPC emulator SheepShaver -->
         <rule type="systempath">
             <entry>SheepShaver</entry>
         </rule>
